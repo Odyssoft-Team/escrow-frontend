@@ -1,0 +1,16 @@
+import Header from "@/components/Header";
+import MenuMobile from "@/components/MenuMobile";
+
+export default function SystemLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <div className="min-h-screen min-w-screen bg-[#F7F8FA]">
+      <Header />
+      {children}
+      <MenuMobile />
+    </div>
+  );
+}
