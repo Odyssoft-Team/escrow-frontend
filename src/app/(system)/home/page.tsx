@@ -5,10 +5,16 @@ import { AiFillThunderbolt } from "react-icons/ai";
 import QuickActions from "@/components/home/QuickActions";
 import { IoMdTrendingUp } from "react-icons/io";
 import PortfolioStatistics from "@/components/home/PortfolioStatistics";
+import { format } from "date-fns";
+import { enUS } from "date-fns/locale";
 
 export default function HomePage() {
   return (
-    <div className="min-h-svh bg-[#F7F8FA] px-4 flex flex-col gap-4 pb-[90px]">
+    <div className="bg-[#F7F8FA] px-4 flex flex-col gap-4 pt-[30px] pb-[90px]">
+      <span className="text-content font-medium text-base">
+        {format(new Date(), "EEEE, MMMM do", { locale: enUS })}
+      </span>
+
       <div className="flex flex-col gap-1 mb-10">
         <h1 className="text-3xl text-content font-semibold">Good Afternon,</h1>
         <span className="font-bold text-primary text-4xl flex items-center gap-2">

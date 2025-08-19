@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+const nunito = Nunito_Sans({
+  variable: "--font-nunito",
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
 });
 
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} antialiased`}>
+      <body className={`${nunito.variable} antialiased overflow-x-hidden`}>
         <Toaster richColors visibleToasts={3} />
         {children}
       </body>
