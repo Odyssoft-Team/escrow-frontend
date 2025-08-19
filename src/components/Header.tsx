@@ -14,7 +14,7 @@ import { BoltIcon, Layers2Icon } from "lucide-react";
 
 export default function Header() {
   return (
-    <header className="w-full p-4 flex items-center justify-end gap-3 fixed top-0">
+    <header className="w-full p-4 flex items-center justify-end gap-3 fixed top-0 z-5">
       <Button className="size-8 p-0 rounded-full bg-gray-200 text-black">
         <FaBell className="size-4" />
       </Button>
