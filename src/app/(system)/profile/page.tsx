@@ -1,6 +1,9 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-export default async function EscrowPage() {
+import { FaBriefcase, FaPhoneAlt, FaUser } from "react-icons/fa";
+import { CiUser } from "react-icons/ci";
+
+export default async function ProfilePage() {
   return (
     <div className="bg-[#F7F8FA] px-4 flex flex-col gap-4 pb-[90px] pt-[20px]">
       <div className="flex flex-col gap-2">
@@ -30,8 +33,27 @@ export default async function EscrowPage() {
           <div className="w-full flex items-start justify-between">
             <div className="flex flex-col items-start">
               <h2 className="text-primary font-extrabold">
+                <FaUser /> Personal Information
+              </h2>
+
+              <div className="flex w-full bg-[#F7F8FA] rounded-2xl px-4 py-3">
+                <CiUser /> First Name
+              </div>
+
+              <div>Last Name</div>
+              <div>
+                <FaBriefcase /> Role
+              </div>
+            </div>
+            <div className="flex flex-col items-end"></div>
+          </div>
+        </div>
+        <div className="w-full rounded-3xl bg-white p-4 shadow-2xl shadow-neutral-200">
+          <div className="w-full flex items-start justify-between">
+            <div className="flex flex-col items-start">
+              <h2 className="flex gap-2 text-blue-500 font-extrabold">
                 {/* {property.property_name} */}
-                Personal Information
+                <FaPhoneAlt /> Contact Information
               </h2>
               {/* <span>{property.property_address1}</span> */}
               <div className="flex w-full bg-[#F7F8FA] rounded-2xl px-4 py-3">
@@ -41,10 +63,7 @@ export default async function EscrowPage() {
               <div>Last Name</div>
               <div>Role</div>
             </div>
-            <div className="flex flex-col items-end">
-              {/* <b>${property.property_rental_amount}</b>
-          <span>per month</span> */}
-            </div>
+            <div className="flex flex-col items-end"></div>
           </div>
         </div>
       </div>
