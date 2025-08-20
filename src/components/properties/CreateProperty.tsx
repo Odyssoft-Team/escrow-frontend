@@ -14,6 +14,8 @@ import { FaBuilding, FaLocationArrow, FaPlus } from "react-icons/fa";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useState } from "react";
+import InfoForm from "./InfoForm";
+import LocationForm from "./LocationForm";
 
 export default function CreateProperty() {
   const [tabValue, setTabValue] = useState("tab-1");
@@ -83,7 +85,10 @@ export default function CreateProperty() {
             </Tabs>
           </div>
         </DrawerHeader>
-        <div className="bg-[#F7F8FA] w-full h-full p-4">hola</div>
+        <div className="bg-[#F7F8FA] w-full h-full p-4">
+          {tabValue === "tab-1" && <InfoForm />}
+          {tabValue === "tab-2" && <LocationForm />}
+        </div>
       </DrawerContent>
     </Drawer>
   );
