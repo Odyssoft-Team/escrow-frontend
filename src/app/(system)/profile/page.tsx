@@ -1,69 +1,64 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-import { FaBriefcase, FaPhoneAlt, FaUser } from "react-icons/fa";
-import { CiUser } from "react-icons/ci";
+import { FaSuitcase, FaUser } from "react-icons/fa";
+import { LuUserRound, LuUserRoundPlus } from "react-icons/lu";
 
 export default async function ProfilePage() {
   return (
     <div className="bg-[#F7F8FA] px-4 flex flex-col gap-4 pb-[90px] pt-[20px]">
       <div className="flex flex-col gap-2">
         <h1 className="font-bold text-primary text-3xl leading-[1]">Profile</h1>
-        <span className="flex items-center gap-1 font-medium text-primary/70 text-sm">
-          <Avatar className="bg-primary text-white size-32">
+        <div className="w-full flex items-center justify-center gap-1 font-medium text-primary/70 text-sm relative">
+          <Avatar className="bg-primary text-white size-32 overflow-visible shadow-[0px_0px_35px_5px_rgba(37,51,131,0.50)]">
             <AvatarFallback className="size-full bg-primary text-white font-bold text-5xl">
               J
             </AvatarFallback>
+            <span className="bg-amber-500 text-white px-4 py-1 rounded-full absolute right-0 bottom-0 text-xs">
+              Broker
+            </span>
           </Avatar>
-          <span className="bg-amber-500 text-white px-4 py-1 rounded-full">
-            Broker
-          </span>
-        </span>
-        <span className="flex flex-col items-center gap-1 font-medium text-primary/70 text-sm">
-          <span className="text-primary px-4 py-1 rounded-full  font-bold text-3xl ">
+        </div>
+        <div className="flex flex-col items-center gap-1 font-medium text-primary/70 text-sm my-6">
+          <span className="text-primary px-4 py-1 rounded-full  font-bold text-3xl leading-[1]">
             John TheBroker
           </span>
-          <span className="text-neutral-700 font-medium text-lg px-4 py-1 rounded-full">
+          <span className="text-content font-normal text-lg px-4 py-1 rounded-full leading-[1]">
             rodney@networkcorp.net
           </span>
-        </span>
+        </div>
       </div>
 
-      <div className="w-full grid grid-cols-1 gap-4">
-        <div className="w-full rounded-3xl bg-white p-4 shadow-2xl shadow-neutral-200">
-          <div className="w-full flex items-start justify-between">
-            <div className="flex flex-col items-start">
-              <h2 className="text-primary font-extrabold">
-                <FaUser /> Personal Information
-              </h2>
-
-              <div className="flex w-full bg-[#F7F8FA] rounded-2xl px-4 py-3">
-                <CiUser /> First Name
-              </div>
-
-              <div>Last Name</div>
-              <div>
-                <FaBriefcase /> Role
-              </div>
-            </div>
-            <div className="flex flex-col items-end"></div>
+      <div className="w-full rounded-3xl bg-white p-6 shadow-[24px_20px_135px_-31px_rgba(37,51,131,0.30)] flex flex-col gap-4">
+        <h2 className="text-primary font-bold text-lg flex items-center gap-2">
+          <FaUser /> Personal Information
+        </h2>
+        <div className="flex items-center gap-4 rounded-xl bg-primary/10 px-5 py-3 shadow-lg">
+          <div className="flex items-center justify-center">
+            <LuUserRound className="size-5 text-primary" />
+          </div>
+          <div className="flex flex-col gap-1 items-start leading-[1]">
+            <span className="text-sm text-content">First Name</span>
+            <span className="font-medium">John</span>
           </div>
         </div>
-        <div className="w-full rounded-3xl bg-white p-4 shadow-2xl shadow-neutral-200">
-          <div className="w-full flex items-start justify-between">
-            <div className="flex flex-col items-start">
-              <h2 className="flex gap-2 text-blue-500 font-extrabold">
-                {/* {property.property_name} */}
-                <FaPhoneAlt /> Contact Information
-              </h2>
-              {/* <span>{property.property_address1}</span> */}
-              <div className="flex w-full bg-[#F7F8FA] rounded-2xl px-4 py-3">
-                First Name
-              </div>
 
-              <div>Last Name</div>
-              <div>Role</div>
-            </div>
-            <div className="flex flex-col items-end"></div>
+        <div className="flex items-center gap-4 rounded-xl bg-primary/10 px-5 py-3 shadow-lg">
+          <div className="flex items-center justify-center">
+            <LuUserRoundPlus className="size-5 text-primary" />
+          </div>
+          <div className="flex flex-col gap-1 items-start leading-[1]">
+            <span className="text-sm text-content">Last Name</span>
+            <span className="font-medium">TheBroker</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4 rounded-xl bg-primary/10 px-5 py-3 shadow-lg">
+          <div className="flex items-center justify-center">
+            <FaSuitcase className="size-5 text-primary" />
+          </div>
+          <div className="flex flex-col gap-1 items-start leading-[1]">
+            <span className="text-sm text-content">Role</span>
+            <span className="font-medium">Broker</span>
           </div>
         </div>
       </div>

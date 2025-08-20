@@ -1,3 +1,4 @@
+import CreateProperty from "@/components/properties/CreateProperty";
 import { PropertiesList } from "@/components/properties/PropertiesList";
 import api from "@/lib/axios";
 import { Property } from "@/types/property";
@@ -13,7 +14,7 @@ export default async function PropertiesPage() {
   const properties: Property[] = response.data;
 
   return (
-    <div className="bg-[#F7F8FA] px-4 flex flex-col gap-4 pb-[90px] pt-[20px]">
+    <div className="bg-[#F7F8FA] px-4 flex flex-col gap-4 pb-[90px] pt-[20px] relative">
       <div className="flex flex-col gap-2">
         <h1 className="font-bold text-primary text-3xl leading-[1]">
           Properties
@@ -26,6 +27,8 @@ export default async function PropertiesPage() {
 
       {/* Usa el componente cliente con la lógica de búsqueda */}
       <PropertiesList properties={properties} />
+
+      <CreateProperty />
     </div>
   );
 }
