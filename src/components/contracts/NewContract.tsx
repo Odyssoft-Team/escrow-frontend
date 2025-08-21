@@ -4,6 +4,7 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -11,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { FaPlus } from "react-icons/fa";
 
@@ -28,10 +29,6 @@ import LeaseDetailsForm from "./LeaseDetailsForm";
 
 export default function NewContract() {
   const [currentStep, setCurrentStep] = useState<number>(1);
-
-  useEffect(() => {
-    setCurrentStep(1);
-  }, [currentStep]);
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -55,13 +52,13 @@ export default function NewContract() {
               </Button>
             </DrawerClose>
             <DrawerTitle className="text-primary font-bold text-xl">
-              New Property
+              New Contract
             </DrawerTitle>
           </div>
 
           <Stepper
             defaultValue={2}
-            className="mt-5 px-5"
+            className="mt-5 mb-0 pb-0 px-5"
             value={currentStep}
             onValueChange={setCurrentStep}
           >
@@ -86,6 +83,12 @@ export default function NewContract() {
         <div className="bg-[#F7F8FA] w-full h-full p-4">
           {currentStep === 1 && <LeaseDetailsForm />}
         </div>
+
+        <DrawerFooter className="border-t fixed bottom-0 w-full bg-white">
+          <Button variant="default" onClick={() => setCurrentStep(2)}>
+            Next
+          </Button>
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );
