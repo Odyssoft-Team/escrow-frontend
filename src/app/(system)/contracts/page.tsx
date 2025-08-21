@@ -1,4 +1,5 @@
 import { ContractsList } from "@/components/contracts/ContractsList";
+import NewContract from "@/components/contracts/NewContract";
 import api from "@/lib/axios";
 import { Contract } from "@/types/contract";
 import { FaFileAlt } from "react-icons/fa";
@@ -25,6 +26,8 @@ export default async function ContractsPage() {
       </div>
 
       <ContractsList contracts={contracts} />
+
+      <NewContract />
     </div>
   );
 }
