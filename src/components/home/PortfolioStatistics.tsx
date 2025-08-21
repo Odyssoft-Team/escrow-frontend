@@ -68,7 +68,7 @@ export default function PortfolioStatistics() {
     return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
   }, []);
   return (
-    <div className="w-full grid grid-cols-1 gap-4 px-6">
+    <div className="w-full grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 sm:px-0 xl:grid-cols-3 2xl:grid-cols-4 2xl:gap-10">
       <Card className="flex flex-col">
         <CardHeader className="items-center justify-center text-center pb-0">
           <CardTitle className="font-bold text-black text-lg leading-[1]">

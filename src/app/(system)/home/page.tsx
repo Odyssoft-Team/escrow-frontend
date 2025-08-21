@@ -10,24 +10,29 @@ import { enUS } from "date-fns/locale";
 
 export default function HomePage() {
   return (
-    <div className="bg-[#F7F8FA] px-4 flex flex-col gap-4 pt-[30px] pb-[90px]">
-      <span className="text-content font-medium text-base">
-        {format(new Date(), "EEEE, MMMM do", { locale: enUS })}
-      </span>
+    <div className="bg-[#F7F8FA] px-4 flex flex-col gap-4 pt-[30px] pb-[90px] sm:px-12 xl:pb-[40px] 2xl:px-40">
+      <div className="w-full flex flex-col gap-4 xl:flex-row xl:items-center xl:gap-10 xl:justify-between">
+        <div className="flex flex-col gap-4">
+          <span className="text-content font-medium text-base xl:text-lg">
+            {format(new Date(), "EEEE, MMMM do", { locale: enUS })}
+          </span>
+          <div className="flex flex-col gap-1 mb-10">
+            <h1 className="text-3xl text-content font-semibold xl:text-5xl">
+              Good Afternon,
+            </h1>
+            <span className="font-bold text-primary text-4xl flex items-center gap-2 xl:text-6xl">
+              John! <FaHandSparkles className="text-yellow-500" />{" "}
+            </span>
+          </div>
+        </div>
 
-      <div className="flex flex-col gap-1 mb-10">
-        <h1 className="text-3xl text-content font-semibold">Good Afternon,</h1>
-        <span className="font-bold text-primary text-4xl flex items-center gap-2">
-          John! <FaHandSparkles className="text-yellow-500" />{" "}
-        </span>
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <h2 className="font-bold text-black text-2xl flex gap-1 leading-[1]">
-          <BsStars className="text-primary" />
-          Your AI Assistant
-        </h2>
-        <AssistanCard />
+        <div className="flex flex-col gap-4">
+          <h2 className="font-bold text-black text-2xl flex gap-1 leading-[1]">
+            <BsStars className="text-primary" />
+            Your AI Assistant
+          </h2>
+          <AssistanCard />
+        </div>
       </div>
 
       <div className="flex flex-col gap-4 mt-10">
