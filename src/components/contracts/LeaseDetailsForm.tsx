@@ -19,12 +19,12 @@ export default function LeaseDetailsForm() {
         <div className="flex items-center justify-start gap-4">
           <FaCircleExclamation className="text-primary size-6" />
           <div className="flex flex-col items-start gap-0 leading-[1]">
-            <h2 className="font-bold text-primary text-xl">Lease Details</h2>
+            <h2 className="font-bold text-primary text-2xl">Lease Details</h2>
             <p className="text-content text-sm">Basic contract information</p>
           </div>
         </div>
 
-        <div className="w-full p-4 bg-white border rounded-xl flex flex-col gap-4">
+        <div className="w-full p-4 bg-white border rounded-xl flex flex-col gap-6">
           <div className="flex flex-col gap-1">
             <label className="flex items-center gap-2 text-content font-normal">
               <PiUserCircleFill className="text-primary/80" />

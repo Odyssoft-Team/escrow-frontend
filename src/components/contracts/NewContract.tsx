@@ -26,6 +26,7 @@ import {
   StepperTrigger,
 } from "@/components/ui/stepper";
 import LeaseDetailsForm from "./LeaseDetailsForm";
+import AmountsDueForm from "./AmountsDueForm";
 
 export default function NewContract() {
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -76,12 +77,18 @@ export default function NewContract() {
             <p className="font-medium leading-[1] text-primary text-sm">
               Step {currentStep} of 4
             </p>
-            <span className="text-xs text-content">Lease details</span>
+            <span className="text-xs text-content">
+              {currentStep === 1 && "Lease Details"}
+              {currentStep === 2 && "Amounts Due"}
+              {currentStep === 3 && "Tenant Details"}
+              {currentStep === 4 && "Escrow Account"}
+            </span>
           </div>
         </DrawerHeader>
 
         <div className="bg-[#F7F8FA] w-full h-full p-4">
           {currentStep === 1 && <LeaseDetailsForm />}
+          {currentStep === 2 && <AmountsDueForm />}
         </div>
 
         <DrawerFooter className="border-t fixed bottom-0 w-full bg-white">
