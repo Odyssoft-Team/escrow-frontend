@@ -11,12 +11,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { FaPlus } from "react-icons/fa";
 
 export default function NewContract() {
   const [currentStep, setCurrentStep] = useState("1");
+
+  useEffect(() => {
+    setCurrentStep("1");
+  }, [currentStep]);
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -44,7 +48,11 @@ export default function NewContract() {
             </DrawerTitle>
           </div>
 
-          <div className="w-full mt-6"></div>
+          <div className="w-full mt-6">
+            <p className="text-content text-base font-medium leading-[1]">
+              {currentStep} of 3
+            </p>
+          </div>
         </DrawerHeader>
       </DrawerContent>
     </Drawer>
