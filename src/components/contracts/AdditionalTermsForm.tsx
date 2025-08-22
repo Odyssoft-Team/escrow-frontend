@@ -1,0 +1,82 @@
+import { BsFileMedicalFill, BsLightningChargeFill } from "react-icons/bs";
+import { ScrollArea } from "../ui/scroll-area";
+import { Textarea } from "../ui/textarea";
+import { ImLibrary } from "react-icons/im";
+import { Input } from "../ui/input";
+import { LuDollarSign } from "react-icons/lu";
+import { IoCard } from "react-icons/io5";
+
+export default function AdditionalTermsForm() {
+  return (
+    <ScrollArea className="h-[calc(100vh-370px)] w-full">
+      <div className="w-full flex flex-col gap-2 ">
+        <div className="flex items-center justify-start gap-4">
+          <BsFileMedicalFill className="text-primary size-6" />
+          <div className="flex flex-col items-start gap-0 leading-[1]">
+            <h2 className="font-bold text-primary text-2xl">
+              Additional Terms
+            </h2>
+            <p className="text-content text-sm">Final contract details</p>
+          </div>
+        </div>
+
+        <div className="w-full p-4 bg-white border rounded-xl flex flex-col gap-6">
+          <h2 className="font-bold text-yellow-400 text-lg flex items-center gap-2">
+            <BsFileMedicalFill className="text-yellow-400 size-6" />
+            Utilities & Services
+          </h2>
+
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center gap-2 text-content font-normal">
+              <BsLightningChargeFill className="text-primary/80" />
+              Utilities Landlord Will Pay
+            </label>
+            <Textarea
+              placeholder="e.g., Water, Sewer, Electricity..."
+              className="h-26 placeholder:text-content/60"
+            />
+          </div>
+
+          <h2 className="font-bold text-cyan-600 text-lg flex items-center gap-2">
+            <ImLibrary className="text-cyan-600 size-6" />
+            Association Details
+          </h2>
+
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center gap-2 text-content font-normal">
+              <ImLibrary className="text-primary/80" />
+              Association Deposit
+            </label>
+            <div className="relative">
+              <Input
+                className="peer ps-9 h-12"
+                placeholder="0.00"
+                type="number"
+              />
+              <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center gap-2 text-content font-normal">
+              <IoCard className="text-primary/80" />
+              Association Fees
+            </label>
+            <div className="relative">
+              <Input
+                className="peer ps-9 h-12"
+                placeholder="0.00"
+                type="number"
+              />
+              <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ScrollArea>
+  );
+}

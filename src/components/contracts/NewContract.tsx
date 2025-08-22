@@ -10,7 +10,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft } from "lucide-react";
+import { CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { useState } from "react";
 
@@ -27,6 +27,8 @@ import {
 } from "@/components/ui/stepper";
 import LeaseDetailsForm from "./LeaseDetailsForm";
 import AmountsDueForm from "./AmountsDueForm";
+import MonthlyTermsForm from "./MonthlyTermsForm";
+import AdditionalTermsForm from "./AdditionalTermsForm";
 
 export default function NewContract() {
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -65,8 +67,8 @@ export default function NewContract() {
           >
             {steps.map((step) => (
               <StepperItem key={step} step={step} className="not-last:flex-1">
-                <StepperTrigger>
-                  <StepperIndicator asChild>{step}</StepperIndicator>
+                <StepperTrigger asChild>
+                  <StepperIndicator />
                 </StepperTrigger>
                 {step < steps.length && <StepperSeparator />}
               </StepperItem>
@@ -80,8 +82,8 @@ export default function NewContract() {
             <span className="text-xs text-content">
               {currentStep === 1 && "Lease Details"}
               {currentStep === 2 && "Amounts Due"}
-              {currentStep === 3 && "Tenant Details"}
-              {currentStep === 4 && "Escrow Account"}
+              {currentStep === 3 && "Monthly Terms"}
+              {currentStep === 4 && "Additional Terms"}
             </span>
           </div>
         </DrawerHeader>
@@ -89,12 +91,43 @@ export default function NewContract() {
         <div className="bg-[#F7F8FA] w-full h-full p-4">
           {currentStep === 1 && <LeaseDetailsForm />}
           {currentStep === 2 && <AmountsDueForm />}
+          {currentStep === 3 && <MonthlyTermsForm />}
+          {currentStep === 4 && <AdditionalTermsForm />}
         </div>
 
-        <DrawerFooter className="border-t fixed bottom-0 w-full bg-white">
-          <Button variant="default" onClick={() => setCurrentStep(2)}>
-            Next
-          </Button>
+        <DrawerFooter className="border-t fixed bottom-0 right-0 left-0 w-screen bg-white flex-row justify-between">
+          <div className="w-full flex items-center justify-between gap-4">
+            {currentStep !== 1 && (
+              <Button
+                variant="outline"
+                onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
+                className="flex-1 bg-primary/10 border border-primary/30"
+              >
+                <ChevronLeft />
+                Prev
+              </Button>
+            )}
+
+            {currentStep === 4 ? (
+              <Button
+                variant="default"
+                onClick={() => setCurrentStep((prev) => Math.min(4, prev + 1))}
+                className="flex-1 bg-green-500 text-white hover:bg-green-500 hover:text-white"
+              >
+                <CheckCircle />
+                Create Contract
+              </Button>
+            ) : (
+              <Button
+                variant="default"
+                onClick={() => setCurrentStep((prev) => Math.min(4, prev + 1))}
+                className="flex-1"
+              >
+                Next
+                <ChevronRight />
+              </Button>
+            )}
+          </div>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

@@ -35,7 +35,7 @@ export default function AmountsDueForm() {
         </div>
 
         <div className="w-full p-4 bg-white border rounded-xl flex flex-col gap-6">
-          <h2 className="font-bold text-primary text-xl flex items-center gap-2">
+          <h2 className="font-bold text-primary text-lg flex items-center gap-2">
             <span className="size-6 flex items-center justify-center rounded-full bg-primary text-white text-sm">
               1
             </span>
