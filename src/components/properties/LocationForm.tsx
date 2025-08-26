@@ -11,12 +11,24 @@ import { Search } from "lucide-react";
 import { IoLocationOutline } from "react-icons/io5";
 
 import dynamic from "next/dynamic";
+import { Location } from "./CreateProperty";
 
 const InteractiveMap = dynamic(() => import("./InteractiveMap"), {
   ssr: false,
 });
 
-export default function LocationForm() {
+interface Props {
+  locationData: Location;
+  setLocationData: React.Dispatch<React.SetStateAction<Location>>;
+}
+
+export default function LocationForm({ locationData, setLocationData }: Props) {
+  const handleChange = (field: keyof Location, value: string | number) => {
+    setLocationData({
+      ...locationData,
+      [field]: value,
+    });
+  };
   return (
     <ScrollArea className="h-[calc(100vh-270px)] w-full">
       <div className="grid grid-cols-1 gap-4 w-full">
@@ -47,6 +59,8 @@ export default function LocationForm() {
             <Input
               placeholder="Street Address"
               className="h-12 placeholder:text-content/60"
+              value={locationData.address1}
+              onChange={(e) => handleChange("address1", e.target.value)}
             />
           </div>
 
@@ -58,6 +72,8 @@ export default function LocationForm() {
             <Input
               placeholder="Apt, Suite, etc. (Optional)"
               className="h-12 placeholder:text-content/60"
+              value={locationData.address2}
+              onChange={(e) => handleChange("address2", e.target.value)}
             />
           </div>
 
@@ -70,6 +86,8 @@ export default function LocationForm() {
               <Input
                 placeholder="City"
                 className="h-12 placeholder:text-content/60"
+                value={locationData.city}
+                onChange={(e) => handleChange("city", e.target.value)}
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -80,6 +98,8 @@ export default function LocationForm() {
               <Input
                 placeholder="State"
                 className="h-12 placeholder:text-content/60"
+                value={locationData.state}
+                onChange={(e) => handleChange("state", e.target.value)}
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -90,6 +110,8 @@ export default function LocationForm() {
               <Input
                 placeholder="ZIP"
                 className="h-12 placeholder:text-content/60"
+                value={locationData.zip}
+                onChange={(e) => handleChange("zip", e.target.value)}
               />
             </div>
           </div>
@@ -105,7 +127,12 @@ export default function LocationForm() {
             Move the map to position the pin ar the exact location
           </p>
 
-          <InteractiveMap />
+          <InteractiveMap
+            latitude={locationData.latitude}
+            longitude={locationData.longitude}
+            setLatitude={(lat: number) => handleChange("latitude", lat)}
+            setLongitude={(lng: number) => handleChange("longitude", lng)}
+          />
         </div>
       </div>
     </ScrollArea>
