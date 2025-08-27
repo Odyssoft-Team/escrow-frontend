@@ -1,6 +1,8 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { FaSuitcase, FaChevronRight, FaHome, FaUser } from "react-icons/fa";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { FaHome } from "react-icons/fa";
 import Link from "next/link";
 
 export function LoginForm({
@@ -8,7 +10,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"form">) {
   return (
-    <section className={cn("flex flex-col gap-6", className)} {...props}>
+    <form className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex justify-center gap-2 md:justify-start mb-10">
         <div className="flex flex-col items-center font-medium text-primary">
           <FaHome className="size-12 text-primary" />
@@ -18,50 +20,53 @@ export function LoginForm({
           </span>
         </div>
       </div>
-      <div className="flex flex-col items-center gap-8 text-center mb-8">
-        <h1 className="text-3xl font-bold text-primary">Welcome to rentsafe</h1>
-        <p className="text-content text-md text-balance">
-          Select your role to get started
-        </p>
+      <div className="flex flex-col items-center gap-2 text-center mb-8">
+        <h1 className="text-3xl font-bold text-primary">Welcome Back</h1>
+        <p className="text-content text-md text-balance">Sign in to continue</p>
       </div>
       <div className="grid gap-6">
-        <Button
-          variant="outline"
-          className="w-full text-primary font-semibold text-md shadow-md bg-white hover:bg-white/90 h-15 !px-6 justify-between"
-        >
-          <div className="flex items-center justify-center gap-5">
-            <FaSuitcase className="size-6" />
-            I&apos;m an Agent/Broker
+        <div className="grid gap-3">
+          <Label htmlFor="email" className="text-content">
+            Email
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            className="placeholder:text-content/50 placeholder:text-sm"
+            placeholder="Enter your username"
+            required
+          />
+        </div>
+        <div className="grid gap-3">
+          <div className="flex items-center">
+            <Label htmlFor="password" className="text-content">
+              Password
+            </Label>
+            <Link
+              href="#"
+              className="ml-auto text-xs text-primary font-medium underline-offset-4 hover:underline"
+            >
+              Forgot your password?
+            </Link>
           </div>
-          <FaChevronRight className="size-4 text-content" />
-        </Button>
-        <Button
-          variant="outline"
-          className="w-full text-primary font-semibold text-md shadow-md bg-white hover:bg-white/90 h-15 !px-6 justify-between"
-        >
-          <div className="flex items-center justify-center gap-5">
-            <FaHome className="size-6" />
-            I&apos;m a Property Owner
-          </div>
-          <FaChevronRight className="size-4 text-content" />
-        </Button>
-        <Button
-          variant="outline"
-          className="w-full text-primary font-semibold text-md shadow-md bg-white hover:bg-white/90 h-15 !px-6 justify-between"
-        >
-          <div className="flex items-center justify-center gap-5">
-            <FaUser className="size-6" />
-            I&apos;m a Renter/Tenant
-          </div>
-          <FaChevronRight className="size-4 text-content" />
+          <Input
+            id="password"
+            type="password"
+            className="placeholder:text-content/50 placeholder:text-sm"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <Button type="submit" className="w-full">
+          Sign In
         </Button>
       </div>
-      <div className="text-center text-md text-content mt-10">
-        Already have an account?{" "}
+      <div className="text-center text-sm text-content">
+        Don&apos;t have an account?{" "}
         <Link href="register" className=" text-primary font-bold">
-          Sign in
+          Sign Up
         </Link>
       </div>
-    </section>
+    </form>
   );
 }
