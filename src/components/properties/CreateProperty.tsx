@@ -17,8 +17,45 @@ import { useState } from "react";
 import InfoForm from "./InfoForm";
 import LocationForm from "./LocationForm";
 
+export interface Location {
+  address1: string;
+  address2: string;
+  city: string;
+  state: string;
+  zip: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface InfoFormData {
+  propertyName: string;
+  propertyDescription: string;
+  monthlyRent: number;
+}
+
 export default function CreateProperty() {
   const [tabValue, setTabValue] = useState("tab-1");
+
+  const [infoData, setInfoData] = useState<InfoFormData>({
+    propertyName: "",
+    propertyDescription: "",
+    monthlyRent: 0,
+  });
+
+  const [locationData, setLocationData] = useState<Location>({
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zip: "",
+    latitude: 40.7128,
+    longitude: -74.006,
+  });
+
+  const sendData = async () => {
+    console.log(infoData, locationData);
+  };
+
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -47,6 +84,7 @@ export default function CreateProperty() {
             <Button
               variant={"outline"}
               className="border-none bg-primary text-white rounded-full text-base !px-4"
+              onClick={sendData}
             >
               <Check className="size-5" />
               Save
@@ -86,8 +124,15 @@ export default function CreateProperty() {
           </div>
         </DrawerHeader>
         <div className="bg-[#F7F8FA] w-full h-full p-4">
-          {tabValue === "tab-1" && <InfoForm />}
-          {tabValue === "tab-2" && <LocationForm />}
+          {tabValue === "tab-1" && (
+            <InfoForm infoData={infoData} setInfoData={setInfoData} />
+          )}
+          {tabValue === "tab-2" && (
+            <LocationForm
+              locationData={locationData}
+              setLocationData={setLocationData}
+            />
+          )}
         </div>
       </DrawerContent>
     </Drawer>

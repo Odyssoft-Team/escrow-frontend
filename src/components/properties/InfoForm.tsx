@@ -6,8 +6,20 @@ import { Textarea } from "../ui/textarea";
 import { AiOutlineDollar } from "react-icons/ai";
 import { LuDollarSign } from "react-icons/lu";
 import { ScrollArea } from "../ui/scroll-area";
+import { InfoFormData } from "./CreateProperty";
 
-export default function InfoForm() {
+interface Props {
+  infoData: InfoFormData;
+  setInfoData: React.Dispatch<React.SetStateAction<InfoFormData>>;
+}
+
+export default function InfoForm({ infoData, setInfoData }: Props) {
+  const handleChange = (field: keyof InfoFormData, value: string | number) => {
+    setInfoData((prev: InfoFormData) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
   return (
     <ScrollArea className="h-[calc(100vh-270px)] w-full">
       <div className="grid grid-cols-1 gap-4 w-full">
@@ -26,6 +38,8 @@ export default function InfoForm() {
             <Input
               placeholder="e.g., Sunset Apartments"
               className="h-12 placeholder:text-content/60"
+              value={infoData.propertyName}
+              onChange={(e) => handleChange("propertyName", e.target.value)}
             />
           </div>
 
@@ -37,6 +51,10 @@ export default function InfoForm() {
             <Textarea
               placeholder="Enter property description..."
               className="h-30 placeholder:text-content/60"
+              value={infoData.propertyDescription}
+              onChange={(e) =>
+                handleChange("propertyDescription", e.target.value)
+              }
             />
           </div>
         </div>
@@ -58,6 +76,10 @@ export default function InfoForm() {
                 className="peer ps-9 h-12"
                 placeholder="0.00"
                 type="number"
+                value={infoData.monthlyRent}
+                onChange={(e) =>
+                  handleChange("monthlyRent", Number(e.target.value))
+                }
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />

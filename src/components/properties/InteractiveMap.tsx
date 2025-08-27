@@ -11,19 +11,29 @@ import {
   Popup,
   useMapEvents,
 } from "react-leaflet";
-import { useState } from "react";
 import type { LatLngExpression, LeafletMouseEvent } from "leaflet";
 
-const initialPosition: LatLngExpression = [40.7128, -74.006];
+interface Props {
+  latitude: number;
+  longitude: number;
+  setLatitude: (latitude: number) => void;
+  setLongitude: (longitude: number) => void;
+}
 
-export default function InteractiveMap() {
-  const [position, setPosition] = useState<LatLngExpression>(initialPosition);
+export default function InteractiveMap({
+  latitude,
+  longitude,
+  setLatitude,
+  setLongitude,
+}: Props) {
+  const position: [number, number] = [latitude, longitude];
 
   function LocationMarker() {
     useMapEvents({
       click(e: LeafletMouseEvent) {
         const newPos: LatLngExpression = [e.latlng.lat, e.latlng.lng];
-        setPosition(newPos);
+        setLatitude(e.latlng.lat);
+        setLongitude(e.latlng.lng);
         console.log("Ubicación por click:", newPos); // Muestra en consola al hacer click
       },
     });
@@ -36,7 +46,8 @@ export default function InteractiveMap() {
           dragend: (e) => {
             const latlng = e.target.getLatLng();
             const newPos: LatLngExpression = [latlng.lat, latlng.lng];
-            setPosition(newPos);
+            setLatitude(latlng.lat);
+            setLongitude(latlng.lng);
             console.log("Ubicación después de arrastrar:", newPos); // Muestra en consola al soltar el marcador
           },
         }}
@@ -63,20 +74,7 @@ export default function InteractiveMap() {
         overflow: "hidden",
       }}
     >
-      {/* <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution="© OpenStreetMap contributors"
-      /> */}
-
-      {/* <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        attribution="© CARTO"
-      /> */}
-
-      <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-        // attribution="© CARTO"
-      />
+      <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
       <LocationMarker />
     </MapContainer>
   );
