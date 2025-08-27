@@ -9,11 +9,18 @@ import {
 
 interface Props {
   property: Property;
+  handlePropertySelected: (property: Property) => void;
 }
 
-export default function PropertyCard({ property }: Props) {
+export default function PropertyCard({
+  property,
+  handlePropertySelected,
+}: Props) {
   return (
-    <div className="w-full border rounded-3xl bg-white p-4 flex flex-col gap-4 relative shadow-[24px_20px_135px_-31px_rgba(37,51,131,0.30)]">
+    <div
+      className="w-full border rounded-3xl bg-white p-4 flex flex-col gap-4 relative shadow-[24px_20px_135px_-31px_rgba(37,51,131,0.30)]"
+      onClick={() => handlePropertySelected(property)}
+    >
       <div className="w-full flex items-start justify-between">
         <div className="flex flex-col items-start gap-2">
           <h2 className="text-primary font-bold text-xl">
