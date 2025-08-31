@@ -86,7 +86,7 @@ export function PropertiesList({ properties }: PropertiesListProps) {
       )}
 
       {/* Properties list */}
-      <div className="w-full grid grid-cols-1 gap-4">
+      <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 2xl:grid-cols-3">
         {filteredProperties.map((property: Property) => (
           <PropertyCard
             key={property.property_id}
