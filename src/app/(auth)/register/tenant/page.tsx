@@ -249,6 +249,7 @@ export default function TenantRegisterPage() {
         // Redirigir a la pantalla de inicio de sesión
         router.push("/login");
       } catch (error) {
+        console.log(error);
         toast.error("Registration failed. Please try again.", {
           position: "top-right",
           duration: 5000,

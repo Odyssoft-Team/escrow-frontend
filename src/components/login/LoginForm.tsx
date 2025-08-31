@@ -96,8 +96,10 @@ export function LoginForm() {
         }
 
         console.log("Response:", response.data);
-      } catch (error: any) {
-        toast.error(error.message || "Login failed. Please try again.", {
+      } catch (error) {
+        console.log("Error:", error);
+
+        toast.error("Login failed. Please try again.", {
           position: "top-right",
           duration: 5000,
         });
