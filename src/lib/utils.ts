@@ -15,3 +15,16 @@ export function formatToShortDate(isoDateString: string | null) {
     return "";
   }
 }
+
+export function formatCurrency(valor: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(valor);
+}
+
+export function formatToDateTime(fechaISO: string) {
+  const fecha = parseISO(fechaISO);
+  if (!fecha || isNaN(fecha.getTime())) return "";
+  return format(fecha, "MMMM d, yyyy 'at' h:mm a");
+}
