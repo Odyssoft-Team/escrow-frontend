@@ -103,7 +103,7 @@ export const useNewContractStore = create<NewContractStore>((set, get) => ({
   isReadyToCreate: () => {
     const state = get();
     return requiredFields.every(({ key }) => {
-      const value = (state as any)[key];
+      const value = state[key as keyof NewContractStore];
       if (typeof value === "string") return value.trim() !== "";
       if (typeof value === "number") return value !== 0;
       if (value instanceof Date) return !isNaN(value.getTime());
@@ -115,7 +115,7 @@ export const useNewContractStore = create<NewContractStore>((set, get) => ({
     const state = get();
     return requiredFields
       .filter(({ key }) => {
-        const value = (state as any)[key];
+        const value = state[key as keyof NewContractStore];
         if (typeof value === "string") return value.trim() === "";
         if (typeof value === "number") return value === 0;
         if (value instanceof Date) return isNaN(value.getTime());

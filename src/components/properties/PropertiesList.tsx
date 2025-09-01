@@ -44,6 +44,7 @@ import {
 } from "react-icons/pi";
 import { FiFileText, FiHash } from "react-icons/fi";
 import { RiEdit2Fill } from "react-icons/ri";
+import EditProperty from "./EditProperty";
 
 interface PropertiesListProps {
   properties: Property[];
@@ -51,6 +52,7 @@ interface PropertiesListProps {
 
 export function PropertiesList({ properties }: PropertiesListProps) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [openEdit, setOpenEdit] = useState(false);
 
   const filteredProperties = useMemo(() => {
     if (!searchTerm.trim()) return properties;
@@ -505,7 +507,12 @@ export function PropertiesList({ properties }: PropertiesListProps) {
           </div>
 
           <DrawerFooter className="border-t flex-row justify-center gap-4">
-            <Button className="bg-primary text-white h-12">
+            <Button
+              className="bg-primary text-white h-12"
+              onClick={() => {
+                setOpenEdit(true);
+              }}
+            >
               {" "}
               <RiEdit2Fill /> Edit Property
             </Button>
@@ -516,6 +523,14 @@ export function PropertiesList({ properties }: PropertiesListProps) {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
+
+      {propertySelected && (
+        <EditProperty
+          data={propertySelected as Property}
+          openEdit={openEdit}
+          setOpenEdit={setOpenEdit}
+        />
+      )}
     </div>
   );
 }
