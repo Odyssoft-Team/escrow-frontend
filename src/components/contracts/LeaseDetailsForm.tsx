@@ -1,3 +1,5 @@
+"use client";
+
 import { FaCircleExclamation } from "react-icons/fa6";
 import { PiUserCircleFill, PiUserCirclePlusFill } from "react-icons/pi";
 import {
@@ -11,8 +13,63 @@ import { FaRegBuilding } from "react-icons/fa";
 import { RiArmchairFill } from "react-icons/ri";
 import { ScrollArea } from "../ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
+import api from "@/lib/axios";
+import { useEffect, useState } from "react";
+import { UserData } from "@/types/user";
+import { Property } from "@/types/property";
+import { useNewContractStore } from "@/store/new-contract.store";
 
 export default function LeaseDetailsForm() {
+  const [listUsers, setListUsers] = useState<UserData[]>([]);
+  const handleGetUsers = async () => {
+    const response = await api.get("/users", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      setListUsers(response.data);
+    } else {
+      console.log(response);
+      setListUsers([]);
+    }
+  };
+
+  const [listProperties, setListProperties] = useState<Property[]>([]);
+  const handleGetProperties = async () => {
+    const response = await api.get("/properties", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("response properties", response);
+
+    if (response.status === 200) {
+      setListProperties(response.data);
+    } else {
+      console.log(response);
+      setListProperties([]);
+    }
+  };
+
+  useEffect(() => {
+    handleGetUsers();
+    handleGetProperties();
+  }, []);
+
+  const {
+    tenantId,
+    landlordId,
+    propertyId,
+    isRented,
+    setLandlordId,
+    setTenantId,
+    setPropertyId,
+    setIsRented,
+  } = useNewContractStore();
+
   return (
     <ScrollArea className="h-[calc(100vh-350px)] w-full">
       <div className="w-full flex flex-col gap-2 ">
@@ -30,14 +87,22 @@ export default function LeaseDetailsForm() {
               <PiUserCircleFill className="text-primary/80" />
               Landlord *
             </label>
-            <Select>
+            <Select value={landlordId} onValueChange={setLandlordId}>
               <SelectTrigger className="w-full !h-12">
                 <SelectValue placeholder="Select Landlord" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">landlord 1</SelectItem>
-                <SelectItem value="dark">landlord 2</SelectItem>
-                <SelectItem value="system">landlord 3</SelectItem>
+                {listUsers
+                  .filter((user) => user.user_role === "landlord")
+                  .map((user) => (
+                    <SelectItem
+                      key={user.user_id}
+                      value={String(user.user_id)}
+                      className="capitalize"
+                    >
+                      {user.user_first_name} {user.user_last_name}
+                    </SelectItem>
+                  ))}
               </SelectContent>
             </Select>
           </div>
@@ -47,14 +112,22 @@ export default function LeaseDetailsForm() {
               <PiUserCirclePlusFill className="text-primary/80" />
               Tenant *
             </label>
-            <Select>
+            <Select value={tenantId} onValueChange={setTenantId}>
               <SelectTrigger className="w-full !h-12">
                 <SelectValue placeholder="Select Tenant" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">tenant 1</SelectItem>
-                <SelectItem value="dark">tenant 2</SelectItem>
-                <SelectItem value="system">tenant 3</SelectItem>
+                {listUsers
+                  .filter((user) => user.user_role === "tenant")
+                  .map((user) => (
+                    <SelectItem
+                      key={user.user_id}
+                      value={String(user.user_id)}
+                      className="capitalize"
+                    >
+                      {user.user_first_name} {user.user_last_name}
+                    </SelectItem>
+                  ))}
               </SelectContent>
             </Select>
           </div>
@@ -64,14 +137,20 @@ export default function LeaseDetailsForm() {
               <FaRegBuilding className="text-primary/80" />
               Property *
             </label>
-            <Select>
+            <Select value={propertyId} onValueChange={setPropertyId}>
               <SelectTrigger className="w-full !h-12">
                 <SelectValue placeholder="Select Property" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">property 1</SelectItem>
-                <SelectItem value="dark">property 2</SelectItem>
-                <SelectItem value="system">property 3</SelectItem>
+                {listProperties.map((property) => (
+                  <SelectItem
+                    key={property.property_id}
+                    value={String(property.property_id)}
+                    className="capitalize"
+                  >
+                    {property.property_name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -87,7 +166,7 @@ export default function LeaseDetailsForm() {
               </p>
             </div>
 
-            <Switch />
+            <Switch checked={isRented} onCheckedChange={setIsRented} />
           </div>
         </div>
       </div>

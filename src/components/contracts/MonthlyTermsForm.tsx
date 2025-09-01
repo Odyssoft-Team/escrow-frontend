@@ -1,3 +1,5 @@
+"use client";
+
 import { IoCard, IoEllipsisHorizontalCircle } from "react-icons/io5";
 import { ScrollArea } from "../ui/scroll-area";
 import { FaChartPie } from "react-icons/fa";
@@ -5,8 +7,19 @@ import { Input } from "../ui/input";
 import { LuDollarSign } from "react-icons/lu";
 import { IoIosCalendar } from "react-icons/io";
 import { FaShield } from "react-icons/fa6";
+import { useNewContractStore } from "@/store/new-contract.store";
 
 export default function MonthlyTermsForm() {
+  const {
+    toFirstMonthRent,
+    toLastMonthRent,
+    toSecurityDeposit,
+    toOther,
+    setToFirstMonthRent,
+    setToLastMonthRent,
+    setToSecurityDeposit,
+    setToOther,
+  } = useNewContractStore();
   return (
     <ScrollArea className="h-[calc(100vh-370px)] w-full">
       <div className="w-full flex flex-col gap-2 ">
@@ -36,6 +49,8 @@ export default function MonthlyTermsForm() {
                 className="peer ps-9 h-12"
                 placeholder="0.00"
                 type="number"
+                value={toFirstMonthRent}
+                onChange={(e) => setToFirstMonthRent(Number(e.target.value))}
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
@@ -53,6 +68,8 @@ export default function MonthlyTermsForm() {
                 className="peer ps-9 h-12"
                 placeholder="0.00"
                 type="number"
+                value={toLastMonthRent}
+                onChange={(e) => setToLastMonthRent(Number(e.target.value))}
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
@@ -70,6 +87,8 @@ export default function MonthlyTermsForm() {
                 className="peer ps-9 h-12"
                 placeholder="0.00"
                 type="number"
+                value={toSecurityDeposit}
+                onChange={(e) => setToSecurityDeposit(Number(e.target.value))}
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
@@ -87,6 +106,8 @@ export default function MonthlyTermsForm() {
                 className="peer ps-9 h-12"
                 placeholder="0.00"
                 type="number"
+                value={toOther}
+                onChange={(e) => setToOther(Number(e.target.value))}
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />

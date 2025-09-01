@@ -1,3 +1,5 @@
+"use client";
+
 import { BsFileMedicalFill, BsLightningChargeFill } from "react-icons/bs";
 import { ScrollArea } from "../ui/scroll-area";
 import { Textarea } from "../ui/textarea";

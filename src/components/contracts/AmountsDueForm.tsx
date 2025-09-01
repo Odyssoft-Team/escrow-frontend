@@ -12,15 +12,25 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
 import { Button } from "../ui/button";
 import { format } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { FaClockRotateLeft } from "react-icons/fa6";
+import { useNewContractStore } from "@/store/new-contract.store";
 
 export default function AmountsDueForm() {
-  const [date, setDate] = useState<Date>();
-  const [date2, setDate2] = useState<Date>();
+  const {
+    firstMonthRent,
+    firstMonthDueOn,
+    advanceRentMonth,
+    advanceRent,
+    advanceRentDueOn,
+    setFirstMonthRent,
+    setFirstMonthDueOn,
+    setAdvanceRentMonth,
+    setAdvanceRent,
+    setAdvanceRentDueOn,
+  } = useNewContractStore();
   return (
     <ScrollArea className="h-[calc(100vh-350px)] w-full">
       <div className="w-full flex flex-col gap-2 ">
@@ -52,6 +62,10 @@ export default function AmountsDueForm() {
                   className="peer ps-9 h-12"
                   placeholder="0.00"
                   type="number"
+                  value={firstMonthRent}
+                  onChange={(e) => {
+                    setFirstMonthRent(Number(e.target.value));
+                  }}
                 />
                 <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                   <LuDollarSign
@@ -71,11 +85,11 @@ export default function AmountsDueForm() {
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    data-empty={!date}
+                    data-empty={!firstMonthDueOn}
                     className="data-[empty=true]:text-muted-foreground w-full h-12 justify-start text-left font-normal"
                   >
-                    {date ? (
-                      format(date, "EEEE, MMMM do", { locale: enUS })
+                    {firstMonthDueOn ? (
+                      format(firstMonthDueOn, "EEEE, MMMM do", { locale: enUS })
                     ) : (
                       <span className="text-muted-foreground text-base font-normal">
                         Pick a date
@@ -84,7 +98,12 @@ export default function AmountsDueForm() {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
-                  <Calendar mode="single" selected={date} onSelect={setDate} />
+                  <Calendar
+                    mode="single"
+                    selected={firstMonthDueOn}
+                    onSelect={setFirstMonthDueOn}
+                    required
+                  />
                 </PopoverContent>
               </Popover>
             </div>
@@ -104,11 +123,11 @@ export default function AmountsDueForm() {
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  data-empty={!date}
+                  data-empty={!advanceRentMonth}
                   className="data-[empty=true]:text-muted-foreground w-full h-12 justify-start text-left font-normal"
                 >
-                  {date ? (
-                    format(date, "MMMM do", { locale: enUS })
+                  {advanceRentMonth ? (
+                    format(advanceRentMonth, "MMMM do", { locale: enUS })
                   ) : (
                     <span className="text-muted-foreground text-base font-normal">
                       e.g., December 2025
@@ -117,7 +136,12 @@ export default function AmountsDueForm() {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={date} onSelect={setDate} />
+                <Calendar
+                  mode="single"
+                  selected={advanceRentMonth}
+                  onSelect={setAdvanceRentMonth}
+                  required
+                />
               </PopoverContent>
             </Popover>
           </div>
@@ -133,6 +157,10 @@ export default function AmountsDueForm() {
                   className="peer ps-9 h-12"
                   placeholder="0.00"
                   type="number"
+                  value={advanceRent}
+                  onChange={(e) => {
+                    setAdvanceRent(Number(e.target.value));
+                  }}
                 />
                 <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                   <LuDollarSign
@@ -152,11 +180,13 @@ export default function AmountsDueForm() {
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    data-empty={!date2}
+                    data-empty={!advanceRentDueOn}
                     className="data-[empty=true]:text-muted-foreground w-full h-12 justify-start text-left font-normal"
                   >
-                    {date2 ? (
-                      format(date2, "EEEE, MMMM do", { locale: enUS })
+                    {advanceRentDueOn ? (
+                      format(advanceRentDueOn, "EEEE, MMMM do", {
+                        locale: enUS,
+                      })
                     ) : (
                       <span className="text-muted-foreground text-base font-normal">
                         Pick a date
@@ -167,8 +197,9 @@ export default function AmountsDueForm() {
                 <PopoverContent className="w-auto p-0">
                   <Calendar
                     mode="single"
-                    selected={date2}
-                    onSelect={setDate2}
+                    selected={advanceRentDueOn}
+                    onSelect={setAdvanceRentDueOn}
+                    required
                   />
                 </PopoverContent>
               </Popover>
