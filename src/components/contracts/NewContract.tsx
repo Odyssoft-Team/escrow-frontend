@@ -10,7 +10,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { CheckCircle, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 import { useState } from "react";
 
@@ -29,11 +29,84 @@ import LeaseDetailsForm from "./LeaseDetailsForm";
 import AmountsDueForm from "./AmountsDueForm";
 import MonthlyTermsForm from "./MonthlyTermsForm";
 import AdditionalTermsForm from "./AdditionalTermsForm";
+import { useNewContractStore } from "@/store/new-contract.store";
+import { toast } from "sonner";
+import api from "@/lib/axios";
 
 export default function NewContract() {
+  const {
+    landlordId,
+    tenantId,
+    propertyId,
+    isRented,
+    firstMonthRent,
+    firstMonthDueOn,
+    advanceRentMonth,
+    advanceRent,
+    advanceRentDueOn,
+    toFirstMonthRent,
+    toLastMonthRent,
+    toSecurityDeposit,
+    toOther,
+    utilitiesExeption,
+    associationDeposit,
+    associationFees,
+    isReadyToCreate,
+    getMissingFields,
+  } = useNewContractStore();
   const [currentStep, setCurrentStep] = useState<number>(1);
+  const [loadingCreate, setLoadingCreate] = useState<boolean>(false);
+  const [openForm, setOpenForm] = useState<boolean>(false);
+
+  const handleCreateContract = async () => {
+    setLoadingCreate(true);
+    if (!isReadyToCreate) {
+      const missingFields = getMissingFields();
+      toast.warning(missingFields, {
+        position: "top-right",
+        duration: 3000,
+      });
+      console.log(missingFields);
+      return;
+    }
+
+    const response = await api.post("/lease_contracts", {
+      landlord_id: landlordId,
+      tenant_id: tenantId,
+      property_id: propertyId,
+      lease_furnished_status: isRented ? "Y" : "N",
+      lease_first_month_rent: firstMonthRent,
+      lease_first_month_due_on: firstMonthDueOn,
+      lease_advance_rent_month: advanceRentMonth,
+      lease_advance_rent: advanceRent,
+      lease_advance_rent_due: advanceRentDueOn,
+      lease_to_first_month_rent: toFirstMonthRent,
+      lease_to_last_month_rent: toLastMonthRent,
+      lease_to_security_deposit: toSecurityDeposit,
+      lease_to_other: toOther,
+      lease_utilities_exception: utilitiesExeption,
+      lease_association_deposit: associationDeposit,
+      lease_association_fees: associationFees,
+    });
+
+    if (response.status === 200) {
+      toast.success("Contract created successfully", {
+        position: "top-right",
+        duration: 3000,
+      });
+      setLoadingCreate(false);
+      setOpenForm(false);
+    } else {
+      toast.error("Error creating contract", {
+        position: "top-right",
+        duration: 3000,
+      });
+      setLoadingCreate(false);
+    }
+  };
+
   return (
-    <Drawer>
+    <Drawer open={openForm} onOpenChange={setOpenForm}>
       <DrawerTrigger asChild>
         <Button
           variant="outline"
@@ -111,10 +184,14 @@ export default function NewContract() {
             {currentStep === 4 ? (
               <Button
                 variant="default"
-                onClick={() => setCurrentStep((prev) => Math.min(4, prev + 1))}
+                onClick={handleCreateContract}
                 className="flex-1 bg-green-500 text-white hover:bg-green-500 hover:text-white"
               >
-                <CheckCircle />
+                {loadingCreate ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <CheckCircle />
+                )}
                 Create Contract
               </Button>
             ) : (

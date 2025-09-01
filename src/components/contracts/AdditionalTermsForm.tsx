@@ -7,8 +7,17 @@ import { ImLibrary } from "react-icons/im";
 import { Input } from "../ui/input";
 import { LuDollarSign } from "react-icons/lu";
 import { IoCard } from "react-icons/io5";
+import { useNewContractStore } from "@/store/new-contract.store";
 
 export default function AdditionalTermsForm() {
+  const {
+    utilitiesExeption,
+    associationDeposit,
+    associationFees,
+    setUtilitiesExeption,
+    setAssociationDeposit,
+    setAssociationFees,
+  } = useNewContractStore();
   return (
     <ScrollArea className="h-[calc(100vh-370px)] w-full">
       <div className="w-full flex flex-col gap-2 ">
@@ -36,6 +45,8 @@ export default function AdditionalTermsForm() {
             <Textarea
               placeholder="e.g., Water, Sewer, Electricity..."
               className="h-26 placeholder:text-content/60"
+              value={utilitiesExeption}
+              onChange={(e) => setUtilitiesExeption(e.target.value)}
             />
           </div>
 
@@ -54,6 +65,8 @@ export default function AdditionalTermsForm() {
                 className="peer ps-9 h-12"
                 placeholder="0.00"
                 type="number"
+                value={associationDeposit}
+                onChange={(e) => setAssociationDeposit(Number(e.target.value))}
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
@@ -71,6 +84,8 @@ export default function AdditionalTermsForm() {
                 className="peer ps-9 h-12"
                 placeholder="0.00"
                 type="number"
+                value={associationFees}
+                onChange={(e) => setAssociationFees(Number(e.target.value))}
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
