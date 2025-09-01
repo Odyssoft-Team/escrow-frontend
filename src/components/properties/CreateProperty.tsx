@@ -9,13 +9,16 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { Check, ChevronLeft } from "lucide-react";
+import { Check, ChevronLeft, Loader2 } from "lucide-react";
 import { FaBuilding, FaLocationArrow, FaPlus } from "react-icons/fa";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useState } from "react";
 import InfoForm from "./InfoForm";
 import LocationForm from "./LocationForm";
+import api from "@/lib/axios";
+import { toast } from "sonner";
+import { usePropertiesStore } from "@/store/properties";
 
 export interface Location {
   address1: string;
@@ -31,15 +34,22 @@ export interface InfoFormData {
   propertyName: string;
   propertyDescription: string;
   monthlyRent: number;
+  brokerId: string;
+  landlordId: string;
+  tenantId: string;
 }
 
 export default function CreateProperty() {
   const [tabValue, setTabValue] = useState("tab-1");
+  const [openCreate, setOpenCreate] = useState<boolean>(false);
 
   const [infoData, setInfoData] = useState<InfoFormData>({
     propertyName: "",
     propertyDescription: "",
     monthlyRent: 0,
+    brokerId: "",
+    landlordId: "",
+    tenantId: "",
   });
 
   const [locationData, setLocationData] = useState<Location>({
@@ -52,12 +62,48 @@ export default function CreateProperty() {
     longitude: -74.006,
   });
 
+  const [loadingCreate, setLoadingCreate] = useState<boolean>(false);
+  const { setReloadData, reloadData } = usePropertiesStore();
+
   const sendData = async () => {
-    console.log(infoData, locationData);
+    setLoadingCreate(true);
+
+    const response = await api.post("/properties", {
+      property_name: infoData.propertyName,
+      property_description: infoData.propertyDescription,
+      property_rental_amount: infoData.monthlyRent,
+      property_address1: locationData.address1,
+      property_address2: locationData.address2,
+      property_city: locationData.city,
+      property_state: locationData.state,
+      property_postal_code: locationData.zip,
+      property_xcoord: String(locationData.latitude),
+      property_ycoord: String(locationData.longitude),
+      broker_id: Number(infoData.brokerId),
+      landlord_id: Number(infoData.landlordId),
+      tenant_id: Number(infoData.tenantId),
+      property_status: "Available",
+    });
+
+    if (response.status === 200) {
+      toast.success("Property created successfully", {
+        position: "top-right",
+        duration: 3000,
+      });
+      setOpenCreate(false);
+      setReloadData(!reloadData);
+    } else {
+      toast.error("Error creating property", {
+        position: "top-right",
+        duration: 3000,
+      });
+    }
+
+    setLoadingCreate(false);
   };
 
   return (
-    <Drawer>
+    <Drawer open={openCreate} onOpenChange={setOpenCreate}>
       <DrawerTrigger asChild>
         <Button
           variant="outline"
@@ -86,7 +132,11 @@ export default function CreateProperty() {
               className="border-none bg-primary text-white rounded-full text-base !px-4"
               onClick={sendData}
             >
-              <Check className="size-5" />
+              {loadingCreate ? (
+                <Loader2 className="size-5 animate-spin" />
+              ) : (
+                <Check className="size-5" />
+              )}
               Save
             </Button>
           </div>

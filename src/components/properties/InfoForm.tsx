@@ -1,4 +1,6 @@
-import { FaRegBuilding } from "react-icons/fa";
+"use client";
+
+import { FaRegBuilding, FaUsers } from "react-icons/fa";
 import { HiCurrencyDollar, HiInformationCircle } from "react-icons/hi2";
 import { Input } from "../ui/input";
 import { GrTextAlignLeft } from "react-icons/gr";
@@ -7,6 +9,17 @@ import { AiOutlineDollar } from "react-icons/ai";
 import { LuDollarSign } from "react-icons/lu";
 import { ScrollArea } from "../ui/scroll-area";
 import { InfoFormData } from "./CreateProperty";
+import { useEffect, useState } from "react";
+import { UserData } from "@/types/user";
+import api from "@/lib/axios";
+import { PiUserCircleFill, PiUserCirclePlusFill } from "react-icons/pi";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Props {
   infoData: InfoFormData;
@@ -20,6 +33,26 @@ export default function InfoForm({ infoData, setInfoData }: Props) {
       [field]: value,
     }));
   };
+
+  const [listUsers, setListUsers] = useState<UserData[]>([]);
+  const handleGetUsers = async () => {
+    const response = await api.get("/users", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      setListUsers(response.data);
+    } else {
+      console.log(response);
+      setListUsers([]);
+    }
+  };
+
+  useEffect(() => {
+    handleGetUsers();
+  }, [infoData.brokerId, infoData.landlordId, infoData.tenantId]);
   return (
     <ScrollArea className="h-[calc(100vh-270px)] w-full">
       <div className="grid grid-cols-1 gap-4 w-full">
@@ -85,6 +118,98 @@ export default function InfoForm({ infoData, setInfoData }: Props) {
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* parties */}
+        <div className="w-full rounded-xl bg-white p-5 flex flex-col gap-4 border">
+          <h2 className="flex items-center gap-2 text-blue-500 font-bold text-lg">
+            <FaUsers className="size-6" />
+            Parties
+          </h2>
+
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center gap-2 text-content font-normal">
+              <PiUserCircleFill className="text-primary/80" />
+              Landlord *
+            </label>
+            <Select
+              value={infoData.landlordId}
+              onValueChange={(value) => handleChange("landlordId", value)}
+            >
+              <SelectTrigger className="w-full !h-12">
+                <SelectValue placeholder="Select Landlord" />
+              </SelectTrigger>
+              <SelectContent>
+                {listUsers
+                  .filter((user) => user.user_role === "landlord")
+                  .map((user) => (
+                    <SelectItem
+                      key={user.user_id}
+                      value={String(user.user_id)}
+                      className="capitalize"
+                    >
+                      {user.user_first_name} {user.user_last_name}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center gap-2 text-content font-normal">
+              <PiUserCirclePlusFill className="text-primary/80" />
+              Tenant *
+            </label>
+            <Select
+              value={infoData.tenantId}
+              onValueChange={(value) => handleChange("tenantId", value)}
+            >
+              <SelectTrigger className="w-full !h-12">
+                <SelectValue placeholder="Select Tenant" />
+              </SelectTrigger>
+              <SelectContent>
+                {listUsers
+                  .filter((user) => user.user_role === "tenant")
+                  .map((user) => (
+                    <SelectItem
+                      key={user.user_id}
+                      value={String(user.user_id)}
+                      className="capitalize"
+                    >
+                      {user.user_first_name} {user.user_last_name}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center gap-2 text-content font-normal">
+              <PiUserCirclePlusFill className="text-primary/80" />
+              Broker *
+            </label>
+            <Select
+              value={infoData.brokerId}
+              onValueChange={(value) => handleChange("brokerId", value)}
+            >
+              <SelectTrigger className="w-full !h-12">
+                <SelectValue placeholder="Select Tenant" />
+              </SelectTrigger>
+              <SelectContent>
+                {listUsers
+                  .filter((user) => user.user_role === "broker")
+                  .map((user) => (
+                    <SelectItem
+                      key={user.user_id}
+                      value={String(user.user_id)}
+                      className="capitalize"
+                    >
+                      {user.user_first_name} {user.user_last_name}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>

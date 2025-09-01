@@ -8,13 +8,17 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { Check, ChevronLeft } from "lucide-react";
+import { Check, ChevronLeft, Loader2 } from "lucide-react";
 import { FaBuilding, FaLocationArrow } from "react-icons/fa";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useState } from "react";
 import InfoForm from "./InfoForm";
 import LocationForm from "./LocationForm";
+import { Property } from "@/types/property";
+import { toast } from "sonner";
+import api from "@/lib/axios";
+import { usePropertiesStore } from "@/store/properties";
 
 export interface Location {
   address1: string;
@@ -30,21 +34,13 @@ export interface InfoFormData {
   propertyName: string;
   propertyDescription: string;
   monthlyRent: number;
+  brokerId: string;
+  landlordId: string;
+  tenantId: string;
 }
 
 interface Props {
-  data: {
-    property_name: string;
-    property_description: string;
-    property_rental_amount: number;
-    property_address1: string;
-    property_address2: string;
-    property_city: string;
-    property_state: string;
-    property_postal_code: string;
-    property_xcoord: string;
-    property_ycoord: string;
-  };
+  data: Property;
   openEdit: boolean;
   setOpenEdit: (state: boolean) => void;
 }
@@ -56,6 +52,9 @@ export default function EditProperty({ data, openEdit, setOpenEdit }: Props) {
     propertyName: data.property_name,
     propertyDescription: data.property_description,
     monthlyRent: data.property_rental_amount,
+    brokerId: String(data.broker_id),
+    landlordId: String(data.landlord_id),
+    tenantId: String(data.tenant_id),
   });
 
   const [locationData, setLocationData] = useState<Location>({
@@ -68,8 +67,44 @@ export default function EditProperty({ data, openEdit, setOpenEdit }: Props) {
     longitude: Number(data.property_ycoord),
   });
 
+  const [loadingUpdate, setLoadingUpdate] = useState<boolean>(false);
+  const { setReloadData, reloadData } = usePropertiesStore();
+
   const sendData = async () => {
-    console.log(infoData, locationData);
+    setLoadingUpdate(true);
+
+    const response = await api.put(`/properties/${data.property_id}`, {
+      property_name: infoData.propertyName,
+      property_description: infoData.propertyDescription,
+      property_rental_amount: infoData.monthlyRent,
+      property_address1: locationData.address1,
+      property_address2: locationData.address2,
+      property_city: locationData.city,
+      property_state: locationData.state,
+      property_postal_code: locationData.zip,
+      property_xcoord: String(locationData.latitude),
+      property_ycoord: String(locationData.longitude),
+      broker_id: Number(infoData.brokerId),
+      landlord_id: Number(infoData.landlordId),
+      tenant_id: Number(infoData.tenantId),
+      property_status: "Available",
+    });
+
+    if (response.status === 200) {
+      toast.success("Property updated successfully", {
+        position: "top-right",
+        duration: 3000,
+      });
+      setOpenEdit(false);
+      setReloadData(!reloadData);
+    } else {
+      toast.error("Error updating property", {
+        position: "top-right",
+        duration: 3000,
+      });
+    }
+
+    setLoadingUpdate(false);
   };
 
   return (
@@ -93,7 +128,11 @@ export default function EditProperty({ data, openEdit, setOpenEdit }: Props) {
               className="border-none bg-primary text-white rounded-full text-base !px-4"
               onClick={sendData}
             >
-              <Check className="size-5" />
+              {loadingUpdate ? (
+                <Loader2 className="size-5 animate-spin" />
+              ) : (
+                <Check className="size-5" />
+              )}
               Save
             </Button>
           </div>

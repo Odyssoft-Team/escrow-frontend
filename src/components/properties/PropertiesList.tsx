@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Property } from "@/types/property";
 import PropertyCard from "@/components/properties/PropertyCard";
-import { ChevronLeft, Search, X } from "lucide-react";
+import { ChevronLeft, RefreshCcw, Search, X } from "lucide-react";
 import { Input } from "../ui/input";
 import { MdPinDrop, MdTag } from "react-icons/md";
 
@@ -45,6 +45,8 @@ import {
 import { FiFileText, FiHash } from "react-icons/fi";
 import { RiEdit2Fill } from "react-icons/ri";
 import EditProperty from "./EditProperty";
+import api from "@/lib/axios";
+import { usePropertiesStore } from "@/store/properties";
 
 interface PropertiesListProps {
   properties: Property[];
@@ -53,11 +55,34 @@ interface PropertiesListProps {
 export function PropertiesList({ properties }: PropertiesListProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [openEdit, setOpenEdit] = useState(false);
+  const [listProperties, setListProperties] = useState<Property[]>(properties);
+  const { reloadData } = usePropertiesStore();
+
+  const handleGetProperties = async () => {
+    const response = await api.get("/properties", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      setListProperties(response.data);
+    } else {
+      console.log(response);
+      setListProperties([]);
+    }
+  };
+
+  useEffect(() => {
+    handleGetProperties();
+    setOpenEdit(false);
+    setOpenPropertyDetails(false);
+  }, [reloadData]);
 
   const filteredProperties = useMemo(() => {
-    if (!searchTerm.trim()) return properties;
+    if (!searchTerm.trim()) return listProperties;
 
-    return properties.filter((property) => {
+    return listProperties.filter((property) => {
       const searchLower = searchTerm.toLowerCase();
       return (
         property.property_name?.toLowerCase().includes(searchLower) ||
@@ -67,7 +92,7 @@ export function PropertiesList({ properties }: PropertiesListProps) {
         property.property_state?.toLowerCase().includes(searchLower)
       );
     });
-  }, [properties, searchTerm]);
+  }, [listProperties, searchTerm]);
 
   const clearSearch = () => setSearchTerm("");
 
@@ -85,29 +110,40 @@ export function PropertiesList({ properties }: PropertiesListProps) {
   return (
     <div className="space-y-4">
       {/* Search Input */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-        <Input
-          type="text"
-          placeholder="Search properties..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-10 py-2 h-10 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white placeholder:text-content/60"
-        />
-        {searchTerm && (
-          <button
-            onClick={clearSearch}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        )}
+      <div className="flex gap-4">
+        <div className="relative w-full">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Input
+            type="text"
+            placeholder="Search properties..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-10 py-2 h-10 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white placeholder:text-content/60"
+          />
+          {searchTerm && (
+            <button
+              onClick={clearSearch}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        <Button
+          variant={"outline"}
+          className="h-10"
+          onClick={() => handleGetProperties()}
+        >
+          <RefreshCcw className="size-4" />
+        </Button>
       </div>
 
       {/* Results counter */}
       {searchTerm && (
         <div className="text-sm text-muted-foreground">
-          Showing {filteredProperties.length} of {properties.length} properties
+          Showing {filteredProperties.length} of {listProperties.length}{" "}
+          properties
         </div>
       )}
 
