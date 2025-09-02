@@ -99,13 +99,15 @@ export function LoginForm() {
           password,
         };
 
-        const response = await api.post("/login", loginData, {
+        const response = await fetch("/api/login", {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify(loginData),
         });
 
-        if (response.data.success) {
+        if (response.status) {
           setToken("token");
 
           const user_selected = listUsers.find(
