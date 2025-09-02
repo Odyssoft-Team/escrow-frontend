@@ -141,9 +141,12 @@ export function LoginForm() {
   };
 
   return (
-    <form className={cn("flex flex-col gap-6")} onSubmit={handleSubmit}>
-      <div className="flex justify-center gap-2 md:justify-start mb-10">
-        <div className="flex flex-col items-center font-medium text-primary">
+    <form
+      className={cn("flex flex-col gap-6 xl:border xl:p-6 xl:rounded-xl")}
+      onSubmit={handleSubmit}
+    >
+      <div className="w-full flex justify-center items-center gap-2 mb-10">
+        <div className="flex flex-col items-center justify-center font-medium text-primary">
           <FaHome className="size-12 text-primary" />
           <span className="text-2xl leading-[1]">
             rent
