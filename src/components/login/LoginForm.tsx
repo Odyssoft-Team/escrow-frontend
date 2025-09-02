@@ -6,14 +6,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FaHome } from "react-icons/fa";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "@/lib/axios";
 import { useAuthStore } from "@/store/auth.store";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { UserData } from "@/types/user";
 
 export function LoginForm() {
-  const { setToken } = useAuthStore();
+  const { setToken, setUserLoggedIn } = useAuthStore();
 
   const router = useRouter();
 
@@ -28,6 +29,26 @@ export function LoginForm() {
     password?: boolean;
   }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [listUsers, setListUsers] = useState<UserData[]>([]);
+  const handleGetUsers = async () => {
+    const response = await api.get("/users", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      setListUsers(response.data);
+    } else {
+      console.log(response);
+      setListUsers([]);
+    }
+  };
+
+  useEffect(() => {
+    handleGetUsers();
+  }, []);
 
   // Validar campos individuales
   const validateField = (name: string, value: string): string => {
@@ -87,15 +108,18 @@ export function LoginForm() {
         if (response.data.success) {
           setToken("token");
 
-          toast.success("Login successful", {
-            position: "top-right",
-            duration: 3000,
-          });
-
-          router.push("/home");
+          const user_selected = listUsers.find(
+            (user) => user.username === username
+          );
+          if (user_selected) {
+            setUserLoggedIn(user_selected);
+            toast.success("Login successful", {
+              position: "top-right",
+              duration: 3000,
+            });
+            router.push("/home");
+          }
         }
-
-        console.log("Response:", response.data);
       } catch (error) {
         console.log("Error:", error);
 
