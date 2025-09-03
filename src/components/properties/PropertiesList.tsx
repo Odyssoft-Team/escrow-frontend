@@ -365,31 +365,33 @@ export function PropertiesList({ properties }: PropertiesListProps) {
                 </div>
               </div>
 
-              <div
-                className={cn(
-                  "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
-                )}
-              >
-                <FaRegMap className={cn("size-5 text-primary")} />
-                <div className="flex flex-col gap-0 leading-[1]">
-                  <span className="text-content text-sm">State</span>
-                  <span className={cn("text-base")}>
-                    {propertySelected?.property_state}
-                  </span>
+              <div className="w-full flex max-md:flex-col gap-4">
+                <div
+                  className={cn(
+                    "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
+                  )}
+                >
+                  <FaRegMap className={cn("size-5 text-primary")} />
+                  <div className="flex flex-col gap-0 leading-[1]">
+                    <span className="text-content text-sm">State</span>
+                    <span className={cn("text-base")}>
+                      {propertySelected?.property_state}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <div
-                className={cn(
-                  "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
-                )}
-              >
-                <FiHash className={cn("size-5 text-primary")} />
-                <div className="flex flex-col gap-0 leading-[1]">
-                  <span className="text-content text-sm">ZIP Code</span>
-                  <span className={cn("text-base")}>
-                    {propertySelected?.property_postal_code}
-                  </span>
+                <div
+                  className={cn(
+                    "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
+                  )}
+                >
+                  <FiHash className={cn("size-5 text-primary")} />
+                  <div className="flex flex-col gap-0 leading-[1]">
+                    <span className="text-content text-sm">ZIP Code</span>
+                    <span className={cn("text-base")}>
+                      {propertySelected?.property_postal_code}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -403,32 +405,33 @@ export function PropertiesList({ properties }: PropertiesListProps) {
                 <MdPinDrop className="size-5" />
                 Location Coordinates
               </h3>
-
-              <div
-                className={cn(
-                  "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
-                )}
-              >
-                <TbWorldLatitude className={cn("size-5 text-primary")} />
-                <div className="flex flex-col gap-0 leading-[1]">
-                  <span className="text-content text-sm">Latitude</span>
-                  <span className={cn("text-base")}>
-                    {propertySelected?.property_xcoord}
-                  </span>
+              <div className="w-full flex max-md:flex-col gap-4">
+                <div
+                  className={cn(
+                    "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
+                  )}
+                >
+                  <TbWorldLatitude className={cn("size-5 text-primary")} />
+                  <div className="flex flex-col gap-0 leading-[1]">
+                    <span className="text-content text-sm">Latitude</span>
+                    <span className={cn("text-base")}>
+                      {propertySelected?.property_xcoord}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <div
-                className={cn(
-                  "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
-                )}
-              >
-                <TbWorldLongitude className={cn("size-5 text-primary")} />
-                <div className="flex flex-col gap-0 leading-[1]">
-                  <span className="text-content text-sm">Longitude</span>
-                  <span className={cn("text-base")}>
-                    {propertySelected?.property_ycoord}
-                  </span>
+                <div
+                  className={cn(
+                    "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
+                  )}
+                >
+                  <TbWorldLongitude className={cn("size-5 text-primary")} />
+                  <div className="flex flex-col gap-0 leading-[1]">
+                    <span className="text-content text-sm">Longitude</span>
+                    <span className={cn("text-base")}>
+                      {propertySelected?.property_ycoord}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -510,33 +513,35 @@ export function PropertiesList({ properties }: PropertiesListProps) {
                 </div>
               </div>
 
-              <div
-                className={cn(
-                  "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
-                )}
-              >
-                <LuCalendarCog className={cn("size-5 text-primary")} />
-                <div className="flex flex-col gap-0 leading-[1]">
-                  <span className="text-content text-sm">Created</span>
-                  <span className={cn("text-base")}>
-                    {formatToDateTime(propertySelected?.created_at || "")}
-                  </span>
+              <div className="w-full flex max-md:flex-col gap-4">
+                <div
+                  className={cn(
+                    "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
+                  )}
+                >
+                  <LuCalendarCog className={cn("size-5 text-primary")} />
+                  <div className="flex flex-col gap-0 leading-[1]">
+                    <span className="text-content text-sm">Created</span>
+                    <span className={cn("text-base")}>
+                      {formatToDateTime(propertySelected?.created_at || "")}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <div
-                className={cn(
-                  "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
-                )}
-              >
-                <PiClockCounterClockwiseBold
-                  className={cn("size-5 text-primary")}
-                />
-                <div className="flex flex-col gap-0 leading-[1]">
-                  <span className="text-content text-sm">Last Updated</span>
-                  <span className={cn("text-base")}>
-                    {formatToDateTime(propertySelected?.updated_at || "")}
-                  </span>
+                <div
+                  className={cn(
+                    "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
+                  )}
+                >
+                  <PiClockCounterClockwiseBold
+                    className={cn("size-5 text-primary")}
+                  />
+                  <div className="flex flex-col gap-0 leading-[1]">
+                    <span className="text-content text-sm">Last Updated</span>
+                    <span className={cn("text-base")}>
+                      {formatToDateTime(propertySelected?.updated_at || "")}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

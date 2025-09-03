@@ -239,63 +239,69 @@ export function ContractsList({ contracts }: ContractsListProps) {
                 </div>
               </div>
 
-              <div
-                className={cn(
-                  "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
-                )}
-              >
-                <CalendarIcon className={cn("size-5 text-primary")} />
-                <div className="flex flex-col gap-0 leading-[1]">
-                  <span className="text-content text-sm">Start Date</span>
-                  <span className={cn("text-base")}>
-                    {formatToShortDate(
-                      contractSelected?.lease_start_date as string
-                    )}
-                  </span>
+              <div className="w-full flex max-md:flex-col gap-4">
+                <div
+                  className={cn(
+                    "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
+                  )}
+                >
+                  <CalendarIcon className={cn("size-5 text-primary")} />
+                  <div className="flex flex-col gap-0 leading-[1]">
+                    <span className="text-content text-sm">Start Date</span>
+                    <span className={cn("text-base")}>
+                      {formatToShortDate(
+                        contractSelected?.lease_start_date as string
+                      )}
+                    </span>
+                  </div>
+                </div>
+
+                <div
+                  className={cn(
+                    "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
+                  )}
+                >
+                  <CalendarIcon className={cn("size-5 text-primary")} />
+                  <div className="flex flex-col gap-0 leading-[1]">
+                    <span className="text-content text-sm">End Date</span>
+                    <span className={cn("text-base")}>
+                      {formatToShortDate(
+                        contractSelected?.lease_end_date as string
+                      )}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              <div
-                className={cn(
-                  "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
-                )}
-              >
-                <CalendarIcon className={cn("size-5 text-primary")} />
-                <div className="flex flex-col gap-0 leading-[1]">
-                  <span className="text-content text-sm">End Date</span>
-                  <span className={cn("text-base")}>
-                    {formatToShortDate(
-                      contractSelected?.lease_end_date as string
-                    )}
-                  </span>
+              <div className="w-full flex max-md:flex-col gap-4">
+                <div
+                  className={cn(
+                    "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
+                  )}
+                >
+                  <FaDollarSign className={cn("size-5 text-primary")} />
+                  <div className="flex flex-col gap-0 leading-[1]">
+                    <span className="text-content text-sm">Monthly Rent</span>
+                    <span className={cn("text-base")}>
+                      {contractSelected?.lease_monthly_rent}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <div
-                className={cn(
-                  "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
-                )}
-              >
-                <FaDollarSign className={cn("size-5 text-primary")} />
-                <div className="flex flex-col gap-0 leading-[1]">
-                  <span className="text-content text-sm">Monthly Rent</span>
-                  <span className={cn("text-base")}>
-                    {contractSelected?.lease_monthly_rent}
-                  </span>
-                </div>
-              </div>
-
-              <div
-                className={cn(
-                  "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
-                )}
-              >
-                <FaCalendarAlt className={cn("size-5 text-primary")} />
-                <div className="flex flex-col gap-0 leading-[1]">
-                  <span className="text-content text-sm">Due Day of Month</span>
-                  <span className={cn("text-base")}>
-                    {contractSelected?.lease_day_of_month}
-                  </span>
+                <div
+                  className={cn(
+                    "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
+                  )}
+                >
+                  <FaCalendarAlt className={cn("size-5 text-primary")} />
+                  <div className="flex flex-col gap-0 leading-[1]">
+                    <span className="text-content text-sm">
+                      Due Day of Month
+                    </span>
+                    <span className={cn("text-base")}>
+                      {contractSelected?.lease_day_of_month}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
