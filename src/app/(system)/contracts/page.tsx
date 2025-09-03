@@ -11,8 +11,6 @@ export default async function ContractsPage() {
     },
   });
 
-  console.log("response contracts", response);
-
   const contracts: Contract[] = response.data;
 
   return (

@@ -65,8 +65,6 @@ export function ContractsList({ contracts }: ContractsListProps) {
     useState<boolean>(false);
 
   const handleContractSelected = (contract: Contract) => {
-    console.log(contract);
-
     setContractSelected(contract);
     setOpenContractDetails(true);
   };

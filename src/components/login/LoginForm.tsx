@@ -113,6 +113,7 @@ export function LoginForm() {
           const user_selected = listUsers.find(
             (user) => user.username === username
           );
+
           if (user_selected) {
             setUserLoggedIn(user_selected);
             toast.success("Login successful", {
@@ -120,6 +121,11 @@ export function LoginForm() {
               duration: 3000,
             });
             router.push("/home");
+          } else {
+            toast.error("User not found", {
+              position: "top-right",
+              duration: 3000,
+            });
           }
         }
       } catch (error) {

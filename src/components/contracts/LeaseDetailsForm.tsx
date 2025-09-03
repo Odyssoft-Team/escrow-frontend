@@ -44,7 +44,6 @@ export default function LeaseDetailsForm() {
       },
     });
 
-    console.log("response properties", response);
 
     if (response.status === 200) {
       setListProperties(response.data);

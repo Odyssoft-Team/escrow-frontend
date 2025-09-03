@@ -66,7 +66,6 @@ export default function NewContract() {
         position: "top-right",
         duration: 3000,
       });
-      console.log(missingFields);
       return;
     }
 
