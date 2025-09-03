@@ -1,6 +1,11 @@
+"use client";
+
+import api from "@/lib/axios";
 import { formatToShortDate } from "@/lib/utils";
 import { Contract } from "@/types/contract";
+import { UserData } from "@/types/user";
 import { ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
 import { FaRegCircle } from "react-icons/fa";
 import { LuCalendar, LuCalendarClock } from "react-icons/lu";
 import { PiUserCircleFill, PiUserCirclePlusFill } from "react-icons/pi";
@@ -14,6 +19,25 @@ export default function ContractCard({
   contract,
   handleContractSelected,
 }: Props) {
+  const [listUsers, setListUsers] = useState<UserData[]>([]);
+  const handleGetUsers = async () => {
+    const response = await api.get("/users", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      setListUsers(response.data);
+    } else {
+      console.log(response);
+      setListUsers([]);
+    }
+  };
+
+  useEffect(() => {
+    handleGetUsers();
+  }, []);
   return (
     <div
       className="w-full border rounded-3xl bg-white p-5 flex flex-col gap-4 relative shadow-[24px_20px_135px_-31px_rgba(37,51,131,0.30)]"
@@ -50,7 +74,16 @@ export default function ContractCard({
             <PiUserCircleFill className="text-blue-500 size-4 xl:size-5" />{" "}
             Landlord
           </span>
-          <span className="font-medium xl:text-lg">Marcus Lee</span>
+          <span className="font-medium xl:text-lg">
+            {
+              listUsers.find((user) => user.user_id === contract.landlord_id)
+                ?.user_first_name
+            }{" "}
+            {
+              listUsers.find((user) => user.user_id === contract.landlord_id)
+                ?.user_last_name
+            }
+          </span>
         </div>
 
         <div className="flex flex-col gap-1 items-start leading-[1]">
@@ -58,7 +91,16 @@ export default function ContractCard({
             <PiUserCirclePlusFill className="text-green-500 size-4 xl:size-5" />{" "}
             Tenant
           </span>
-          <span className="font-medium xl:text-lg">Marcus Lee</span>
+          <span className="font-medium xl:text-lg">
+            {
+              listUsers.find((user) => user.user_id === contract.tenant_id)
+                ?.user_first_name
+            }{" "}
+            {
+              listUsers.find((user) => user.user_id === contract.tenant_id)
+                ?.user_last_name
+            }
+          </span>
         </div>
       </div>
 
