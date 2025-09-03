@@ -16,7 +16,9 @@ export async function POST(req: NextRequest) {
     }
   );
 
-  if (response.status === 200) {
+  console.log("response", response.data);
+
+  if (response.data.success) {
     cookieStore.set("token", username);
     return NextResponse.json({
       message: "Login successful",

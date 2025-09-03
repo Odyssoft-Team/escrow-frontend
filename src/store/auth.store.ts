@@ -9,7 +9,7 @@ type AuthState = {
   setToken: (token: string) => void;
   logout: () => void;
   setHasHydrated: (state: boolean) => void;
-  setUserLoggedIn: (user: UserData) => void;
+  setUserLoggedIn: (user: UserData | null) => void;
 };
 
 export const useAuthStore = create<AuthState>()(

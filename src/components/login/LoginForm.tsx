@@ -107,7 +107,9 @@ export function LoginForm() {
           body: JSON.stringify(loginData),
         });
 
-        if (response.status) {
+        const data = await response.json();
+
+        if (data.status) {
           setToken("token");
 
           const user_selected = listUsers.find(
@@ -127,6 +129,11 @@ export function LoginForm() {
               duration: 3000,
             });
           }
+        } else {
+          toast.error("Login failed. Please try again.", {
+            position: "top-right",
+            duration: 5000,
+          });
         }
       } catch (error) {
         console.log("Error:", error);
