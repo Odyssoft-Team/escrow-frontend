@@ -30,7 +30,7 @@ export default function Header() {
 
     if (data.status) {
       setUserLoggedIn(null);
-      router.push("/home");
+      router.push("/login");
     }
   };
   return (

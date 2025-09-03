@@ -42,7 +42,7 @@ export default function ProfileData() {
 
     if (data.status) {
       setUserLoggedIn(null);
-      router.push("/home");
+      router.push("/login");
     }
   };
 
