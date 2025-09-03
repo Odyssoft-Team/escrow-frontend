@@ -8,6 +8,7 @@ import { LuDollarSign } from "react-icons/lu";
 import { IoIosCalendar } from "react-icons/io";
 import { FaShield } from "react-icons/fa6";
 import { useNewContractStore } from "@/store/new-contract.store";
+import { useState } from "react"; // Importamos useState para manejar el estado local
 
 export default function MonthlyTermsForm() {
   const {
@@ -20,6 +21,153 @@ export default function MonthlyTermsForm() {
     setToSecurityDeposit,
     setToOther,
   } = useNewContractStore();
+
+  // Estados locales para manejar el valor temporal durante la edición
+  const [tempToFirstMonthRent, setTempToFirstMonthRent] = useState(
+    toFirstMonthRent.toString()
+  );
+  const [tempToLastMonthRent, setTempToLastMonthRent] = useState(
+    toLastMonthRent.toString()
+  );
+  const [tempToSecurityDeposit, setTempToSecurityDeposit] = useState(
+    toSecurityDeposit.toString()
+  );
+  const [tempToOther, setTempToOther] = useState(toOther.toString());
+
+  const [isToFirstMonthRentFocused, setIsToFirstMonthRentFocused] =
+    useState(false);
+  const [isToLastMonthRentFocused, setIsToLastMonthRentFocused] =
+    useState(false);
+  const [isToSecurityDepositFocused, setIsToSecurityDepositFocused] =
+    useState(false);
+  const [isToOtherFocused, setIsToOtherFocused] = useState(false);
+
+  // Manejadores para To First Month Rent
+  const handleToFirstMonthRentFocus = () => {
+    setIsToFirstMonthRentFocused(true);
+    if (toFirstMonthRent === 0) {
+      setTempToFirstMonthRent("");
+    }
+  };
+
+  const handleToFirstMonthRentBlur = (
+    e: React.FocusEvent<HTMLInputElement>
+  ) => {
+    setIsToFirstMonthRentFocused(false);
+    const value = e.target.value;
+
+    if (value === "") {
+      setToFirstMonthRent(0);
+      setTempToFirstMonthRent("0");
+    } else {
+      const numValue = Number(value);
+      setToFirstMonthRent(numValue);
+      setTempToFirstMonthRent(numValue.toString());
+    }
+  };
+
+  const handleToFirstMonthRentChange = (
+    e: React.FocusEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setTempToFirstMonthRent(value);
+    }
+  };
+
+  // Manejadores para To Last Month Rent
+  const handleToLastMonthRentFocus = () => {
+    setIsToLastMonthRentFocused(true);
+    if (toLastMonthRent === 0) {
+      setTempToLastMonthRent("");
+    }
+  };
+
+  const handleToLastMonthRentBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsToLastMonthRentFocused(false);
+    const value = e.target.value;
+
+    if (value === "") {
+      setToLastMonthRent(0);
+      setTempToLastMonthRent("0");
+    } else {
+      const numValue = Number(value);
+      setToLastMonthRent(numValue);
+      setTempToLastMonthRent(numValue.toString());
+    }
+  };
+
+  const handleToLastMonthRentChange = (
+    e: React.FocusEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setTempToLastMonthRent(value);
+    }
+  };
+
+  // Manejadores para To Security Deposit
+  const handleToSecurityDepositFocus = () => {
+    setIsToSecurityDepositFocused(true);
+    if (toSecurityDeposit === 0) {
+      setTempToSecurityDeposit("");
+    }
+  };
+
+  const handleToSecurityDepositBlur = (
+    e: React.FocusEvent<HTMLInputElement>
+  ) => {
+    setIsToSecurityDepositFocused(false);
+    const value = e.target.value;
+
+    if (value === "") {
+      setToSecurityDeposit(0);
+      setTempToSecurityDeposit("0");
+    } else {
+      const numValue = Number(value);
+      setToSecurityDeposit(numValue);
+      setTempToSecurityDeposit(numValue.toString());
+    }
+  };
+
+  const handleToSecurityDepositChange = (
+    e: React.FocusEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setTempToSecurityDeposit(value);
+    }
+  };
+
+  // Manejadores para To Other
+  const handleToOtherFocus = () => {
+    setIsToOtherFocused(true);
+    if (toOther === 0) {
+      setTempToOther("");
+    }
+  };
+
+  const handleToOtherBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsToOtherFocused(false);
+    const value = e.target.value;
+
+    if (value === "") {
+      setToOther(0);
+      setTempToOther("0");
+    } else {
+      const numValue = Number(value);
+      setToOther(numValue);
+      setTempToOther(numValue.toString());
+    }
+  };
+
+  const handleToOtherChange = (e: React.FocusEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setTempToOther(value);
+    }
+  };
+
   return (
     <ScrollArea className="h-[calc(100vh-370px)] w-full">
       <div className="w-full flex flex-col gap-2 ">
@@ -48,9 +196,18 @@ export default function MonthlyTermsForm() {
               <Input
                 className="peer ps-9 h-12"
                 placeholder="0.00"
-                type="number"
-                value={toFirstMonthRent}
-                onChange={(e) => setToFirstMonthRent(Number(e.target.value))}
+                type="text"
+                inputMode="decimal"
+                value={
+                  isToFirstMonthRentFocused
+                    ? tempToFirstMonthRent
+                    : toFirstMonthRent === 0
+                      ? ""
+                      : toFirstMonthRent.toString()
+                }
+                onChange={handleToFirstMonthRentChange}
+                onFocus={handleToFirstMonthRentFocus}
+                onBlur={handleToFirstMonthRentBlur}
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
@@ -67,9 +224,18 @@ export default function MonthlyTermsForm() {
               <Input
                 className="peer ps-9 h-12"
                 placeholder="0.00"
-                type="number"
-                value={toLastMonthRent}
-                onChange={(e) => setToLastMonthRent(Number(e.target.value))}
+                type="text"
+                inputMode="decimal"
+                value={
+                  isToLastMonthRentFocused
+                    ? tempToLastMonthRent
+                    : toLastMonthRent === 0
+                      ? ""
+                      : toLastMonthRent.toString()
+                }
+                onChange={handleToLastMonthRentChange}
+                onFocus={handleToLastMonthRentFocus}
+                onBlur={handleToLastMonthRentBlur}
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
@@ -86,9 +252,18 @@ export default function MonthlyTermsForm() {
               <Input
                 className="peer ps-9 h-12"
                 placeholder="0.00"
-                type="number"
-                value={toSecurityDeposit}
-                onChange={(e) => setToSecurityDeposit(Number(e.target.value))}
+                type="text"
+                inputMode="decimal"
+                value={
+                  isToSecurityDepositFocused
+                    ? tempToSecurityDeposit
+                    : toSecurityDeposit === 0
+                      ? ""
+                      : toSecurityDeposit.toString()
+                }
+                onChange={handleToSecurityDepositChange}
+                onFocus={handleToSecurityDepositFocus}
+                onBlur={handleToSecurityDepositBlur}
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
@@ -105,9 +280,18 @@ export default function MonthlyTermsForm() {
               <Input
                 className="peer ps-9 h-12"
                 placeholder="0.00"
-                type="number"
-                value={toOther}
-                onChange={(e) => setToOther(Number(e.target.value))}
+                type="text"
+                inputMode="decimal"
+                value={
+                  isToOtherFocused
+                    ? tempToOther
+                    : toOther === 0
+                      ? ""
+                      : toOther.toString()
+                }
+                onChange={handleToOtherChange}
+                onFocus={handleToOtherFocus}
+                onBlur={handleToOtherBlur}
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />

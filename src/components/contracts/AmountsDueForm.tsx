@@ -17,6 +17,7 @@ import { format } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import { useNewContractStore } from "@/store/new-contract.store";
+import { useState } from "react";
 
 export default function AmountsDueForm() {
   const {
@@ -31,6 +32,83 @@ export default function AmountsDueForm() {
     setAdvanceRent,
     setAdvanceRentDueOn,
   } = useNewContractStore();
+
+  // Estados locales para manejar el valor temporal durante la edición
+  const [tempFirstMonthRent, setTempFirstMonthRent] = useState(
+    firstMonthRent.toString()
+  );
+  const [tempAdvanceRent, setTempAdvanceRent] = useState(
+    advanceRent.toString()
+  );
+  const [isFirstMonthFocused, setIsFirstMonthFocused] = useState(false);
+  const [isAdvanceRentFocused, setIsAdvanceRentFocused] = useState(false);
+
+  // Manejadores para el primer mes de renta
+  const handleFirstMonthFocus = () => {
+    setIsFirstMonthFocused(true);
+    // Si el valor actual es 0, mostramos campo vacío al enfocar
+    if (firstMonthRent === 0) {
+      setTempFirstMonthRent("");
+    }
+  };
+
+  const handleFirstMonthBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsFirstMonthFocused(false);
+    const value = e.target.value;
+
+    if (value === "") {
+      // Si el campo está vacío, establecer a 0
+      setFirstMonthRent(0);
+      setTempFirstMonthRent("0");
+    } else {
+      // Convertir a número y actualizar el store
+      const numValue = Number(value);
+      setFirstMonthRent(numValue);
+      setTempFirstMonthRent(numValue.toString());
+    }
+  };
+
+  const handleFirstMonthChange = (e: React.FocusEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Permitir solo números y punto decimal
+    if (/^\d*\.?\d*$/.test(value)) {
+      setTempFirstMonthRent(value);
+    }
+  };
+
+  // Manejadores para la renta adelantada
+  const handleAdvanceRentFocus = () => {
+    setIsAdvanceRentFocused(true);
+    // Si el valor actual es 0, mostramos campo vacío al enfocar
+    if (advanceRent === 0) {
+      setTempAdvanceRent("");
+    }
+  };
+
+  const handleAdvanceRentBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsAdvanceRentFocused(false);
+    const value = e.target.value;
+
+    if (value === "") {
+      // Si el campo está vacío, establecer a 0
+      setAdvanceRent(0);
+      setTempAdvanceRent("0");
+    } else {
+      // Convertir a número y actualizar el store
+      const numValue = Number(value);
+      setAdvanceRent(numValue);
+      setTempAdvanceRent(numValue.toString());
+    }
+  };
+
+  const handleAdvanceRentChange = (e: React.FocusEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Permitir solo números y punto decimal
+    if (/^\d*\.?\d*$/.test(value)) {
+      setTempAdvanceRent(value);
+    }
+  };
+
   return (
     <ScrollArea className="h-[calc(100vh-350px)] w-full">
       <div className="w-full flex flex-col gap-2 ">
@@ -61,11 +139,18 @@ export default function AmountsDueForm() {
                 <Input
                   className="peer ps-9 h-12"
                   placeholder="0.00"
-                  type="number"
-                  value={firstMonthRent}
-                  onChange={(e) => {
-                    setFirstMonthRent(Number(e.target.value));
-                  }}
+                  type="text" // Cambiamos a text para mejor control
+                  inputMode="decimal" // Para teclado numérico en dispositivos móviles
+                  value={
+                    isFirstMonthFocused
+                      ? tempFirstMonthRent
+                      : firstMonthRent === 0
+                        ? ""
+                        : firstMonthRent.toString()
+                  }
+                  onChange={handleFirstMonthChange}
+                  onFocus={handleFirstMonthFocus}
+                  onBlur={handleFirstMonthBlur}
                 />
                 <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                   <LuDollarSign
@@ -89,7 +174,11 @@ export default function AmountsDueForm() {
                     className="data-[empty=true]:text-muted-foreground w-full h-12 justify-start text-left font-normal"
                   >
                     {firstMonthDueOn ? (
-                      format(firstMonthDueOn, "EEEE, MMMM do", { locale: enUS })
+                      <span className="truncate">
+                        {format(firstMonthDueOn, "EEEE, MMMM do", {
+                          locale: enUS,
+                        })}
+                      </span>
                     ) : (
                       <span className="text-muted-foreground text-base font-normal">
                         Pick a date
@@ -127,7 +216,9 @@ export default function AmountsDueForm() {
                   className="data-[empty=true]:text-muted-foreground w-full h-12 justify-start text-left font-normal"
                 >
                   {advanceRentMonth ? (
-                    format(advanceRentMonth, "MMMM do", { locale: enUS })
+                    <span className="truncate">
+                      {format(advanceRentMonth, "MMMM do", { locale: enUS })}
+                    </span>
                   ) : (
                     <span className="text-muted-foreground text-base font-normal">
                       e.g., December 2025
@@ -156,11 +247,18 @@ export default function AmountsDueForm() {
                 <Input
                   className="peer ps-9 h-12"
                   placeholder="0.00"
-                  type="number"
-                  value={advanceRent}
-                  onChange={(e) => {
-                    setAdvanceRent(Number(e.target.value));
-                  }}
+                  type="text" // Cambiamos a text para mejor control
+                  inputMode="decimal" // Para teclado numérico en dispositivos móviles
+                  value={
+                    isAdvanceRentFocused
+                      ? tempAdvanceRent
+                      : advanceRent === 0
+                        ? ""
+                        : advanceRent.toString()
+                  }
+                  onChange={handleAdvanceRentChange}
+                  onFocus={handleAdvanceRentFocus}
+                  onBlur={handleAdvanceRentBlur}
                 />
                 <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                   <LuDollarSign
@@ -184,9 +282,11 @@ export default function AmountsDueForm() {
                     className="data-[empty=true]:text-muted-foreground w-full h-12 justify-start text-left font-normal"
                   >
                     {advanceRentDueOn ? (
-                      format(advanceRentDueOn, "EEEE, MMMM do", {
-                        locale: enUS,
-                      })
+                      <span className="truncate">
+                        {format(advanceRentDueOn, "EEEE, MMMM do", {
+                          locale: enUS,
+                        })}
+                      </span>
                     ) : (
                       <span className="text-muted-foreground text-base font-normal">
                         Pick a date

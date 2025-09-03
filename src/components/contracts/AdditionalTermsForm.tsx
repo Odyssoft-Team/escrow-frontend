@@ -8,6 +8,7 @@ import { Input } from "../ui/input";
 import { LuDollarSign } from "react-icons/lu";
 import { IoCard } from "react-icons/io5";
 import { useNewContractStore } from "@/store/new-contract.store";
+import { useState } from "react"; // Importamos useState para manejar el estado local
 
 export default function AdditionalTermsForm() {
   const {
@@ -18,6 +19,84 @@ export default function AdditionalTermsForm() {
     setAssociationDeposit,
     setAssociationFees,
   } = useNewContractStore();
+
+  // Estados locales para manejar el valor temporal durante la edición
+  const [tempAssociationDeposit, setTempAssociationDeposit] = useState(
+    associationDeposit.toString()
+  );
+  const [tempAssociationFees, setTempAssociationFees] = useState(
+    associationFees.toString()
+  );
+
+  const [isAssociationDepositFocused, setIsAssociationDepositFocused] =
+    useState(false);
+  const [isAssociationFeesFocused, setIsAssociationFeesFocused] =
+    useState(false);
+
+  // Manejadores para Association Deposit
+  const handleAssociationDepositFocus = () => {
+    setIsAssociationDepositFocused(true);
+    if (associationDeposit === 0) {
+      setTempAssociationDeposit("");
+    }
+  };
+
+  const handleAssociationDepositBlur = (
+    e: React.FocusEvent<HTMLInputElement>
+  ) => {
+    setIsAssociationDepositFocused(false);
+    const value = e.target.value;
+
+    if (value === "") {
+      setAssociationDeposit(0);
+      setTempAssociationDeposit("0");
+    } else {
+      const numValue = Number(value);
+      setAssociationDeposit(numValue);
+      setTempAssociationDeposit(numValue.toString());
+    }
+  };
+
+  const handleAssociationDepositChange = (
+    e: React.FocusEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setTempAssociationDeposit(value);
+    }
+  };
+
+  // Manejadores para Association Fees
+  const handleAssociationFeesFocus = () => {
+    setIsAssociationFeesFocused(true);
+    if (associationFees === 0) {
+      setTempAssociationFees("");
+    }
+  };
+
+  const handleAssociationFeesBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsAssociationFeesFocused(false);
+    const value = e.target.value;
+
+    if (value === "") {
+      setAssociationFees(0);
+      setTempAssociationFees("0");
+    } else {
+      const numValue = Number(value);
+      setAssociationFees(numValue);
+      setTempAssociationFees(numValue.toString());
+    }
+  };
+
+  const handleAssociationFeesChange = (
+    e: React.FocusEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setTempAssociationFees(value);
+    }
+  };
+
   return (
     <ScrollArea className="h-[calc(100vh-370px)] w-full">
       <div className="w-full flex flex-col gap-2 ">
@@ -64,9 +143,18 @@ export default function AdditionalTermsForm() {
               <Input
                 className="peer ps-9 h-12"
                 placeholder="0.00"
-                type="number"
-                value={associationDeposit}
-                onChange={(e) => setAssociationDeposit(Number(e.target.value))}
+                type="text"
+                inputMode="decimal"
+                value={
+                  isAssociationDepositFocused
+                    ? tempAssociationDeposit
+                    : associationDeposit === 0
+                      ? ""
+                      : associationDeposit.toString()
+                }
+                onChange={handleAssociationDepositChange}
+                onFocus={handleAssociationDepositFocus}
+                onBlur={handleAssociationDepositBlur}
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
@@ -83,9 +171,18 @@ export default function AdditionalTermsForm() {
               <Input
                 className="peer ps-9 h-12"
                 placeholder="0.00"
-                type="number"
-                value={associationFees}
-                onChange={(e) => setAssociationFees(Number(e.target.value))}
+                type="text"
+                inputMode="decimal"
+                value={
+                  isAssociationFeesFocused
+                    ? tempAssociationFees
+                    : associationFees === 0
+                      ? ""
+                      : associationFees.toString()
+                }
+                onChange={handleAssociationFeesChange}
+                onFocus={handleAssociationFeesFocus}
+                onBlur={handleAssociationFeesBlur}
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
