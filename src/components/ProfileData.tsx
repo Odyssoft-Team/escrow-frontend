@@ -30,7 +30,7 @@ import { useAuthStore } from "@/store/auth.store";
 import { useRouter } from "next/navigation";
 
 export default function ProfileData() {
-  const { userLoggedIn } = useAuthStore();
+  const { userLoggedIn, setUserLoggedIn } = useAuthStore();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -38,7 +38,10 @@ export default function ProfileData() {
       method: "GET",
     });
 
-    if (response.status) {
+    const data = await response.json();
+
+    if (data.status) {
+      setUserLoggedIn(null);
       router.push("/home");
     }
   };
