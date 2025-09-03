@@ -3,6 +3,7 @@ import { Fira_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 import ClientProvider from "@/components/providers/ClientProvider";
+import { CapacitorStatusBar } from "@/components/CapacitorStatusBar";
 
 const font_family = Fira_Sans({
   variable: "--font-family",
@@ -29,6 +30,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
       </head>
       <body className={`${font_family.variable} antialiased overflow-x-hidden`}>
+        <CapacitorStatusBar />
         <ClientProvider />
         <Toaster richColors visibleToasts={3} />
         {children}
