@@ -111,9 +111,8 @@ export function LoginForm() {
 
         if (data.status) {
           setToken("token");
-
           const user_selected = listUsers.find(
-            (user) => user.username === username
+            (user) => user.username.toLowerCase() === username.toLowerCase()
           );
 
           if (user_selected) {
@@ -180,10 +179,12 @@ export function LoginForm() {
             id="username"
             name="username"
             type="text"
+            autoCapitalize="none"
+            autoCorrect="off"
             className={`placeholder:text-content/50 placeholder:text-sm ${errors.username && touched.username ? "border-red-500" : ""}`}
             placeholder="Enter your username or email"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value.toLowerCase())}
             onBlur={handleBlur}
             required
           />

@@ -65,6 +65,8 @@ export function PropertiesList({ properties }: PropertiesListProps) {
       },
     });
 
+    console.log("response", response.data);
+
     if (response.status === 200) {
       setListProperties(response.data);
     } else {
@@ -396,7 +398,7 @@ export function PropertiesList({ properties }: PropertiesListProps) {
               </div>
             </div>
 
-            <div className="w-full p-4 flex flex-col items-start gap-4 bg-white border rounded-xl">
+            <div className="w-full p-4 flex-col items-start gap-4 bg-white border rounded-xl hidden">
               <h3
                 className={cn(
                   "flex items-center gap-2 text-lg font-medium text-orange-400"

@@ -58,6 +58,7 @@ export default function InteractiveMap({
 
     return (
       <Marker
+        key={position.toString()}
         draggable
         position={position}
         eventHandlers={{
@@ -71,7 +72,7 @@ export default function InteractiveMap({
         }}
       >
         <Popup>
-          Latitud: {Array.isArray(position) ? position : ""}
+          Latitud: {Array.isArray(position) ? position[0] : ""}
           <br />
           Longitud: {Array.isArray(position) ? position[1] : ""}
         </Popup>
@@ -92,7 +93,7 @@ export default function InteractiveMap({
         overflow: "hidden",
       }}
     >
-      <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+      <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}" />
       <LocationMarker />
       <RecenterMap latitude={latitude} longitude={longitude} />
     </MapContainer>

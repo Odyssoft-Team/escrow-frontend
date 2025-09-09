@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaBuilding, FaFileAlt, FaHome, FaUser } from "react-icons/fa";
+import { FaBuilding, FaFileAlt, FaHome, FaPhoneAlt } from "react-icons/fa";
 import { HiCurrencyDollar } from "react-icons/hi2";
 
 export default function MenuDesktop() {
@@ -56,14 +56,14 @@ export default function MenuDesktop() {
       </Link>
 
       <Link
-        href="/profile"
+        href="/contacts"
         className={cn(
           "flex items-center gap-2",
-          path === "/profile" ? "text-primary" : "text-content"
+          path === "/contacts" ? "text-primary" : "text-content"
         )}
       >
-        <FaUser className="size-5" />
-        <span className="text-base font-semibold leading-[1]">Profile</span>
+        <FaPhoneAlt className="size-5" />
+        <span className="text-base font-semibold leading-[1]">contacts</span>
       </Link>
     </div>
   );

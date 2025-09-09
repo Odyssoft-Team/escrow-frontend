@@ -120,6 +120,25 @@ export default function CreateProperty() {
               <Button
                 variant={"outline"}
                 className="border-none bg-primary/10 text-primary rounded-full text-base !px-4"
+                onClick={() => {
+                  setInfoData({
+                    propertyName: "",
+                    propertyDescription: "",
+                    monthlyRent: 0,
+                    brokerId: "",
+                    landlordId: "",
+                    tenantId: "",
+                  });
+                  setLocationData({
+                    address1: "",
+                    address2: "",
+                    city: "",
+                    state: "",
+                    zip: "",
+                    latitude: 40.7128,
+                    longitude: -74.006,
+                  });
+                }}
               >
                 <ChevronLeft className="size-5" /> Cancel
               </Button>

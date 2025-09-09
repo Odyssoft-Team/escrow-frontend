@@ -27,6 +27,38 @@ interface Props {
 }
 
 export default function InfoForm({ infoData, setInfoData }: Props) {
+  const [isMonthlyRentFocused, setIsMonthlyRentFocused] = useState(false);
+  const [tempMonthlyRent, setTempMonthlyRent] = useState(
+    infoData.monthlyRent === 0 ? "" : infoData.monthlyRent.toString()
+  );
+
+  const handleMonthlyRentFocus = () => {
+    setIsMonthlyRentFocused(true);
+    if (infoData.monthlyRent === 0) {
+      setTempMonthlyRent("");
+    }
+  };
+
+  const handleMonthlyRentBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsMonthlyRentFocused(false);
+    const value = e.target.value;
+
+    if (value === "") {
+      handleChange("monthlyRent", 0);
+      setTempMonthlyRent("0");
+    } else {
+      const numValue = Number(value);
+      handleChange("monthlyRent", numValue);
+      setTempMonthlyRent(numValue.toString());
+    }
+  };
+
+  const handleMonthlyRentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setTempMonthlyRent(value);
+    }
+  };
   const handleChange = (field: keyof InfoFormData, value: string | number) => {
     setInfoData((prev: InfoFormData) => ({
       ...prev,
@@ -108,11 +140,18 @@ export default function InfoForm({ infoData, setInfoData }: Props) {
               <Input
                 className="peer ps-9 h-12"
                 placeholder="0.00"
-                type="number"
-                value={infoData.monthlyRent}
-                onChange={(e) =>
-                  handleChange("monthlyRent", Number(e.target.value))
+                type="text" // usar text para controlar el formato
+                inputMode="decimal"
+                value={
+                  isMonthlyRentFocused
+                    ? tempMonthlyRent
+                    : infoData.monthlyRent === 0
+                      ? ""
+                      : infoData.monthlyRent.toString()
                 }
+                onChange={handleMonthlyRentChange}
+                onFocus={handleMonthlyRentFocus}
+                onBlur={handleMonthlyRentBlur}
               />
               <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
@@ -156,7 +195,7 @@ export default function InfoForm({ infoData, setInfoData }: Props) {
             </Select>
           </div>
 
-          <div className="flex flex-col gap-1">
+          <div className="flex-col gap-1 hidden">
             <label className="flex items-center gap-2 text-content font-normal">
               <PiUserCirclePlusFill className="text-primary/80" />
               Tenant *
