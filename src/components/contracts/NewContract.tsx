@@ -53,6 +53,19 @@ export default function NewContract() {
     associationFees,
     isReadyToCreate,
     getMissingFields,
+    leaseStartDate,
+    leaseEndDate,
+    leaseAgreementDueBy,
+    lastMonthRent,
+    lastMonthDueOn,
+    securityDeposit,
+    securityDepositDueOn,
+    securityDepositAssociation,
+    securityDepositAssociationDueOn,
+    rentsafeDeposit,
+    petDeposit,
+    petDepositDueOn,
+    petDepositRefundable,
   } = useNewContractStore();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [loadingCreate, setLoadingCreate] = useState<boolean>(false);
@@ -86,6 +99,19 @@ export default function NewContract() {
       lease_utilities_exception: utilitiesExeption,
       lease_association_deposit: associationDeposit,
       lease_association_fees: associationFees,
+      lease_start_date: leaseStartDate,
+      lease_end_date: leaseEndDate,
+      lease_due_before_occupancy: leaseAgreementDueBy,
+      lease_last_month_rent: lastMonthRent,
+      lease_last_month_due_on: lastMonthDueOn,
+      lease_security_deposit: securityDeposit,
+      lease_security_due_on: securityDepositDueOn,
+      xx: securityDepositAssociation,
+      xxxx: securityDepositAssociationDueOn,
+      xxx: rentsafeDeposit,
+      lease_pet_deposit: petDeposit,
+      lease_pet_due_on: petDepositDueOn,
+      lease_pet_deposit_refundable: petDepositRefundable,
     });
 
     if (response.status === 200) {
