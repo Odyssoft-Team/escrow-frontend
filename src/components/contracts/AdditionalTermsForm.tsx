@@ -10,6 +10,8 @@ import { IoCard } from "react-icons/io5";
 import { useNewContractStore } from "@/store/new-contract.store";
 import { useState } from "react"; // Importamos useState para manejar el estado local
 
+import { Switch } from "../ui/switch";
+
 export default function AdditionalTermsForm() {
   const {
     utilitiesExeption,
@@ -188,6 +190,54 @@ export default function AdditionalTermsForm() {
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
               </div>
             </div>
+          </div>
+
+          <h2 className="font-bold text-yellow-400 text-lg flex items-center gap-2">
+            <BsFileMedicalFill className="text-yellow-400 size-6" />
+            Special Terms
+          </h2>
+
+          <div className="flex items-center justify-between border rounded-xl p-4">
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                {/* <MdOutlinePets className="size-6 text-orange-400" /> */}
+                <h3 className="font-bold text-black">Pet Deposit Refundable</h3>
+              </div>
+              <p className="font-light text-content text-sm">
+                Will the pet deposit be refundable?
+              </p>
+            </div>
+
+            {/* <Switch
+              checked={petDepositRefundable}
+              onCheckedChange={setPetDepositRefundable}
+            /> */}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center gap-2 text-content font-normal">
+              <BsLightningChargeFill className="text-primary/80" />
+              Maintenance Exceptions
+            </label>
+            <Textarea
+              placeholder="e.g., Water, Sewer, Electricity..."
+              className="h-26 placeholder:text-content/60"
+              value={utilitiesExeption}
+              onChange={(e) => setUtilitiesExeption(e.target.value)}
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center gap-2 text-content font-normal">
+              <BsLightningChargeFill className="text-primary/80" />
+              Additional Terms
+            </label>
+            <Textarea
+              placeholder="e.g., Water, Sewer, Electricity..."
+              className="h-26 placeholder:text-content/60"
+              value={utilitiesExeption}
+              onChange={(e) => setUtilitiesExeption(e.target.value)}
+            />
           </div>
         </div>
       </div>
