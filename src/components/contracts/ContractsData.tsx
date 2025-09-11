@@ -22,6 +22,8 @@ export default function ContractsData() {
       }
     );
 
+    console.log("response contracts:", response.data);
+
     setListContracts(response.data);
   };
 
@@ -45,7 +47,7 @@ export default function ContractsData() {
 
       <ContractsList contracts={listContracts} />
 
-      <NewContract />
+      <NewContract onLoading={getContracts} />
     </>
   );
 }

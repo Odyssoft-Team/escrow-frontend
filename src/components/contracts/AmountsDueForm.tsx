@@ -546,7 +546,7 @@ export default function AmountsDueForm() {
                       ? tempLastMonthRent
                       : lastMonthRent === 0
                         ? ""
-                        : lastMonthDueOn.toString()
+                        : lastMonthRent.toString()
                   }
                   onChange={handleLastMonthChange}
                   onFocus={handleLastMonthFocus}
@@ -734,7 +734,7 @@ export default function AmountsDueForm() {
           <div className="flex flex-col gap-1">
             <label className="flex items-center gap-2 text-content font-normal">
               <FaHandPaper className="text-primary/80" />
-              Initial escrow deposit
+              Initial escrow deposit
             </label>
             <div className="relative">
               <Input

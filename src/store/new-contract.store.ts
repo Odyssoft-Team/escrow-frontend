@@ -56,18 +56,44 @@ interface NewContractStore {
   toLastMonthRent: number;
   toSecurityDeposit: number;
   toOther: number;
+  totalRent: number;
+  tenantWillPay: string;
+  dayOfEachmonth: string;
+  monthlyRent: number;
+  paymentDate: Date;
+  paymentTotalAmount: number;
+  petsAllowed: boolean;
+  smokingAllowed: boolean;
   setToFirstMonthRent: (amount: number) => void;
   setToLastMonthRent: (amount: number) => void;
   setToSecurityDeposit: (amount: number) => void;
   setToOther: (amount: number) => void;
+  setTotalRent: (amount: number) => void;
+  setTenantWillPay: (amount: string) => void;
+  setDayOfEachmonth: (amount: string) => void;
+  setMonthlyRent: (amount: number) => void;
+  setPaymentDate: (date: Date) => void;
+  setPaymentTotalAmount: (amount: number) => void;
+  setPetsAllowed: (state: boolean) => void;
+  setSmokingAllowed: (state: boolean) => void;
 
   // step 4
   utilitiesExeption: string;
   associationDeposit: number;
   associationFees: number;
+  associationAppDue: Date;
+  tenantPaysAssociationFee: boolean;
+  serviceMemberTenant: boolean;
+  maintenanceException: string;
+  additionalTerms: string;
   setUtilitiesExeption: (amount: string) => void;
   setAssociationDeposit: (amount: number) => void;
   setAssociationFees: (amount: number) => void;
+  setAssociationAppDue: (date: Date) => void;
+  setTenantPaysAssociationFee: (state: boolean) => void;
+  setServiceMemberTenant: (state: boolean) => void;
+  setMaintenanceException: (amount: string) => void;
+  setAdditionalTerms: (amount: string) => void;
 
   isReadyToCreate: () => boolean;
   getMissingFields: () => string[];
@@ -145,18 +171,45 @@ export const useNewContractStore = create<NewContractStore>((set, get) => ({
   toLastMonthRent: 0,
   toSecurityDeposit: 0,
   toOther: 0,
+  totalRent: 0,
+  tenantWillPay: "full",
+  dayOfEachmonth: "",
+  monthlyRent: 0,
+  paymentDate: new Date(),
+  paymentTotalAmount: 0,
+  petsAllowed: false,
+  smokingAllowed: false,
   setToFirstMonthRent: (amount) => set({ toFirstMonthRent: amount }),
   setToLastMonthRent: (amount) => set({ toLastMonthRent: amount }),
   setToSecurityDeposit: (amount) => set({ toSecurityDeposit: amount }),
   setToOther: (amount) => set({ toOther: amount }),
+  setTotalRent: (amount) => set({ totalRent: amount }),
+  setTenantWillPay: (amount) => set({ tenantWillPay: amount }),
+  setDayOfEachmonth: (amount) => set({ dayOfEachmonth: amount }),
+  setMonthlyRent: (amount) => set({ monthlyRent: amount }),
+  setPaymentDate: (date) => set({ paymentDate: date }),
+  setPaymentTotalAmount: (amount) => set({ paymentTotalAmount: amount }),
+  setPetsAllowed: (state) => set({ petsAllowed: state }),
+  setSmokingAllowed: (state) => set({ smokingAllowed: state }),
 
   // step 4
   utilitiesExeption: "",
   associationDeposit: 0,
   associationFees: 0,
+  associationAppDue: new Date(),
+  tenantPaysAssociationFee: false,
+  serviceMemberTenant: false,
+  maintenanceException: "",
+  additionalTerms: "",
   setUtilitiesExeption: (amount) => set({ utilitiesExeption: amount }),
   setAssociationDeposit: (amount) => set({ associationDeposit: amount }),
   setAssociationFees: (amount) => set({ associationFees: amount }),
+  setAssociationAppDue: (date) => set({ associationAppDue: date }),
+  setTenantPaysAssociationFee: (state) =>
+    set({ tenantPaysAssociationFee: state }),
+  setServiceMemberTenant: (state) => set({ serviceMemberTenant: state }),
+  setMaintenanceException: (amount) => set({ maintenanceException: amount }),
+  setAdditionalTerms: (amount) => set({ additionalTerms: amount }),
 
   isReadyToCreate: () => {
     const state = get();

@@ -206,7 +206,7 @@ export default function BrokerRegisterPage() {
       setIsSubmitting(true);
       try {
         const userData = {
-          username,
+          username: username.toLowerCase(),
           user_email: email,
           password_hash: password,
           user_role: "broker",
@@ -479,9 +479,11 @@ export default function BrokerRegisterPage() {
           <Input
             name="username"
             placeholder="Username"
+            autoCapitalize="none"
+            autoCorrect="off"
             className={`h-12 w-full placeholder:text-content/50 placeholder:text-sm bg-white ${errors.username && touched.username ? "border-red-500" : ""}`}
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value.toLowerCase())}
             onBlur={handleBlur}
           />
           {errors.username && touched.username && (

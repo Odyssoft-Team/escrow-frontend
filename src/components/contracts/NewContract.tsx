@@ -32,8 +32,14 @@ import AdditionalTermsForm from "./AdditionalTermsForm";
 import { useNewContractStore } from "@/store/new-contract.store";
 import { toast } from "sonner";
 import api from "@/lib/axios";
+import { format } from "date-fns";
+import { useAuthStore } from "@/store/auth.store";
 
-export default function NewContract() {
+interface Props {
+  onLoading: () => void;
+}
+
+export default function NewContract({ onLoading }: Props) {
   const {
     landlordId,
     tenantId,
@@ -48,9 +54,6 @@ export default function NewContract() {
     toLastMonthRent,
     toSecurityDeposit,
     toOther,
-    utilitiesExeption,
-    associationDeposit,
-    associationFees,
     isReadyToCreate,
     getMissingFields,
     leaseStartDate,
@@ -66,7 +69,25 @@ export default function NewContract() {
     petDeposit,
     petDepositDueOn,
     petDepositRefundable,
+    leasePreparedBy,
+    totalRent,
+    tenantWillPay,
+    paymentDate,
+    paymentTotalAmount,
+    dayOfEachmonth,
+    monthlyRent,
+    petsAllowed,
+    smokingAllowed,
+    utilitiesExeption,
+    associationDeposit,
+    associationFees,
+    associationAppDue,
+    tenantPaysAssociationFee,
+    serviceMemberTenant,
+    maintenanceException,
+    additionalTerms,
   } = useNewContractStore();
+  const { userLoggedIn } = useAuthStore();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [loadingCreate, setLoadingCreate] = useState<boolean>(false);
   const [openForm, setOpenForm] = useState<boolean>(false);
@@ -87,31 +108,66 @@ export default function NewContract() {
       tenant_id: tenantId,
       property_id: propertyId,
       lease_furnished_status: isRented ? "Y" : "N",
+      lease_start_date: format(leaseStartDate, "yyyy-MM-dd"),
+      lease_end_date: format(leaseEndDate, "yyyy-MM-dd"),
+      lease_due_to_complete: format(leaseAgreementDueBy, "yyyy-MM-dd"),
+      lease_landlord_agree: leasePreparedBy === "landlord" ? "Y" : "N",
+      lease_tenant_agree: leasePreparedBy === "tenant" ? "Y" : "N",
+
       lease_first_month_rent: firstMonthRent,
-      lease_first_month_due_on: firstMonthDueOn,
-      lease_advance_rent_month: advanceRentMonth,
+      lease_first_month_due_on: format(firstMonthDueOn, "yyyy-MM-dd"),
+      lease_advance_rent_month: format(advanceRentMonth, "yyyy-MM-dd"),
       lease_advance_rent: advanceRent,
-      lease_advance_rent_due: advanceRentDueOn,
+      lease_advance_rent_due: format(advanceRentDueOn, "yyyy-MM-dd"),
+      lease_last_month_rent: lastMonthRent,
+      lease_last_month_due_on: format(lastMonthDueOn, "yyyy-MM-dd"),
+      lease_security_deposit: securityDeposit,
+      lease_security_due_on: format(securityDepositDueOn, "yyyy-MM-dd"),
+      xx: securityDepositAssociation,
+      lease_association_due_on: format(
+        securityDepositAssociationDueOn,
+        "yyyy-MM-dd"
+      ),
+      lease_holder_deposit_amount: rentsafeDeposit,
+      lease_pet_deposit: petDeposit,
+      lease_pet_due_on: format(petDepositDueOn, "yyyy-MM-dd"),
+      lease_pet_deposit_refundable: petDepositRefundable ? "Y" : "N",
+
       lease_to_first_month_rent: toFirstMonthRent,
       lease_to_last_month_rent: toLastMonthRent,
       lease_to_security_deposit: toSecurityDeposit,
       lease_to_other: toOther,
+      lease_total_rent: totalRent,
+      lease_pay_in_full_check: tenantWillPay === "full" ? "Y" : "N",
+      lease_pay_monthly_check: tenantWillPay === "monthly" ? "Y" : "N",
+      lease_pay_in_full_on: format(paymentDate, "yyyy-MM-dd"),
+      lease_full_amount: paymentTotalAmount,
+      lease_day_of_month: dayOfEachmonth,
+      lease_monthly_rent: monthlyRent,
+      lease_pets_allowed: petsAllowed ? "Y" : "N",
+      lease_smoking_allowed: smokingAllowed ? "Y" : "N",
+
       lease_utilities_exception: utilitiesExeption,
       lease_association_deposit: associationDeposit,
       lease_association_fees: associationFees,
-      lease_start_date: leaseStartDate,
-      lease_end_date: leaseEndDate,
-      lease_due_before_occupancy: leaseAgreementDueBy,
-      lease_last_month_rent: lastMonthRent,
-      lease_last_month_due_on: lastMonthDueOn,
-      lease_security_deposit: securityDeposit,
-      lease_security_due_on: securityDepositDueOn,
-      xx: securityDepositAssociation,
-      xxxx: securityDepositAssociationDueOn,
-      xxx: rentsafeDeposit,
-      lease_pet_deposit: petDeposit,
-      lease_pet_due_on: petDepositDueOn,
-      lease_pet_deposit_refundable: petDepositRefundable,
+      lease_association_aproval: format(associationAppDue, "yyyy-MM-dd"),
+      lease_tenant_will_pay_association_fee: tenantPaysAssociationFee
+        ? "Y"
+        : "N",
+      lease_tenant_service_member: serviceMemberTenant ? "Y" : "N",
+      lease_maintenance_exception: maintenanceException,
+      lease_additional_terms: additionalTerms,
+
+      lease_status: "Contract",
+      broker_id: userLoggedIn?.user_id,
+      lease_pets_condition: "",
+      lease_tenant_will_pay: "",
+      lease_to_first_month_rent_check: "",
+      lease_to_last_month_rent_check: "",
+      lease_to_security_deposit_check: "",
+      lease_to_other_check: "",
+      lease_deposit_holder: "",
+      lease_due_before_occupancy: 80,
     });
 
     if (response.status === 200) {
@@ -121,13 +177,14 @@ export default function NewContract() {
       });
       setLoadingCreate(false);
       setOpenForm(false);
+      onLoading();
     } else {
       toast.error("Error creating contract", {
         position: "top-right",
         duration: 3000,
       });
-      setLoadingCreate(false);
     }
+    setLoadingCreate(false);
   };
 
   return (

@@ -11,15 +11,32 @@ import { useNewContractStore } from "@/store/new-contract.store";
 import { useState } from "react"; // Importamos useState para manejar el estado local
 
 import { Switch } from "../ui/switch";
+import { FaStar } from "react-icons/fa";
+import { IoIosCalendar } from "react-icons/io";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Button } from "../ui/button";
+import { format } from "date-fns";
+import { Calendar } from "../ui/calendar";
+import { enUS } from "date-fns/locale";
 
 export default function AdditionalTermsForm() {
   const {
     utilitiesExeption,
     associationDeposit,
     associationFees,
+    associationAppDue,
+    tenantPaysAssociationFee,
+    serviceMemberTenant,
+    maintenanceException,
+    additionalTerms,
     setUtilitiesExeption,
     setAssociationDeposit,
     setAssociationFees,
+    setAssociationAppDue,
+    setTenantPaysAssociationFee,
+    setServiceMemberTenant,
+    setMaintenanceException,
+    setAdditionalTerms,
   } = useNewContractStore();
 
   // Estados locales para manejar el valor temporal durante la edición
@@ -192,6 +209,61 @@ export default function AdditionalTermsForm() {
             </div>
           </div>
 
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center gap-2 text-content font-normal">
+              <IoIosCalendar className="text-primary/80" />
+              Association application due date
+            </label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  data-empty={!associationAppDue}
+                  className="data-[empty=true]:text-muted-foreground w-full h-12 justify-start text-left font-normal"
+                >
+                  {associationAppDue ? (
+                    <span className="truncate">
+                      {format(associationAppDue, "MMM d, yyyy", {
+                        locale: enUS,
+                      })}
+                    </span>
+                  ) : (
+                    <span className="text-muted-foreground text-base font-normal">
+                      Pick a date
+                    </span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={associationAppDue}
+                  onSelect={setAssociationAppDue}
+                  required
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          <div className="flex items-center justify-between border rounded-xl p-4">
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <IoCard className="size-6 text-blue-400" />
+                <h3 className="font-bold text-black">
+                  Tenant Pays Association Fee
+                </h3>
+              </div>
+              <p className="font-light text-content text-sm">
+                Will tenant pay association fees?
+              </p>
+            </div>
+
+            <Switch
+              checked={tenantPaysAssociationFee}
+              onCheckedChange={setTenantPaysAssociationFee}
+            />
+          </div>
+
           <h2 className="font-bold text-yellow-400 text-lg flex items-center gap-2">
             <BsFileMedicalFill className="text-yellow-400 size-6" />
             Special Terms
@@ -200,18 +272,18 @@ export default function AdditionalTermsForm() {
           <div className="flex items-center justify-between border rounded-xl p-4">
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                {/* <MdOutlinePets className="size-6 text-orange-400" /> */}
-                <h3 className="font-bold text-black">Pet Deposit Refundable</h3>
+                <FaStar className="size-6 text-blue-400" />
+                <h3 className="font-bold text-black">Service Member Tenant</h3>
               </div>
               <p className="font-light text-content text-sm">
-                Will the pet deposit be refundable?
+                Is the tenant a service member?
               </p>
             </div>
 
-            {/* <Switch
-              checked={petDepositRefundable}
-              onCheckedChange={setPetDepositRefundable}
-            /> */}
+            <Switch
+              checked={serviceMemberTenant}
+              onCheckedChange={setServiceMemberTenant}
+            />
           </div>
 
           <div className="flex flex-col gap-1">
@@ -220,10 +292,10 @@ export default function AdditionalTermsForm() {
               Maintenance Exceptions
             </label>
             <Textarea
-              placeholder="e.g., Water, Sewer, Electricity..."
+              placeholder="Any maintenance exceptions or special terms..."
               className="h-26 placeholder:text-content/60"
-              value={utilitiesExeption}
-              onChange={(e) => setUtilitiesExeption(e.target.value)}
+              value={maintenanceException}
+              onChange={(e) => setMaintenanceException(e.target.value)}
             />
           </div>
 
@@ -233,10 +305,10 @@ export default function AdditionalTermsForm() {
               Additional Terms
             </label>
             <Textarea
-              placeholder="e.g., Water, Sewer, Electricity..."
+              placeholder="Enter any additional terms outside of utilities and maintenance..."
               className="h-26 placeholder:text-content/60"
-              value={utilitiesExeption}
-              onChange={(e) => setUtilitiesExeption(e.target.value)}
+              value={additionalTerms}
+              onChange={(e) => setAdditionalTerms(e.target.value)}
             />
           </div>
         </div>

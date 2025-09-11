@@ -2,13 +2,46 @@
 
 import { IoCard, IoEllipsisHorizontalCircle } from "react-icons/io5";
 import { ScrollArea } from "../ui/scroll-area";
-import { FaChartPie } from "react-icons/fa";
+import {
+  FaChartPie,
+  FaCheck,
+  FaFileAlt,
+  FaMoneyBill,
+  FaSmoking,
+} from "react-icons/fa";
 import { Input } from "../ui/input";
 import { LuDollarSign } from "react-icons/lu";
 import { IoIosCalendar } from "react-icons/io";
 import { FaShield } from "react-icons/fa6";
 import { useNewContractStore } from "@/store/new-contract.store";
 import { useState } from "react"; // Importamos useState para manejar el estado local
+import { AiFillDollarCircle } from "react-icons/ai";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { Label } from "../ui/label";
+import { MdCalendarMonth, MdOutlinePets } from "react-icons/md";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Switch } from "../ui/switch";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Button } from "../ui/button";
+import { format } from "date-fns";
+import { Calendar } from "../ui/calendar";
+import { enUS } from "date-fns/locale";
+
+const LIST_DAYS = [
+  { id: 1, day: "Monday" },
+  { id: 2, day: "Tuesday" },
+  { id: 3, day: "Wednesday" },
+  { id: 4, day: "Thursday" },
+  { id: 5, day: "Friday" },
+  { id: 6, day: "Saturday" },
+  { id: 7, day: "Sunday" },
+];
 
 export default function MonthlyTermsForm() {
   const {
@@ -20,6 +53,22 @@ export default function MonthlyTermsForm() {
     setToLastMonthRent,
     setToSecurityDeposit,
     setToOther,
+    totalRent,
+    tenantWillPay,
+    dayOfEachmonth,
+    monthlyRent,
+    paymentDate,
+    paymentTotalAmount,
+    petsAllowed,
+    smokingAllowed,
+    setTotalRent,
+    setTenantWillPay,
+    setDayOfEachmonth,
+    setMonthlyRent,
+    setPaymentDate,
+    setPaymentTotalAmount,
+    setPetsAllowed,
+    setSmokingAllowed,
   } = useNewContractStore();
 
   // Estados locales para manejar el valor temporal durante la edición
@@ -33,6 +82,13 @@ export default function MonthlyTermsForm() {
     toSecurityDeposit.toString()
   );
   const [tempToOther, setTempToOther] = useState(toOther.toString());
+  const [tempTotalRent, setTempTotalRent] = useState(totalRent.toString());
+  const [tempMonthlyRent, setTempMonthlyRent] = useState(
+    monthlyRent.toString()
+  );
+  const [tempPaymentTotalAmount, setTempPaymentTotalAmount] = useState(
+    paymentTotalAmount.toString()
+  );
 
   const [isToFirstMonthRentFocused, setIsToFirstMonthRentFocused] =
     useState(false);
@@ -41,6 +97,10 @@ export default function MonthlyTermsForm() {
   const [isToSecurityDepositFocused, setIsToSecurityDepositFocused] =
     useState(false);
   const [isToOtherFocused, setIsToOtherFocused] = useState(false);
+  const [isTotalRentFocused, setIsTotalRentFocused] = useState(false);
+  const [isMonthlyRentFocused, setIsMonthlyRentFocused] = useState(false);
+  const [isPaymentTotalAmountFocused, setIsPaymentTotalAmountFocused] =
+    useState(false);
 
   // Manejadores para To First Month Rent
   const handleToFirstMonthRentFocus = () => {
@@ -165,6 +225,97 @@ export default function MonthlyTermsForm() {
     const value = e.target.value;
     if (/^\d*\.?\d*$/.test(value)) {
       setTempToOther(value);
+    }
+  };
+
+  // Manejadores
+  const handleTotalRentFocus = () => {
+    setIsTotalRentFocused(true);
+    if (totalRent === 0) {
+      setTempTotalRent("");
+    }
+  };
+
+  const handleTotalRentBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsTotalRentFocused(false);
+    const value = e.target.value;
+
+    if (value === "") {
+      setTotalRent(0);
+      setTempTotalRent("0");
+    } else {
+      const numValue = Number(value);
+      setTotalRent(numValue);
+      setTempTotalRent(numValue.toString());
+    }
+  };
+
+  const handleTotalRentChange = (e: React.FocusEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setTempTotalRent(value);
+    }
+  };
+
+  // Manejadores
+  const handleMonthlyRentFocus = () => {
+    setIsMonthlyRentFocused(true);
+    if (monthlyRent === 0) {
+      setTempMonthlyRent("");
+    }
+  };
+
+  const handleMonthlyRentBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsMonthlyRentFocused(false);
+    const value = e.target.value;
+
+    if (value === "") {
+      setMonthlyRent(0);
+      setTempMonthlyRent("0");
+    } else {
+      const numValue = Number(value);
+      setMonthlyRent(numValue);
+      setTempMonthlyRent(numValue.toString());
+    }
+  };
+
+  const handleMonthlyRentChange = (e: React.FocusEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setTempMonthlyRent(value);
+    }
+  };
+
+  // Manejadores
+  const handlePaymentTotalAmountFocus = () => {
+    setIsPaymentTotalAmountFocused(true);
+    if (paymentTotalAmount === 0) {
+      setTempPaymentTotalAmount("");
+    }
+  };
+
+  const handlePaymentTotalAmountBlur = (
+    e: React.FocusEvent<HTMLInputElement>
+  ) => {
+    setIsPaymentTotalAmountFocused(false);
+    const value = e.target.value;
+
+    if (value === "") {
+      setPaymentTotalAmount(0);
+      setTempPaymentTotalAmount("0");
+    } else {
+      const numValue = Number(value);
+      setPaymentTotalAmount(numValue);
+      setTempPaymentTotalAmount(numValue.toString());
+    }
+  };
+
+  const handlePaymentTotalAmountChange = (
+    e: React.FocusEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setTempPaymentTotalAmount(value);
     }
   };
 
@@ -297,6 +448,253 @@ export default function MonthlyTermsForm() {
                 <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
               </div>
             </div>
+          </div>
+
+          <h2 className="font-bold text-[#01C3BA] text-lg flex items-center gap-2">
+            <IoCard className="text-[#01C3BA] size-6" />
+            Rent payment details
+          </h2>
+
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center gap-2 text-content font-normal">
+              <AiFillDollarCircle className="text-primary/80" />
+              Total Rent
+            </label>
+            <div className="relative">
+              <Input
+                className="peer ps-9 h-12"
+                placeholder="0.00"
+                type="text"
+                inputMode="decimal"
+                value={
+                  isTotalRentFocused
+                    ? tempTotalRent
+                    : totalRent === 0
+                      ? ""
+                      : totalRent.toString()
+                }
+                onChange={handleTotalRentChange}
+                onFocus={handleTotalRentFocus}
+                onBlur={handleTotalRentBlur}
+              />
+              <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                <LuDollarSign size={16} strokeWidth={2.5} aria-hidden="true" />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <span className="font-medium">Tenant will pay the rent:</span>
+            <RadioGroup
+              value={tenantWillPay}
+              onValueChange={setTenantWillPay}
+              className="mt-2 space-y-0"
+            >
+              <div
+                className="flex items-center gap-3 px-4 h-10 bg-gray-50 rounded-lg border border-gray-300"
+                data-state={tenantWillPay === "full" ? "checked" : ""}
+              >
+                <RadioGroupItem value="full" id="full" className="peer" />
+                <Label
+                  htmlFor="full"
+                  className="cursor-pointer peer-data-[state=checked]:font-semibold"
+                >
+                  In Full
+                </Label>
+                {tenantWillPay === "full" && (
+                  <span className="ml-auto text-green-600">
+                    {/* Check icon */}
+                    <FaCheck className="size-3" />
+                  </span>
+                )}
+              </div>
+              <div
+                className="flex items-center gap-3 px-4 h-10 bg-gray-50 rounded-lg border border-gray-300"
+                data-state={tenantWillPay === "monthly" ? "checked" : ""}
+              >
+                <RadioGroupItem value="monthly" id="monthly" className="peer" />
+                <Label
+                  htmlFor="monthly"
+                  className="cursor-pointer peer-data-[state=checked]:font-semibold"
+                >
+                  Monthly
+                </Label>
+                {tenantWillPay === "monthly" && (
+                  <span className="ml-auto text-green-600">
+                    {/* Check icon */}
+                    <FaCheck className="size-3" />
+                  </span>
+                )}
+              </div>
+            </RadioGroup>
+          </div>
+
+          {tenantWillPay === "full" && (
+            <>
+              <div className="flex flex-col gap-1">
+                <label className="flex items-center gap-2 text-content font-normal">
+                  <IoIosCalendar className="text-primary/80" />
+                  Payment Date
+                </label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      data-empty={!paymentDate}
+                      className="data-[empty=true]:text-muted-foreground w-full h-12 justify-start text-left font-normal"
+                    >
+                      {paymentDate ? (
+                        <span className="truncate">
+                          {format(paymentDate, "MMM d, yyyy", {
+                            locale: enUS,
+                          })}
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground text-base font-normal">
+                          Pick a date
+                        </span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={paymentDate}
+                      onSelect={setPaymentDate}
+                      required
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="flex items-center gap-2 text-content font-normal">
+                  <FaMoneyBill className="text-primary/80" />
+                  Total Amount
+                </label>
+                <div className="relative">
+                  <Input
+                    className="peer ps-9 h-12"
+                    placeholder="0.00"
+                    type="text"
+                    inputMode="decimal"
+                    value={
+                      isPaymentTotalAmountFocused
+                        ? tempPaymentTotalAmount
+                        : paymentTotalAmount === 0
+                          ? ""
+                          : paymentTotalAmount.toString()
+                    }
+                    onChange={handlePaymentTotalAmountChange}
+                    onFocus={handlePaymentTotalAmountFocus}
+                    onBlur={handlePaymentTotalAmountBlur}
+                  />
+                  <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                    <LuDollarSign
+                      size={16}
+                      strokeWidth={2.5}
+                      aria-hidden="true"
+                    />
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {tenantWillPay === "monthly" && (
+            <>
+              <div className="flex flex-col gap-1">
+                <label className="flex items-center gap-2 text-content font-normal">
+                  <MdCalendarMonth className="text-primary/80" />
+                  Day of each month *
+                </label>
+                <Select
+                  value={dayOfEachmonth}
+                  onValueChange={setDayOfEachmonth}
+                >
+                  <SelectTrigger className="w-full !h-12">
+                    <SelectValue placeholder="Select day" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {LIST_DAYS.map((day) => (
+                      <SelectItem
+                        key={day.id}
+                        value={String(day.id)}
+                        className="capitalize"
+                      >
+                        {day.day}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="flex items-center gap-2 text-content font-normal">
+                  <MdCalendarMonth className="text-primary/80" />
+                  Monthly Rent
+                </label>
+                <div className="relative">
+                  <Input
+                    className="peer ps-9 h-12"
+                    placeholder="0.00"
+                    type="text"
+                    inputMode="decimal"
+                    value={
+                      isMonthlyRentFocused
+                        ? tempMonthlyRent
+                        : monthlyRent === 0
+                          ? ""
+                          : monthlyRent.toString()
+                    }
+                    onChange={handleMonthlyRentChange}
+                    onFocus={handleMonthlyRentFocus}
+                    onBlur={handleMonthlyRentBlur}
+                  />
+                  <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                    <LuDollarSign
+                      size={16}
+                      strokeWidth={2.5}
+                      aria-hidden="true"
+                    />
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          <h2 className="font-bold text-red-500 text-lg flex items-center gap-2">
+            <FaFileAlt className="text-red-500 size-6" />
+            Property Policies
+          </h2>
+
+          <div className="flex items-center justify-between border rounded-xl p-4">
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <MdOutlinePets className="size-6 text-orange-400" />
+                <h3 className="font-bold text-black">Pets Allowed</h3>
+              </div>
+              <p className="font-light text-content text-sm">
+                Are pets permitted on the property?
+              </p>
+            </div>
+
+            <Switch checked={petsAllowed} onCheckedChange={setPetsAllowed} />
+          </div>
+
+          <div className="flex items-center justify-between border rounded-xl p-4">
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <FaSmoking className="size-6 text-red-400" />
+                <h3 className="font-bold text-black">Smoking Allowed</h3>
+              </div>
+              <p className="font-light text-content text-sm">
+                Is smoking permitted on the property?
+              </p>
+            </div>
+
+            <Switch
+              checked={smokingAllowed}
+              onCheckedChange={setSmokingAllowed}
+            />
           </div>
         </div>
       </div>
