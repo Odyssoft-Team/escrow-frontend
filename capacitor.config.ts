@@ -22,6 +22,10 @@ const config: CapacitorConfig = {
       splashFullScreen: true,
       splashImmersive: true,
     },
+    StatusBar: {
+      backgroundColor: "#000000",
+      style: "light",
+    },
   },
 };
 
