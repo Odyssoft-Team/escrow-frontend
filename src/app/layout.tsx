@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import "./globals.css";
 import ClientProvider from "@/components/providers/ClientProvider";
 import { CapacitorStatusBar } from "@/components/CapacitorStatusBar";
+import { BackButtonProvider } from "@/components/providers/BackButtonProvider";
 
 const font_family = Fira_Sans({
   variable: "--font-family",
@@ -32,8 +33,11 @@ export default function RootLayout({
       <body className={`${font_family.variable} antialiased overflow-x-hidden`}>
         <CapacitorStatusBar />
         <ClientProvider />
-        <Toaster richColors visibleToasts={3} />
-        {children}
+        <BackButtonProvider>
+          <Toaster richColors visibleToasts={3} />
+
+          {children}
+        </BackButtonProvider>
       </body>
     </html>
   );
