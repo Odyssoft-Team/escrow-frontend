@@ -55,7 +55,6 @@ export default function NewContract({ onLoading }: Props) {
     toSecurityDeposit,
     toOther,
     isReadyToCreate,
-    getMissingFields,
     leaseStartDate,
     leaseEndDate,
     leaseAgreementDueBy,
@@ -87,20 +86,43 @@ export default function NewContract({ onLoading }: Props) {
     maintenanceException,
     additionalTerms,
     resetContract,
+    cooperatingBroker,
+    cooperatingBrokerType,
+    petsCondition,
+    isStepReady,
+    getMissingFieldsByStep,
   } = useNewContractStore();
   const { userLoggedIn } = useAuthStore();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [loadingCreate, setLoadingCreate] = useState<boolean>(false);
   const [openForm, setOpenForm] = useState<boolean>(false);
 
+  const handleNextStep = () => {
+    if (!isStepReady(currentStep)) {
+      const missing = getMissingFieldsByStep(currentStep);
+      toast.error(
+        `Please complete the following fields: ${missing.join(", ")}`,
+        { duration: 4000, position: "top-right" }
+      );
+      return;
+    }
+    setCurrentStep((prev) => Math.min(4, prev + 1));
+  };
+
   const handleCreateContract = async () => {
     setLoadingCreate(true);
-    if (!isReadyToCreate) {
-      const missingFields = getMissingFields();
-      toast.warning(missingFields, {
-        position: "top-right",
-        duration: 3000,
+
+    if (!isReadyToCreate()) {
+      const missing: string[] = [];
+      steps.forEach((s) => {
+        missing.push(...getMissingFieldsByStep(s));
       });
+
+      toast.error(
+        `Cannot create contract. Missing fields: ${missing.join(", ")}`,
+        { duration: 5000, position: "top-right" }
+      );
+      setLoadingCreate(false);
       return;
     }
 
@@ -114,6 +136,8 @@ export default function NewContract({ onLoading }: Props) {
       lease_due_to_complete: format(leaseAgreementDueBy, "yyyy-MM-dd"),
       lease_landlord_agree: leasePreparedBy === "landlord" ? "Y" : "N",
       lease_tenant_agree: leasePreparedBy === "tenant" ? "Y" : "N",
+      cooperating_broker_id: cooperatingBroker,
+      cooperating_broker_type: cooperatingBrokerType,
 
       lease_first_month_rent: firstMonthRent,
       lease_first_month_due_on: format(firstMonthDueOn, "yyyy-MM-dd"),
@@ -146,6 +170,7 @@ export default function NewContract({ onLoading }: Props) {
       lease_day_of_month: dayOfEachmonth,
       lease_monthly_rent: monthlyRent,
       lease_pets_allowed: petsAllowed ? "Y" : "N",
+      lease_pets_condition: petsCondition,
       lease_smoking_allowed: smokingAllowed ? "Y" : "N",
 
       lease_utilities_exception: utilitiesExeption,
@@ -161,14 +186,17 @@ export default function NewContract({ onLoading }: Props) {
 
       lease_status: "Contract",
       broker_id: userLoggedIn?.user_id,
-      lease_pets_condition: "",
       lease_tenant_will_pay: "",
       lease_to_first_month_rent_check: "",
       lease_to_last_month_rent_check: "",
       lease_to_security_deposit_check: "",
       lease_to_other_check: "",
       lease_deposit_holder: "",
-      lease_due_before_occupancy: 80,
+      lease_due_before_occupancy: 0,
+      lease_envelope_id: "",
+      lease_disburse_approved_by_broker: "",
+      lease_disburse_approved_by_landlord: "",
+      lease_disburse_approved_by_tenant: "",
     });
 
     if (response.status === 200) {
@@ -200,7 +228,7 @@ export default function NewContract({ onLoading }: Props) {
           New Contract
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="h-[90vh] !max-h-screen">
+      <DrawerContent className="h-[90dvh] !max-h-screen">
         <DrawerHeader className="pt-2 pb-4 flex justify-between flex-col border-b">
           <div className="w-full flex items-center justify-center relative">
             <DrawerClose asChild>
@@ -218,7 +246,7 @@ export default function NewContract({ onLoading }: Props) {
           </div>
 
           <Stepper
-            defaultValue={2}
+            defaultValue={1}
             className="mt-5 mb-0 pb-0 px-5"
             value={currentStep}
             onValueChange={setCurrentStep}
@@ -282,7 +310,7 @@ export default function NewContract({ onLoading }: Props) {
             ) : (
               <Button
                 variant="default"
-                onClick={() => setCurrentStep((prev) => Math.min(4, prev + 1))}
+                onClick={handleNextStep}
                 className="flex-1"
               >
                 Next

@@ -109,7 +109,7 @@ export default function EditProperty({ data, openEdit, setOpenEdit }: Props) {
 
   return (
     <Drawer open={openEdit} onOpenChange={setOpenEdit}>
-      <DrawerContent className="h-[90vh] !max-h-screen">
+      <DrawerContent className="h-[90dvh] !max-h-screen">
         <DrawerHeader className="pt-2 pb-0 flex justify-between flex-col border-b">
           <div className="w-full flex items-center justify-between">
             <DrawerClose asChild>

@@ -32,6 +32,7 @@ import { Button } from "../ui/button";
 import { format } from "date-fns";
 import { Calendar } from "../ui/calendar";
 import { enUS } from "date-fns/locale";
+import { Textarea } from "../ui/textarea";
 
 const LIST_DAYS = [
   { id: 1, day: "Monday" },
@@ -69,6 +70,8 @@ export default function MonthlyTermsForm() {
     setPaymentTotalAmount,
     setPetsAllowed,
     setSmokingAllowed,
+    petsCondition,
+    setPetsCondition,
   } = useNewContractStore();
 
   // Estados locales para manejar el valor temporal durante la edición
@@ -679,6 +682,21 @@ export default function MonthlyTermsForm() {
 
             <Switch checked={petsAllowed} onCheckedChange={setPetsAllowed} />
           </div>
+
+          {petsAllowed && (
+            <div className="flex flex-col gap-1">
+              <label className="flex items-center gap-2 text-content font-normal">
+                <MdOutlinePets className="text-primary/80" />
+                Pets Description
+              </label>
+              <Textarea
+                placeholder="Describe allowed pets (type, size, etc.)"
+                className="h-26 placeholder:text-content/60"
+                value={petsCondition}
+                onChange={(e) => setPetsCondition(e.target.value)}
+              />
+            </div>
+          )}
 
           <div className="flex items-center justify-between border rounded-xl p-4">
             <div className="flex flex-col">

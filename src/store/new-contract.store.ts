@@ -10,6 +10,8 @@ interface NewContractStore {
   leaseEndDate: Date;
   leaseAgreementDueBy: Date;
   leasePreparedBy: string;
+  cooperatingBroker: string;
+  cooperatingBrokerType: string;
   setLandlordId: (id: string) => void;
   setTenantId: (id: string) => void;
   setPropertyId: (id: string) => void;
@@ -18,6 +20,8 @@ interface NewContractStore {
   setLeaseEndDate: (date: Date) => void;
   setLeaseAgreementDueBy: (date: Date) => void;
   setLeasePreparedBy: (name: string) => void;
+  setCooperatingBroker: (id: string) => void;
+  setCooperatingBrokerType: (type: string) => void;
 
   // step 2
   firstMonthRent: number;
@@ -64,6 +68,7 @@ interface NewContractStore {
   paymentTotalAmount: number;
   petsAllowed: boolean;
   smokingAllowed: boolean;
+  petsCondition: string;
   setToFirstMonthRent: (amount: number) => void;
   setToLastMonthRent: (amount: number) => void;
   setToSecurityDeposit: (amount: number) => void;
@@ -76,6 +81,7 @@ interface NewContractStore {
   setPaymentTotalAmount: (amount: number) => void;
   setPetsAllowed: (state: boolean) => void;
   setSmokingAllowed: (state: boolean) => void;
+  setPetsCondition: (amount: string) => void;
 
   // step 4
   utilitiesExeption: string;
@@ -95,64 +101,65 @@ interface NewContractStore {
   setMaintenanceException: (amount: string) => void;
   setAdditionalTerms: (amount: string) => void;
 
+  // validations
+  isStepReady: (step: number) => boolean;
+  getMissingFieldsByStep: (step: number) => string[];
   isReadyToCreate: () => boolean;
-  getMissingFields: () => string[];
   resetContract: () => void;
 }
 
-const requiredFields = [
-  // Step 1
-  { key: "landlordId", label: "Landlord" },
-  { key: "tenantId", label: "Tenant" },
-  { key: "propertyId", label: "Property" },
-  { key: "leaseStartDate", label: "Lease start date" },
-  { key: "leaseEndDate", label: "Lease end date" },
-  { key: "leasePreparedBy", label: "Lease prepared by" },
+const requiredFieldsByStep: Record<
+  number,
+  { key: keyof NewContractStore; label: string }[]
+> = {
+  1: [
+    { key: "landlordId", label: "Landlord" },
+    { key: "tenantId", label: "Tenant" },
+    { key: "propertyId", label: "Property" },
+    { key: "leaseStartDate", label: "Lease start date" },
+    { key: "leaseEndDate", label: "Lease end date" },
+  ],
+  2: [
+    { key: "firstMonthRent", label: "First month rent" },
+    { key: "advanceRent", label: "Advance rent" },
+    { key: "lastMonthRent", label: "Last month rent" },
+    { key: "securityDeposit", label: "Security deposit" },
+    {
+      key: "securityDepositAssociation",
+      label: "Security deposit association",
+    },
+    { key: "rentsafeDeposit", label: "Initial escrow deposit" },
+    { key: "petDeposit", label: "Pet deposit" },
+  ],
+  3: [
+    { key: "toFirstMonthRent", label: "To first month rent" },
+    { key: "toLastMonthRent", label: "To last month rent" },
+    { key: "toSecurityDeposit", label: "To security deposit" },
+    { key: "toOther", label: "To other" },
+    { key: "totalRent", label: "Total rent" },
+    { key: "tenantWillPay", label: "Tenant will pay" },
+    { key: "petsAllowed", label: "Pets allowed" },
+    { key: "smokingAllowed", label: "Smoking allowed" },
+    // condicionales (se validan aparte en runtime)
+    { key: "dayOfEachmonth", label: "Day of each month" },
+    { key: "monthlyRent", label: "Monthly rent" },
+    { key: "paymentDate", label: "Payment date" },
+    { key: "paymentTotalAmount", label: "Payment total amount" },
+    { key: "petsCondition", label: "Pets condition" },
+  ],
+  4: [
+    { key: "utilitiesExeption", label: "Utilities exeption" },
+    { key: "associationDeposit", label: "Association deposit" },
+    { key: "associationAppDue", label: "Association app due" },
+  ],
+};
 
-  // Step 2
-  { key: "firstMonthRent", label: "First month rent" },
-  { key: "firstMonthDueOn", label: "First month due on" },
-  { key: "advanceRentMonth", label: "Advance rent month" },
-  { key: "advanceRent", label: "Advance rent" },
-  { key: "advanceRentDueOn", label: "Advance rent due on" },
-  { key: "lastMonthRent", label: "Last month rent" },
-  { key: "lastMonthDueOn", label: "Last month due on" },
-  { key: "securityDeposit", label: "Security deposit" },
-  { key: "securityDepositDueOn", label: "Security deposit due on" },
-  { key: "securityDepositAssociation", label: "Security deposit association" },
-  {
-    key: "securityDepositAssociationDueOn",
-    label: "Security deposit association due on",
-  },
-  { key: "rentsafeDeposit", label: "Rentsafe deposit" },
-  { key: "petDeposit", label: "Pet deposit" },
-  { key: "petDepositDueOn", label: "Pet deposit due on" },
-  { key: "petDepositRefundable", label: "Pet deposit refundable" },
-
-  // Step 3
-  { key: "toFirstMonthRent", label: "To first month rent" },
-  { key: "toLastMonthRent", label: "To last month rent" },
-  { key: "toSecurityDeposit", label: "To security deposit" },
-  { key: "toOther", label: "To other" },
-  { key: "totalRent", label: "Total rent" },
-  { key: "tenantWillPay", label: "Tenant will pay" },
-  { key: "dayOfEachmonth", label: "Day of each month" },
-  { key: "monthlyRent", label: "Monthly rent" },
-  { key: "paymentDate", label: "Payment date" },
-  { key: "paymentTotalAmount", label: "Payment total amount" },
-  { key: "petsAllowed", label: "Pets allowed" },
-  { key: "smokingAllowed", label: "Smoking allowed" },
-
-  // Step 4
-  { key: "utilitiesExeption", label: "Utilities exeption" },
-  { key: "associationDeposit", label: "Association deposit" },
-  { key: "associationFees", label: "Association fees" },
-  { key: "associationAppDue", label: "Association app due" },
-  { key: "tenantPaysAssociationFee", label: "Tenant pays association fee" },
-  { key: "serviceMemberTenant", label: "Service member tenant" },
-  { key: "maintenanceException", label: "Maintenance exception" },
-  { key: "additionalTerms", label: "Additional terms" },
-];
+function isValidValue(value: unknown): boolean {
+  if (typeof value === "string") return value.trim() !== "";
+  if (typeof value === "number") return value !== 0;
+  if (value instanceof Date) return !isNaN(value.getTime());
+  return value !== null && value !== undefined;
+}
 
 export const useNewContractStore = create<NewContractStore>((set, get) => ({
   // step 1
@@ -164,6 +171,8 @@ export const useNewContractStore = create<NewContractStore>((set, get) => ({
   leaseEndDate: new Date(),
   leaseAgreementDueBy: new Date(),
   leasePreparedBy: "landlord",
+  cooperatingBroker: "",
+  cooperatingBrokerType: "T",
   setLandlordId: (id) => set({ landlordId: id }),
   setTenantId: (id) => set({ tenantId: id }),
   setPropertyId: (id) => set({ propertyId: id }),
@@ -172,6 +181,8 @@ export const useNewContractStore = create<NewContractStore>((set, get) => ({
   setLeaseEndDate: (date) => set({ leaseEndDate: date }),
   setLeaseAgreementDueBy: (date) => set({ leaseAgreementDueBy: date }),
   setLeasePreparedBy: (name) => set({ leasePreparedBy: name }),
+  setCooperatingBroker: (id) => set({ cooperatingBroker: id }),
+  setCooperatingBrokerType: (type) => set({ cooperatingBrokerType: type }),
 
   // step 2
   firstMonthRent: 0,
@@ -220,6 +231,7 @@ export const useNewContractStore = create<NewContractStore>((set, get) => ({
   paymentTotalAmount: 0,
   petsAllowed: false,
   smokingAllowed: false,
+  petsCondition: "",
   setToFirstMonthRent: (amount) => set({ toFirstMonthRent: amount }),
   setToLastMonthRent: (amount) => set({ toLastMonthRent: amount }),
   setToSecurityDeposit: (amount) => set({ toSecurityDeposit: amount }),
@@ -232,6 +244,7 @@ export const useNewContractStore = create<NewContractStore>((set, get) => ({
   setPaymentTotalAmount: (amount) => set({ paymentTotalAmount: amount }),
   setPetsAllowed: (state) => set({ petsAllowed: state }),
   setSmokingAllowed: (state) => set({ smokingAllowed: state }),
+  setPetsCondition: (state) => set({ petsCondition: state }),
 
   // step 4
   utilitiesExeption: "",
@@ -252,28 +265,46 @@ export const useNewContractStore = create<NewContractStore>((set, get) => ({
   setMaintenanceException: (amount) => set({ maintenanceException: amount }),
   setAdditionalTerms: (amount) => set({ additionalTerms: amount }),
 
-  isReadyToCreate: () => {
+  isStepReady: (step) => {
     const state = get();
-    return requiredFields.every(({ key }) => {
-      const value = state[key as keyof NewContractStore];
-      if (typeof value === "string") return value.trim() !== "";
-      if (typeof value === "number") return value !== 0;
-      if (value instanceof Date) return !isNaN(value.getTime());
-      return value !== null && value !== undefined;
-    });
+    const baseValid = requiredFieldsByStep[step]
+      .filter(({ key }) => {
+        // Excluir condicionales que no aplican
+        if (key === "dayOfEachmonth" || key === "monthlyRent") {
+          return state.tenantWillPay === "monthly";
+        }
+        if (key === "paymentDate" || key === "paymentTotalAmount") {
+          return state.tenantWillPay === "full";
+        }
+        if (key === "petsCondition") {
+          return state.petsAllowed === true;
+        }
+        return true;
+      })
+      .every(({ key }) => isValidValue(state[key]));
+    return baseValid;
   },
 
-  getMissingFields: () => {
+  getMissingFieldsByStep: (step) => {
     const state = get();
-    return requiredFields
+    return requiredFieldsByStep[step]
       .filter(({ key }) => {
-        const value = state[key as keyof NewContractStore];
-        if (typeof value === "string") return value.trim() === "";
-        if (typeof value === "number") return value === 0;
-        if (value instanceof Date) return isNaN(value.getTime());
-        return value === null || value === undefined;
+        if (key === "dayOfEachmonth" || key === "monthlyRent") {
+          return state.tenantWillPay === "monthly" && !isValidValue(state[key]);
+        }
+        if (key === "paymentDate" || key === "paymentTotalAmount") {
+          return state.tenantWillPay === "full" && !isValidValue(state[key]);
+        }
+        if (key === "petsCondition") {
+          return state.petsAllowed === true && !isValidValue(state[key]);
+        }
+        return !isValidValue(state[key]);
       })
       .map(({ label }) => label);
+  },
+
+  isReadyToCreate: () => {
+    return [1, 2, 3, 4].every((step) => get().isStepReady(step));
   },
 
   resetContract: () =>

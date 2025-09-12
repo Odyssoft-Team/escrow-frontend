@@ -26,8 +26,34 @@ import { format } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
+import { useAuthStore } from "@/store/auth.store";
+import { TbUsersGroup } from "react-icons/tb";
+import { IoInformationCircleOutline } from "react-icons/io5";
 
 export default function LeaseDetailsForm() {
+  const {
+    tenantId,
+    landlordId,
+    propertyId,
+    isRented,
+    setLandlordId,
+    setTenantId,
+    setPropertyId,
+    setIsRented,
+    leaseStartDate,
+    leaseEndDate,
+    leaseAgreementDueBy,
+    setLeaseStartDate,
+    setLeaseEndDate,
+    setLeaseAgreementDueBy,
+    leasePreparedBy,
+    setLeasePreparedBy,
+    cooperatingBroker,
+    setCooperatingBroker,
+    cooperatingBrokerType,
+    setCooperatingBrokerType,
+  } = useNewContractStore();
+  const { userLoggedIn } = useAuthStore();
   const [listUsers, setListUsers] = useState<UserData[]>([]);
   const handleGetUsers = async () => {
     const response = await api.get("/users", {
@@ -64,25 +90,6 @@ export default function LeaseDetailsForm() {
     handleGetUsers();
     handleGetProperties();
   }, []);
-
-  const {
-    tenantId,
-    landlordId,
-    propertyId,
-    isRented,
-    setLandlordId,
-    setTenantId,
-    setPropertyId,
-    setIsRented,
-    leaseStartDate,
-    leaseEndDate,
-    leaseAgreementDueBy,
-    setLeaseStartDate,
-    setLeaseEndDate,
-    setLeaseAgreementDueBy,
-    leasePreparedBy,
-    setLeasePreparedBy,
-  } = useNewContractStore();
 
   return (
     <ScrollArea className="h-[calc(100vh-350px)] w-full pb-6">
@@ -168,6 +175,89 @@ export default function LeaseDetailsForm() {
               </SelectContent>
             </Select>
           </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center gap-2 text-content font-normal">
+              <TbUsersGroup className="text-primary/80" />
+              Cooperating Broker
+            </label>
+            <Select
+              value={cooperatingBroker}
+              onValueChange={setCooperatingBroker}
+            >
+              <SelectTrigger className="w-full !h-12">
+                <SelectValue placeholder="Select Broker" />
+              </SelectTrigger>
+              <SelectContent>
+                {listUsers
+                  .filter(
+                    (user) =>
+                      user.user_role === "broker" &&
+                      userLoggedIn?.user_id !== user.user_id
+                  )
+                  .map((user) => (
+                    <SelectItem
+                      key={user.user_id}
+                      value={String(user.user_id)}
+                      className="capitalize"
+                    >
+                      {user.user_first_name} {user.user_last_name}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {cooperatingBroker && (
+            <div className="flex flex-col gap-1">
+              <label className="flex items-center gap-2 text-content font-normal">
+                <IoInformationCircleOutline className="text-primary/80" />
+                Cooperating Broker Type *
+              </label>
+              <RadioGroup
+                value={cooperatingBrokerType}
+                onValueChange={setCooperatingBrokerType}
+                className="mt-2 space-y-1"
+              >
+                <div
+                  className="flex items-center gap-3 px-4 h-10 bg-gray-50 rounded-lg border border-gray-300"
+                  data-state={cooperatingBrokerType === "L" ? "checked" : ""}
+                >
+                  <RadioGroupItem value="L" id="L" className="peer" />
+                  <Label
+                    htmlFor="L"
+                    className="cursor-pointer peer-data-[state=checked]:font-semibold"
+                  >
+                    Landlord Broker
+                  </Label>
+                  {cooperatingBrokerType === "L" && (
+                    <span className="ml-auto text-green-600">
+                      {/* Check icon */}
+                      <FaCheck className="size-3" />
+                    </span>
+                  )}
+                </div>
+                <div
+                  className="flex items-center gap-3 px-4 h-10 bg-gray-50 rounded-lg border border-gray-300"
+                  data-state={cooperatingBrokerType === "T" ? "checked" : ""}
+                >
+                  <RadioGroupItem value="T" id="T" className="peer" />
+                  <Label
+                    htmlFor="T"
+                    className="cursor-pointer peer-data-[state=checked]:font-semibold"
+                  >
+                    Tenant Broker
+                  </Label>
+                  {cooperatingBrokerType === "T" && (
+                    <span className="ml-auto text-green-600">
+                      {/* Check icon */}
+                      <FaCheck className="size-3" />
+                    </span>
+                  )}
+                </div>
+              </RadioGroup>
+            </div>
+          )}
 
           <div className="flex items-center justify-between border rounded-xl p-4">
             <div className="flex flex-col">

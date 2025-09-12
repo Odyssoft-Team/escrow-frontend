@@ -168,7 +168,7 @@ export function PropertiesList({ properties }: PropertiesListProps) {
       </div>
 
       <Drawer open={openPropertyDetails} onOpenChange={setOpenPropertyDetails}>
-        <DrawerContent className="h-[90vh] !max-h-screen">
+        <DrawerContent className="h-[90dvh] !max-h-screen">
           <DrawerHeader className="pt-2 pb-4 flex justify-between flex-col border-b">
             <div className="w-full flex items-center justify-center relative">
               <DrawerClose asChild>
