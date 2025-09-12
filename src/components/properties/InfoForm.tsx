@@ -233,7 +233,7 @@ export default function InfoForm({ infoData, setInfoData }: Props) {
               onValueChange={(value) => handleChange("brokerId", value)}
             >
               <SelectTrigger className="w-full !h-12">
-                <SelectValue placeholder="Select Tenant" />
+                <SelectValue placeholder="Select Broker" />
               </SelectTrigger>
               <SelectContent>
                 {listUsers

@@ -9,13 +9,8 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Input } from "../ui/input";
 import { Search } from "lucide-react";
 import { IoLocationOutline } from "react-icons/io5";
-
-import dynamic from "next/dynamic";
 import { Location } from "./CreateProperty";
-
-const InteractiveMap = dynamic(() => import("./InteractiveMap"), {
-  ssr: false,
-});
+import PropertyMap from "./PropertyMap";
 
 interface Props {
   locationData: Location;
@@ -23,6 +18,7 @@ interface Props {
 }
 
 export default function LocationForm({ locationData, setLocationData }: Props) {
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
   const handleChange = (field: keyof Location, value: string | number) => {
     setLocationData({
       ...locationData,
@@ -39,7 +35,7 @@ export default function LocationForm({ locationData, setLocationData }: Props) {
             Property Address
           </h2>
 
-          <div className="flex flex-col gap-1">
+          <div className="flex-col gap-1 hidden">
             <div className="relative">
               <Input
                 placeholder="Search address..."
@@ -127,12 +123,7 @@ export default function LocationForm({ locationData, setLocationData }: Props) {
             Move the map to position the pin ar the exact location
           </p>
 
-          <InteractiveMap
-            latitude={locationData.latitude}
-            longitude={locationData.longitude}
-            setLatitude={(lat: number) => handleChange("latitude", lat)}
-            setLongitude={(lng: number) => handleChange("longitude", lng)}
-          />
+          <PropertyMap apiKey={apiKey} />
         </div>
       </div>
     </ScrollArea>

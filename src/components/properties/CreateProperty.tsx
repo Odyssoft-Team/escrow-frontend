@@ -19,6 +19,7 @@ import LocationForm from "./LocationForm";
 import api from "@/lib/axios";
 import { toast } from "sonner";
 import { usePropertiesStore } from "@/store/properties";
+import { useNewPropertyStore } from "@/store/new-property";
 
 export interface Location {
   address1: string;
@@ -40,6 +41,7 @@ export interface InfoFormData {
 }
 
 export default function CreateProperty() {
+  const { position } = useNewPropertyStore();
   const [tabValue, setTabValue] = useState("tab-1");
   const [openCreate, setOpenCreate] = useState<boolean>(false);
 
@@ -58,8 +60,8 @@ export default function CreateProperty() {
     city: "",
     state: "",
     zip: "",
-    latitude: 40.7128,
-    longitude: -74.006,
+    latitude: position.lat,
+    longitude: position.lng,
   });
 
   const [loadingCreate, setLoadingCreate] = useState<boolean>(false);
@@ -67,6 +69,24 @@ export default function CreateProperty() {
 
   const sendData = async () => {
     setLoadingCreate(true);
+
+    if (
+      infoData.propertyName === "" ||
+      infoData.monthlyRent === 0 ||
+      infoData.brokerId === "" ||
+      infoData.landlordId === "" ||
+      locationData.address1 === "" ||
+      locationData.city === "" ||
+      locationData.state === "" ||
+      locationData.zip === ""
+    ) {
+      toast.error("Please fill in all the required fields", {
+        position: "top-right",
+        duration: 3000,
+      });
+      setLoadingCreate(false);
+      return;
+    }
 
     const response = await api.post("/properties", {
       property_name: infoData.propertyName,
@@ -77,8 +97,8 @@ export default function CreateProperty() {
       property_city: locationData.city,
       property_state: locationData.state,
       property_postal_code: locationData.zip,
-      property_xcoord: String(locationData.latitude),
-      property_ycoord: String(locationData.longitude),
+      property_xcoord: String(position.lat),
+      property_ycoord: String(position.lng),
       broker_id: Number(infoData.brokerId),
       landlord_id: Number(infoData.landlordId),
       tenant_id: Number(infoData.tenantId),
@@ -92,6 +112,7 @@ export default function CreateProperty() {
       });
       setOpenCreate(false);
       setReloadData(!reloadData);
+      clearFields();
     } else {
       toast.error("Error creating property", {
         position: "top-right",
@@ -100,6 +121,26 @@ export default function CreateProperty() {
     }
 
     setLoadingCreate(false);
+  };
+
+  const clearFields = () => {
+    setInfoData({
+      propertyName: "",
+      propertyDescription: "",
+      monthlyRent: 0,
+      brokerId: "",
+      landlordId: "",
+      tenantId: "",
+    });
+    setLocationData({
+      address1: "",
+      address2: "",
+      city: "",
+      state: "",
+      zip: "",
+      latitude: 40.7128,
+      longitude: -74.006,
+    });
   };
 
   return (
@@ -121,23 +162,7 @@ export default function CreateProperty() {
                 variant={"outline"}
                 className="border-none bg-primary/10 text-primary rounded-full text-base !px-4"
                 onClick={() => {
-                  setInfoData({
-                    propertyName: "",
-                    propertyDescription: "",
-                    monthlyRent: 0,
-                    brokerId: "",
-                    landlordId: "",
-                    tenantId: "",
-                  });
-                  setLocationData({
-                    address1: "",
-                    address2: "",
-                    city: "",
-                    state: "",
-                    zip: "",
-                    latitude: 40.7128,
-                    longitude: -74.006,
-                  });
+                  clearFields();
                 }}
               >
                 <ChevronLeft className="size-5" /> Cancel

@@ -97,20 +97,61 @@ interface NewContractStore {
 
   isReadyToCreate: () => boolean;
   getMissingFields: () => string[];
+  resetContract: () => void;
 }
 
 const requiredFields = [
+  // Step 1
   { key: "landlordId", label: "Landlord" },
   { key: "tenantId", label: "Tenant" },
   { key: "propertyId", label: "Property" },
+  { key: "leaseStartDate", label: "Lease start date" },
+  { key: "leaseEndDate", label: "Lease end date" },
+  { key: "leasePreparedBy", label: "Lease prepared by" },
+
+  // Step 2
   { key: "firstMonthRent", label: "First month rent" },
   { key: "firstMonthDueOn", label: "First month due on" },
+  { key: "advanceRentMonth", label: "Advance rent month" },
+  { key: "advanceRent", label: "Advance rent" },
+  { key: "advanceRentDueOn", label: "Advance rent due on" },
+  { key: "lastMonthRent", label: "Last month rent" },
+  { key: "lastMonthDueOn", label: "Last month due on" },
+  { key: "securityDeposit", label: "Security deposit" },
+  { key: "securityDepositDueOn", label: "Security deposit due on" },
+  { key: "securityDepositAssociation", label: "Security deposit association" },
+  {
+    key: "securityDepositAssociationDueOn",
+    label: "Security deposit association due on",
+  },
+  { key: "rentsafeDeposit", label: "Rentsafe deposit" },
+  { key: "petDeposit", label: "Pet deposit" },
+  { key: "petDepositDueOn", label: "Pet deposit due on" },
+  { key: "petDepositRefundable", label: "Pet deposit refundable" },
+
+  // Step 3
   { key: "toFirstMonthRent", label: "To first month rent" },
   { key: "toLastMonthRent", label: "To last month rent" },
   { key: "toSecurityDeposit", label: "To security deposit" },
+  { key: "toOther", label: "To other" },
+  { key: "totalRent", label: "Total rent" },
+  { key: "tenantWillPay", label: "Tenant will pay" },
+  { key: "dayOfEachmonth", label: "Day of each month" },
+  { key: "monthlyRent", label: "Monthly rent" },
+  { key: "paymentDate", label: "Payment date" },
+  { key: "paymentTotalAmount", label: "Payment total amount" },
+  { key: "petsAllowed", label: "Pets allowed" },
+  { key: "smokingAllowed", label: "Smoking allowed" },
+
+  // Step 4
   { key: "utilitiesExeption", label: "Utilities exeption" },
   { key: "associationDeposit", label: "Association deposit" },
   { key: "associationFees", label: "Association fees" },
+  { key: "associationAppDue", label: "Association app due" },
+  { key: "tenantPaysAssociationFee", label: "Tenant pays association fee" },
+  { key: "serviceMemberTenant", label: "Service member tenant" },
+  { key: "maintenanceException", label: "Maintenance exception" },
+  { key: "additionalTerms", label: "Additional terms" },
 ];
 
 export const useNewContractStore = create<NewContractStore>((set, get) => ({
@@ -234,4 +275,58 @@ export const useNewContractStore = create<NewContractStore>((set, get) => ({
       })
       .map(({ label }) => label);
   },
+
+  resetContract: () =>
+    set({
+      // Step 1
+      landlordId: "",
+      tenantId: "",
+      propertyId: "",
+      isRented: false,
+      leaseStartDate: new Date(),
+      leaseEndDate: new Date(),
+      leaseAgreementDueBy: new Date(),
+      leasePreparedBy: "landlord",
+
+      // Step 2
+      firstMonthRent: 0,
+      firstMonthDueOn: new Date(),
+      advanceRentMonth: new Date(),
+      advanceRent: 0,
+      advanceRentDueOn: new Date(),
+      lastMonthRent: 0,
+      lastMonthDueOn: new Date(),
+      securityDeposit: 0,
+      securityDepositDueOn: new Date(),
+      securityDepositAssociation: 0,
+      securityDepositAssociationDueOn: new Date(),
+      rentsafeDeposit: 0,
+      petDeposit: 0,
+      petDepositDueOn: new Date(),
+      petDepositRefundable: false,
+
+      // Step 3
+      toFirstMonthRent: 0,
+      toLastMonthRent: 0,
+      toSecurityDeposit: 0,
+      toOther: 0,
+      totalRent: 0,
+      tenantWillPay: "full",
+      dayOfEachmonth: "",
+      monthlyRent: 0,
+      paymentDate: new Date(),
+      paymentTotalAmount: 0,
+      petsAllowed: false,
+      smokingAllowed: false,
+
+      // Step 4
+      utilitiesExeption: "",
+      associationDeposit: 0,
+      associationFees: 0,
+      associationAppDue: new Date(),
+      tenantPaysAssociationFee: false,
+      serviceMemberTenant: false,
+      maintenanceException: "",
+      additionalTerms: "",
+    }),
 }));

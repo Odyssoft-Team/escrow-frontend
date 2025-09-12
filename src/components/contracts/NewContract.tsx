@@ -86,6 +86,7 @@ export default function NewContract({ onLoading }: Props) {
     serviceMemberTenant,
     maintenanceException,
     additionalTerms,
+    resetContract,
   } = useNewContractStore();
   const { userLoggedIn } = useAuthStore();
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -177,6 +178,7 @@ export default function NewContract({ onLoading }: Props) {
       });
       setLoadingCreate(false);
       setOpenForm(false);
+      resetContract();
       onLoading();
     } else {
       toast.error("Error creating contract", {
@@ -205,6 +207,7 @@ export default function NewContract({ onLoading }: Props) {
               <Button
                 variant={"outline"}
                 className="border-none bg-primary/10 text-primary rounded-full text-base !px-4 absolute left-0"
+                onClick={resetContract}
               >
                 <ChevronLeft className="size-5" /> Cancel
               </Button>
