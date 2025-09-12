@@ -7,7 +7,7 @@ export default function SystemLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="h-screen w-screen bg-[#F7F8FA]">
+    <div className="h-screen w-screen bg-[#F7F8FA] pt-6">
       <Header />
       {children}
       <MenuMobile />
