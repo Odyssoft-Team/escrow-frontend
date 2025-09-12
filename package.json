@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@capacitor/app": "^7.1.0",
+    "@capacitor/preferences": "^7.0.2",
     "@capacitor/status-bar": "^7.0.2",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-dialog": "^1.1.15",

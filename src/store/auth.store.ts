@@ -1,6 +1,7 @@
 import { UserData } from "@/types/user";
+import { Preferences } from "@capacitor/preferences";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, StorageValue } from "zustand/middleware";
 
 type AuthState = {
   token: string | null;
@@ -10,6 +11,23 @@ type AuthState = {
   logout: () => void;
   setHasHydrated: (state: boolean) => void;
   setUserLoggedIn: (user: UserData | null) => void;
+};
+
+// Adaptador para usar Capacitor Preferences como storage
+const capacitorStorage = {
+  getItem: async (name: string): Promise<StorageValue<AuthState> | null> => {
+    const { value } = await Preferences.get({ key: name });
+    return value ? JSON.parse(value) : null;
+  },
+  setItem: async (
+    name: string,
+    value: StorageValue<AuthState>
+  ): Promise<void> => {
+    await Preferences.set({ key: name, value: JSON.stringify(value) });
+  },
+  removeItem: async (name: string): Promise<void> => {
+    await Preferences.remove({ key: name });
+  },
 };
 
 export const useAuthStore = create<AuthState>()(
@@ -26,6 +44,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "auth",
+      storage: capacitorStorage,
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },
