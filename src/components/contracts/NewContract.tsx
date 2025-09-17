@@ -234,7 +234,7 @@ export default function NewContract({ onLoading }: Props) {
             <DrawerClose asChild>
               <Button
                 variant={"outline"}
-                className="border-none bg-primary/10 text-primary rounded-full text-base !px-4 absolute left-0"
+                className="border-none bg-primary/10 text-primary rounded-full text-base !pl-2 !pr-4 absolute left-0"
                 onClick={resetContract}
               >
                 <ChevronLeft className="size-5" /> Cancel

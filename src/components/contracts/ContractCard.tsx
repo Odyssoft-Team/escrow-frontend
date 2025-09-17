@@ -68,7 +68,7 @@ export default function ContractCard({
         </div>
       </div>
 
-      <div className="w-full px-5 py-3 bg-primary/10 rounded-2xl flex items-start justify-start gap-8 xl:gap-15">
+      <div className="w-full px-4 py-3 bg-primary/10 rounded-2xl flex items-start justify-start gap-8 xl:gap-15">
         <div className="flex flex-col gap-1 items-start leading-[1]">
           <span className="flex gap-1 items-center text-sm text-content xl:text-lg">
             <PiUserCircleFill className="text-blue-500 size-4 xl:size-5" />{" "}
@@ -109,7 +109,7 @@ export default function ContractCard({
           <span className="flex gap-2 items-center text-xs text-content xl:text-lg">
             <LuCalendar className="text-primary" /> Start Date
           </span>
-          <b className="xl:text-lg">
+          <b className="text-[0.925rem] xl:text-lg">
             {formatToShortDate(contract.lease_start_date)}
           </b>
         </div>
@@ -117,7 +117,7 @@ export default function ContractCard({
           <span className="flex gap-2 items-center text-xs text-content xl:text-lg">
             <LuCalendarClock className="text-primary" /> End Date
           </span>
-          <b className="xl:text-lg">
+          <b className="text-[0.925rem] xl:text-lg">
             {formatToShortDate(contract.lease_end_date)}
           </b>
         </div>
@@ -125,7 +125,7 @@ export default function ContractCard({
           <span className="flex gap-2 items-center text-xs text-content xl:text-lg">
             <LuCalendarClock className="text-content" /> Due Day
           </span>
-          <b className="xl:text-lg">{contract.lease_day_of_month || "-"}</b>
+          <b className="text-[0.925rem] xl:text-lg">{contract.lease_day_of_month || "-"}</b>
         </div>
       </div>
 

@@ -36,11 +36,11 @@ export default function ContractsData() {
   return (
     <>
       <div className="flex flex-col gap-2">
-        <h1 className="font-bold text-primary text-3xl leading-[1] xl:text-4xl 2xl:text-5xl">
+        <h1 className="font-bold text-primary text-[1.75rem] leading-[1] xl:text-4xl 2xl:text-5xl">
           Contracts
         </h1>
         <span className="flex items-center gap-1 font-medium text-primary/70 text-sm xl:text-lg">
-          <FaFileAlt className="size-5 xl:size-6" />
+          <FaFileAlt className="size-4 xl:size-6" />
           {listContracts.length} Contracts
         </span>
       </div>

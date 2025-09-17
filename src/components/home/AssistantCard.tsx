@@ -6,13 +6,13 @@ import { AiFillThunderbolt } from "react-icons/ai";
 
 export default function AssistanCard() {
   return (
-    <div className="w-full rounded-xl border border-primary/50 flex items-center gap-2 p-4 py-6 shadow-sm shadow-primary lg:max-w-[60%] xl:max-w-full">
-      <div className="w-[40%] flex items-center justify-center sm:w-[35%]">
+    <div className="w-full rounded-3xl border border-primary/50 flex items-center gap-2 p-4 py-6 lg:max-w-[60%] xl:max-w-full">
+      <div className="w-[35%] flex items-center justify-center sm:w-[35%]">
         <span className="size-18 flex items-center justify-center rounded-full bg-primary shadow-md shadow-primary sm:size-24">
           <GiBrain className="size-12 text-white sm:size-16" />
         </span>
       </div>
-      <div className="flex flex-col gap-2  w-[60%] sm:w-[65%]">
+      <div className="flex flex-col gap-2  w-[65%] sm:w-[65%]">
         <div className="flex flex-col gap-1 mb-2">
           <h3 className="text-primary font-bold text-2xl leading-[1] sm:text-3xl">
             Escrow Genie
@@ -29,7 +29,7 @@ export default function AssistanCard() {
           <div className="flex items-center justify-between gap-2 md:justify-start md:gap-8">
             <div className="flex flex-col items-center justify-center gap-1 text-[#0F6DEB]">
               <span className="size-8 flex items-center justify-center rounded-md border border-[#0F6DEB]/50 bg-[#0F6DEB]/10 sm:size-12">
-                <LuBrain className="size-6" />
+                <LuBrain className="size-5" />
               </span>
               <span className="text-[10px] text-center font-medium leading-[1.2] sm:text-xs">
                 Smart <br /> AI
@@ -38,7 +38,7 @@ export default function AssistanCard() {
 
             <div className="flex flex-col items-center justify-center gap-1 text-[#34C955]">
               <span className="size-8 flex items-center justify-center rounded-md border border-[#34C955]/50 bg-[#34C955]/10 sm:size-12">
-                <GoClockFill className="size-6" />
+                <GoClockFill className="size-5" />
               </span>
               <span className="text-[10px] text-center font-medium leading-[1.2] sm:text-xs">
                 24/7 <br /> Online
@@ -47,7 +47,7 @@ export default function AssistanCard() {
 
             <div className="flex flex-col items-center justify-center gap-1 text-[#AF52E0]">
               <span className="size-8 flex items-center justify-center rounded-md border border-[#AF52E0]/50 bg-[#AF52E0]/10 sm:size-12">
-                <GiCheckedShield className="size-6" />
+                <GiCheckedShield className="size-5" />
               </span>
               <span className="text-[10px] text-center font-medium leading-[1.2] sm:text-xs">
                 Secure <br /> & Safe
@@ -56,7 +56,7 @@ export default function AssistanCard() {
 
             <div className="flex flex-col items-center justify-center gap-1 text-[#FA9301]">
               <span className="size-8 flex items-center justify-center rounded-md border border-[#FA9301]/50 bg-[#FA9301]/10 sm:size-12">
-                <AiFillThunderbolt className="size-6" />
+                <AiFillThunderbolt className="size-5" />
               </span>
               <span className="text-[10px] text-center font-medium leading-[1.2] sm:text-xs">
                 Fast <br /> Reply

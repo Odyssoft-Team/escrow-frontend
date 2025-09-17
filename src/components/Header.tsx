@@ -19,7 +19,7 @@ export default function Header() {
 
         <Link
           href={"/profile"}
-          className="h-auto p-0 hover:bg-transparent shadow-md shadow-primary rounded-full"
+          className="h-auto p-0 hover:bg-transparent rounded-full"
         >
           <Avatar className="bg-primary text-white size-9">
             <AvatarFallback className="size-full bg-primary text-white font-bold text-md uppercase">

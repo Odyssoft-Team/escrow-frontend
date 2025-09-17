@@ -160,7 +160,7 @@ export default function CreateProperty() {
             <DrawerClose asChild>
               <Button
                 variant={"outline"}
-                className="border-none bg-primary/10 text-primary rounded-full text-base !px-4"
+                className="border-none bg-primary/10 text-primary rounded-full text-base !pl-2 !pr-4"
                 onClick={() => {
                   clearFields();
                 }}
