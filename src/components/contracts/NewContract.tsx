@@ -136,7 +136,7 @@ export default function NewContract({ onLoading }: Props) {
       lease_due_to_complete: format(leaseAgreementDueBy, "yyyy-MM-dd"),
       lease_landlord_agree: leasePreparedBy === "landlord" ? "Y" : "N",
       lease_tenant_agree: leasePreparedBy === "tenant" ? "Y" : "N",
-      cooperating_broker_id: cooperatingBroker,
+      cooperating_broker_id: cooperatingBroker ? cooperatingBroker : 0,
       cooperating_broker_type: cooperatingBrokerType,
 
       lease_first_month_rent: firstMonthRent,
@@ -222,13 +222,13 @@ export default function NewContract({ onLoading }: Props) {
       <DrawerTrigger asChild>
         <Button
           variant="outline"
-          className="bg-primary text-white fixed right-4 bottom-[90px] rounded-full py-6 !px-6 w-auto shadow-[0px_0px_35px_5px_rgba(37,51,131,0.50)] border-none text-base"
+          className="bg-primary text-white fixed right-4 bottom-[120px] rounded-full py-6 !px-6 w-auto shadow-[0px_0px_35px_5px_rgba(37,51,131,0.50)] border-none text-base"
         >
           <FaPlus />
           New Contract
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="h-[90dvh] !max-h-screen">
+      <DrawerContent className="h-[95dvh] !max-h-screen">
         <DrawerHeader className="pt-2 pb-4 flex justify-between flex-col border-b">
           <div className="w-full flex items-center justify-center relative">
             <DrawerClose asChild>

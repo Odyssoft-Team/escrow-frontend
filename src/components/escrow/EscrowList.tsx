@@ -98,7 +98,7 @@ export default function EscrowList({ list_escrow }: Props) {
       </div>
 
       <Drawer open={openEscrowDetails} onOpenChange={setOpenEscrowDetails}>
-        <DrawerContent className="h-[90dvh] !max-h-screen">
+        <DrawerContent className="h-[95dvh] !max-h-screen">
           <DrawerHeader className="pt-2 pb-4 flex justify-between flex-col border-b">
             <div className="w-full flex items-center justify-center relative">
               <DrawerClose asChild>

@@ -120,22 +120,22 @@ const requiredFieldsByStep: Record<
     { key: "leaseEndDate", label: "Lease end date" },
   ],
   2: [
-    { key: "firstMonthRent", label: "First month rent" },
-    { key: "advanceRent", label: "Advance rent" },
-    { key: "lastMonthRent", label: "Last month rent" },
-    { key: "securityDeposit", label: "Security deposit" },
-    {
-      key: "securityDepositAssociation",
-      label: "Security deposit association",
-    },
+    // { key: "firstMonthRent", label: "First month rent" },
+    // { key: "advanceRent", label: "Advance rent" },
+    // { key: "lastMonthRent", label: "Last month rent" },
+    // { key: "securityDeposit", label: "Security deposit" },
+    // {
+    //   key: "securityDepositAssociation",
+    //   label: "Security deposit association",
+    // },
     { key: "rentsafeDeposit", label: "Initial escrow deposit" },
-    { key: "petDeposit", label: "Pet deposit" },
+    // { key: "petDeposit", label: "Pet deposit" },
   ],
   3: [
-    { key: "toFirstMonthRent", label: "To first month rent" },
-    { key: "toLastMonthRent", label: "To last month rent" },
-    { key: "toSecurityDeposit", label: "To security deposit" },
-    { key: "toOther", label: "To other" },
+    // { key: "toFirstMonthRent", label: "To first month rent" },
+    // { key: "toLastMonthRent", label: "To last month rent" },
+    // { key: "toSecurityDeposit", label: "To security deposit" },
+    // { key: "toOther", label: "To other" },
     { key: "totalRent", label: "Total rent" },
     { key: "tenantWillPay", label: "Tenant will pay" },
     { key: "petsAllowed", label: "Pets allowed" },
@@ -148,9 +148,9 @@ const requiredFieldsByStep: Record<
     { key: "petsCondition", label: "Pets condition" },
   ],
   4: [
-    { key: "utilitiesExeption", label: "Utilities exeption" },
-    { key: "associationDeposit", label: "Association deposit" },
-    { key: "associationAppDue", label: "Association app due" },
+    // { key: "utilitiesExeption", label: "Utilities exeption" },
+    // { key: "associationDeposit", label: "Association deposit" },
+    // { key: "associationAppDue", label: "Association app due" },
   ],
 };
 

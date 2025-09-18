@@ -53,6 +53,9 @@ export default function AmountsDueForm() {
     setPetDepositDueOn,
     petDepositRefundable,
     setPetDepositRefundable,
+    setToFirstMonthRent,
+    setToLastMonthRent,
+    setToSecurityDeposit,
   } = useNewContractStore();
 
   // Estados locales para manejar el valor temporal durante la edición
@@ -281,6 +284,9 @@ export default function AmountsDueForm() {
       const numValue = Number(value);
       setRentsafeDeposit(numValue);
       setTempRentsafeDeposit(numValue.toString());
+      setToFirstMonthRent(numValue / 3);
+      setToLastMonthRent(numValue / 3);
+      setToSecurityDeposit(numValue / 3);
     }
   };
 
@@ -291,6 +297,9 @@ export default function AmountsDueForm() {
     // Permitir solo números y punto decimal
     if (/^\d*\.?\d*$/.test(value)) {
       setTempRentsafeDeposit(value);
+      setToFirstMonthRent(Number(value) / 3);
+      setToLastMonthRent(Number(value) / 3);
+      setToSecurityDeposit(Number(value) / 3);
     }
   };
 
@@ -734,7 +743,7 @@ export default function AmountsDueForm() {
           <div className="flex flex-col gap-1">
             <label className="flex items-center gap-2 text-content font-normal">
               <FaHandPaper className="text-primary/80" />
-              Initial escrow deposit
+              Initial escrow deposit *
             </label>
             <div className="relative">
               <Input

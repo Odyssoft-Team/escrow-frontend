@@ -46,6 +46,7 @@ const LIST_DAYS = [
 
 export default function MonthlyTermsForm() {
   const {
+    rentsafeDeposit,
     toFirstMonthRent,
     toLastMonthRent,
     toSecurityDeposit,
@@ -76,13 +77,13 @@ export default function MonthlyTermsForm() {
 
   // Estados locales para manejar el valor temporal durante la edición
   const [tempToFirstMonthRent, setTempToFirstMonthRent] = useState(
-    toFirstMonthRent.toString()
+    (rentsafeDeposit / 3).toString()
   );
   const [tempToLastMonthRent, setTempToLastMonthRent] = useState(
-    toLastMonthRent.toString()
+    (rentsafeDeposit / 3).toString()
   );
   const [tempToSecurityDeposit, setTempToSecurityDeposit] = useState(
-    toSecurityDeposit.toString()
+    (rentsafeDeposit / 3).toString()
   );
   const [tempToOther, setTempToOther] = useState(toOther.toString());
   const [tempTotalRent, setTempTotalRent] = useState(totalRent.toString());
