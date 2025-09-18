@@ -10,7 +10,7 @@ export default function MenuMobile() {
   const path = usePathname();
 
   return (
-    <div className="bg-white border-t flex items-center justify-around fixed bottom-0 w-screen pt-2 pb-10 xl:hidden">
+    <div className="bg-white border-t flex items-center justify-around fixed bottom-0 w-screen pt-3 pb-3 xl:hidden">
       <Link
         href="/home"
         className={cn(
