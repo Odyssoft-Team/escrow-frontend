@@ -337,7 +337,7 @@ export default function AmountsDueForm() {
   };
 
   return (
-    <ScrollArea className="h-[calc(100vh-350px)] w-full pb-6">
+    <ScrollArea className="h-[calc(100vh-270px)] w-full pb-6">
       <div className="w-full flex flex-col gap-2 ">
         <div className="flex items-center justify-start gap-4">
           <FaMoneyBill className="text-primary size-6" />

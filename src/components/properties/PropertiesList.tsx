@@ -150,7 +150,7 @@ export function PropertiesList({ properties }: PropertiesListProps) {
       )}
 
       {/* Properties list */}
-      <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 2xl:grid-cols-3">
+      <div className="w-full grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-6 2xl:grid-cols-3">
         {filteredProperties.map((property: Property) => (
           <PropertyCard
             key={property.property_id}
@@ -174,7 +174,7 @@ export function PropertiesList({ properties }: PropertiesListProps) {
               <DrawerClose asChild>
                 <Button
                   variant={"outline"}
-                  className="border-none bg-primary/10 text-primary rounded-full text-base !px-4 absolute left-0"
+                  className="border-none bg-primary/10 text-primary rounded-full text-base !pl-2 !pr-4 absolute left-0"
                   onClick={() => {
                     setOpenPropertyDetails(false);
                     setPropertySelected(null);

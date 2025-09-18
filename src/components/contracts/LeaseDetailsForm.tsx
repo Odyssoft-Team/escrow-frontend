@@ -92,7 +92,7 @@ export default function LeaseDetailsForm() {
   }, []);
 
   return (
-    <ScrollArea className="h-[calc(100vh-350px)] w-full pb-6">
+    <ScrollArea className="h-[calc(100vh-270px)] w-full pb-6">
       <div className="w-full flex flex-col gap-2 ">
         <div className="flex items-center justify-start gap-4">
           <FaCircleExclamation className="text-primary size-6" />
@@ -102,14 +102,14 @@ export default function LeaseDetailsForm() {
           </div>
         </div>
 
-        <div className="w-full p-4 bg-white border rounded-xl flex flex-col gap-6">
+        <div className="w-full p-4 bg-white border rounded-xl flex flex-col gap-5">
           <div className="flex flex-col gap-1">
             <label className="flex items-center gap-2 text-content font-normal">
               <PiUserCircleFill className="text-primary/80" />
               Landlord *
             </label>
             <Select value={landlordId} onValueChange={setLandlordId}>
-              <SelectTrigger className="w-full !h-12">
+              <SelectTrigger className="w-full !h-10">
                 <SelectValue placeholder="Select Landlord" />
               </SelectTrigger>
               <SelectContent>
@@ -134,7 +134,7 @@ export default function LeaseDetailsForm() {
               Tenant *
             </label>
             <Select value={tenantId} onValueChange={setTenantId}>
-              <SelectTrigger className="w-full !h-12">
+              <SelectTrigger className="w-full !h-10">
                 <SelectValue placeholder="Select Tenant" />
               </SelectTrigger>
               <SelectContent>
@@ -159,7 +159,7 @@ export default function LeaseDetailsForm() {
               Property *
             </label>
             <Select value={propertyId} onValueChange={setPropertyId}>
-              <SelectTrigger className="w-full !h-12">
+              <SelectTrigger className="w-full !h-10">
                 <SelectValue placeholder="Select Property" />
               </SelectTrigger>
               <SelectContent>
@@ -185,7 +185,7 @@ export default function LeaseDetailsForm() {
               value={cooperatingBroker}
               onValueChange={setCooperatingBroker}
             >
-              <SelectTrigger className="w-full !h-12">
+              <SelectTrigger className="w-full !h-10">
                 <SelectValue placeholder="Select Broker" />
               </SelectTrigger>
               <SelectContent>
@@ -283,7 +283,7 @@ export default function LeaseDetailsForm() {
                 <Button
                   variant="outline"
                   data-empty={!leaseStartDate}
-                  className="data-[empty=true]:text-muted-foreground w-full h-12 justify-start text-left font-normal"
+                  className="data-[empty=true]:text-muted-foreground w-full h-10 justify-start text-left font-normal"
                 >
                   {leaseStartDate ? (
                     <span className="truncate">
@@ -319,7 +319,7 @@ export default function LeaseDetailsForm() {
                 <Button
                   variant="outline"
                   data-empty={!leaseEndDate}
-                  className="data-[empty=true]:text-muted-foreground w-full h-12 justify-start text-left font-normal"
+                  className="data-[empty=true]:text-muted-foreground w-full h-10 justify-start text-left font-normal"
                 >
                   {leaseEndDate ? (
                     <span className="truncate">
@@ -355,7 +355,7 @@ export default function LeaseDetailsForm() {
                 <Button
                   variant="outline"
                   data-empty={!leaseAgreementDueBy}
-                  className="data-[empty=true]:text-muted-foreground w-full h-12 justify-start text-left font-normal"
+                  className="data-[empty=true]:text-muted-foreground w-full h-10 justify-start text-left font-normal"
                 >
                   {leaseAgreementDueBy ? (
                     <span className="truncate">

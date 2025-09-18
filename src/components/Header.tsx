@@ -10,7 +10,7 @@ import Link from "next/link";
 export default function Header() {
   const { userLoggedIn } = useAuthStore();
   return (
-    <header className="w-full p-4 flex items-center justify-end gap-3 fixed top-2 xl:top-0 z-5 sm:p-6 xl:relative xl:bg-white xl:py-4 xl:justify-between xl:border-b">
+    <header className="w-full p-4 flex items-center justify-end gap-3 fixed top-0 xl:top-0 z-5 sm:p-6 xl:relative xl:bg-white xl:py-4 xl:justify-between xl:border-b">
       <MenuDesktop />
       <div className="flex items-center gap-3">
         <Button className="size-8 p-0 rounded-full bg-gray-200 text-black">

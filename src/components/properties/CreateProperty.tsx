@@ -154,7 +154,7 @@ export default function CreateProperty() {
           New Property
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="h-[95dvh] !max-h-screen">
+      <DrawerContent className="h-[100dvh] !max-h-screen">
         <DrawerHeader className="pt-2 pb-0 flex justify-between flex-col border-b">
           <div className="w-full flex items-center justify-between">
             <DrawerClose asChild>
@@ -173,7 +173,7 @@ export default function CreateProperty() {
             </DrawerTitle>
             <Button
               variant={"outline"}
-              className="border-none bg-primary text-white rounded-full text-base !px-4"
+              className="border-none bg-primary text-white rounded-full text-base !pl-3 !pr-4"
               onClick={sendData}
             >
               {loadingCreate ? (
