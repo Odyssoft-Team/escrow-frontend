@@ -3,10 +3,14 @@ import { LuBrain } from "react-icons/lu";
 import { GoClockFill } from "react-icons/go";
 import { GiCheckedShield } from "react-icons/gi";
 import { AiFillThunderbolt } from "react-icons/ai";
+import Link from "next/link";
 
 export default function AssistanCard() {
   return (
-    <div className="w-full rounded-3xl border border-primary/50 flex items-center gap-2 p-4 py-6 lg:max-w-[60%] xl:max-w-full">
+    <Link
+      href="/escrow-genie"
+      className="w-full rounded-3xl border border-primary/50 flex items-center gap-2 p-4 py-6 lg:max-w-[60%] xl:max-w-full"
+    >
       <div className="w-[35%] flex items-center justify-center sm:w-[35%]">
         <span className="size-18 flex items-center justify-center rounded-full bg-primary shadow-md shadow-primary sm:size-24">
           <GiBrain className="size-12 text-white sm:size-16" />
@@ -65,6 +69,6 @@ export default function AssistanCard() {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
