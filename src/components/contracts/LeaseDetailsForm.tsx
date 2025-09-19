@@ -2,13 +2,6 @@
 
 import { FaCircleExclamation } from "react-icons/fa6";
 import { PiUserCircleFill, PiUserCirclePlusFill } from "react-icons/pi";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { FaCheck, FaRegBuilding, FaSignature } from "react-icons/fa";
 import { RiArmchairFill } from "react-icons/ri";
 import { ScrollArea } from "../ui/scroll-area";
@@ -29,6 +22,17 @@ import { Label } from "../ui/label";
 import { useAuthStore } from "@/store/auth.store";
 import { TbUsersGroup } from "react-icons/tb";
 import { IoInformationCircleOutline } from "react-icons/io5";
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function LeaseDetailsForm() {
   const {
@@ -91,6 +95,12 @@ export default function LeaseDetailsForm() {
     handleGetProperties();
   }, []);
 
+  const [openLandlord, setOpenLandlord] = useState<boolean>(false);
+  const [openTenant, setOpenTenant] = useState<boolean>(false);
+  const [openProperty, setOpenProperty] = useState<boolean>(false);
+  const [openCooperatingBroker, setOpenCooperatingBroker] =
+    useState<boolean>(false);
+
   return (
     <ScrollArea className="h-[calc(100vh-270px)] w-full pb-6">
       <div className="w-full flex flex-col gap-2 ">
@@ -108,24 +118,79 @@ export default function LeaseDetailsForm() {
               <PiUserCircleFill className="text-primary/80" />
               Landlord *
             </label>
-            <Select value={landlordId} onValueChange={setLandlordId}>
-              <SelectTrigger className="w-full !h-10">
-                <SelectValue placeholder="Select Landlord" />
-              </SelectTrigger>
-              <SelectContent>
-                {listUsers
-                  .filter((user) => user.user_role === "landlord")
-                  .map((user) => (
-                    <SelectItem
-                      key={user.user_id}
-                      value={String(user.user_id)}
-                      className="capitalize"
-                    >
-                      {user.user_first_name} {user.user_last_name}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
+
+            <Popover open={openLandlord} onOpenChange={setOpenLandlord}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  className="w-full justify-between"
+                >
+                  {landlordId ? (
+                    <span className="font-normal">
+                      {listUsers
+                        .filter((user) => user.user_role === "landlord")
+                        .find(
+                          (framework) =>
+                            String(framework.user_id) === landlordId
+                        )?.user_first_name +
+                        " " +
+                        listUsers
+                          .filter((user) => user.user_role === "landlord")
+                          .find(
+                            (framework) =>
+                              String(framework.user_id) === landlordId
+                          )?.user_last_name}
+                    </span>
+                  ) : (
+                    <span className="text-muted-foreground font-normal">
+                      Select landlord...
+                    </span>
+                  )}
+                  <ChevronsUpDown className="opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[400px] p-0" align="start">
+                <Command>
+                  <CommandInput
+                    placeholder="Search landlord..."
+                    className="h-9"
+                  />
+                  <CommandList>
+                    <CommandEmpty>No results found.</CommandEmpty>
+                    <CommandGroup>
+                      {listUsers
+                        .filter((user) => user.user_role === "landlord")
+                        .map((framework) => (
+                          <CommandItem
+                            key={framework.user_id}
+                            value={String(
+                              framework.user_first_name +
+                                " " +
+                                framework.user_last_name
+                            )}
+                            onSelect={() => {
+                              setLandlordId(String(framework.user_id));
+                              setOpenLandlord(false);
+                            }}
+                          >
+                            {framework.user_first_name}{" "}
+                            {framework.user_last_name}
+                            <Check
+                              className={cn(
+                                "ml-auto",
+                                landlordId === String(framework.user_id)
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div className="flex flex-col gap-1">
@@ -133,24 +198,78 @@ export default function LeaseDetailsForm() {
               <PiUserCirclePlusFill className="text-primary/80" />
               Tenant *
             </label>
-            <Select value={tenantId} onValueChange={setTenantId}>
-              <SelectTrigger className="w-full !h-10">
-                <SelectValue placeholder="Select Tenant" />
-              </SelectTrigger>
-              <SelectContent>
-                {listUsers
-                  .filter((user) => user.user_role === "tenant")
-                  .map((user) => (
-                    <SelectItem
-                      key={user.user_id}
-                      value={String(user.user_id)}
-                      className="capitalize"
-                    >
-                      {user.user_first_name} {user.user_last_name}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
+
+            <Popover open={openTenant} onOpenChange={setOpenTenant} modal>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  className="w-full justify-between"
+                >
+                  {tenantId ? (
+                    <span className="font-normal">
+                      {listUsers
+                        .filter((user) => user.user_role === "tenant")
+                        .find(
+                          (framework) => String(framework.user_id) === tenantId
+                        )?.user_first_name +
+                        " " +
+                        listUsers
+                          .filter((user) => user.user_role === "tenant")
+                          .find(
+                            (framework) =>
+                              String(framework.user_id) === tenantId
+                          )?.user_last_name}
+                    </span>
+                  ) : (
+                    <span className="text-muted-foreground font-normal">
+                      Select tenant...
+                    </span>
+                  )}
+                  <ChevronsUpDown className="opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[400px] p-0" align="start">
+                <Command>
+                  <CommandInput
+                    placeholder="Search tenant..."
+                    className="h-9"
+                  />
+                  <CommandList>
+                    <CommandEmpty>No results found.</CommandEmpty>
+                    <CommandGroup>
+                      {listUsers
+                        .filter((user) => user.user_role === "tenant")
+                        .map((framework) => (
+                          <CommandItem
+                            key={framework.user_id}
+                            value={String(
+                              framework.user_first_name +
+                                " " +
+                                framework.user_last_name
+                            )}
+                            onSelect={() => {
+                              setTenantId(String(framework.user_id));
+                              setOpenTenant(false);
+                            }}
+                          >
+                            {framework.user_first_name}{" "}
+                            {framework.user_last_name}
+                            <Check
+                              className={cn(
+                                "ml-auto",
+                                tenantId === String(framework.user_id)
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div className="flex flex-col gap-1">
@@ -158,22 +277,65 @@ export default function LeaseDetailsForm() {
               <FaRegBuilding className="text-primary/80" />
               Property *
             </label>
-            <Select value={propertyId} onValueChange={setPropertyId}>
-              <SelectTrigger className="w-full !h-10">
-                <SelectValue placeholder="Select Property" />
-              </SelectTrigger>
-              <SelectContent>
-                {listProperties.map((property) => (
-                  <SelectItem
-                    key={property.property_id}
-                    value={String(property.property_id)}
-                    className="capitalize"
-                  >
-                    {property.property_name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+
+            <Popover open={openProperty} onOpenChange={setOpenProperty} modal>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  className="w-full justify-between"
+                >
+                  {propertyId ? (
+                    <span className="font-normal">
+                      {
+                        listProperties.find(
+                          (framework) =>
+                            String(framework.property_id) === propertyId
+                        )?.property_name
+                      }
+                    </span>
+                  ) : (
+                    <span className="text-muted-foreground font-normal">
+                      Select property...
+                    </span>
+                  )}
+                  <ChevronsUpDown className="opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[400px] p-0" align="start">
+                <Command>
+                  <CommandInput
+                    placeholder="Search property..."
+                    className="h-9"
+                  />
+                  <CommandList>
+                    <CommandEmpty>No results found.</CommandEmpty>
+                    <CommandGroup>
+                      {listProperties.map((framework) => (
+                        <CommandItem
+                          key={framework.property_id}
+                          value={String(framework.property_name)}
+                          onSelect={() => {
+                            setPropertyId(String(framework.property_id));
+                            setOpenTenant(false);
+                          }}
+                        >
+                          {framework.property_name}
+                          <Check
+                            className={cn(
+                              "ml-auto",
+                              tenantId === String(framework.property_id)
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div className="flex flex-col gap-1">
@@ -181,31 +343,95 @@ export default function LeaseDetailsForm() {
               <TbUsersGroup className="text-primary/80" />
               Cooperating Broker
             </label>
-            <Select
-              value={cooperatingBroker}
-              onValueChange={setCooperatingBroker}
+
+            <Popover
+              open={openCooperatingBroker}
+              onOpenChange={setOpenCooperatingBroker}
+              modal
             >
-              <SelectTrigger className="w-full !h-10">
-                <SelectValue placeholder="Select Broker" />
-              </SelectTrigger>
-              <SelectContent>
-                {listUsers
-                  .filter(
-                    (user) =>
-                      user.user_role === "broker" &&
-                      userLoggedIn?.user_id !== user.user_id
-                  )
-                  .map((user) => (
-                    <SelectItem
-                      key={user.user_id}
-                      value={String(user.user_id)}
-                      className="capitalize"
-                    >
-                      {user.user_first_name} {user.user_last_name}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  className="w-full justify-between"
+                >
+                  {cooperatingBroker ? (
+                    <span className="font-normal">
+                      {listUsers
+                        .filter(
+                          (user) =>
+                            user.user_role === "broker" &&
+                            userLoggedIn?.user_id !== user.user_id
+                        )
+                        .find(
+                          (framework) =>
+                            String(framework.user_id) === cooperatingBroker
+                        )?.user_first_name +
+                        " " +
+                        listUsers
+                          .filter(
+                            (user) =>
+                              user.user_role === "broker" &&
+                              userLoggedIn?.user_id !== user.user_id
+                          )
+                          .find(
+                            (framework) =>
+                              String(framework.user_id) === cooperatingBroker
+                          )?.user_last_name}
+                    </span>
+                  ) : (
+                    <span className="text-muted-foreground font-normal">
+                      Select cooperating broker...
+                    </span>
+                  )}
+                  <ChevronsUpDown className="opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[400px] p-0" align="start">
+                <Command>
+                  <CommandInput
+                    placeholder="Search cooperating broker..."
+                    className="h-9"
+                  />
+                  <CommandList>
+                    <CommandEmpty>No results found.</CommandEmpty>
+                    <CommandGroup>
+                      {listUsers
+                        .filter(
+                          (user) =>
+                            user.user_role === "broker" &&
+                            userLoggedIn?.user_id !== user.user_id
+                        )
+                        .map((framework) => (
+                          <CommandItem
+                            key={framework.user_id}
+                            value={String(
+                              framework.user_first_name +
+                                " " +
+                                framework.user_last_name
+                            )}
+                            onSelect={() => {
+                              setCooperatingBroker(String(framework.user_id));
+                              setOpenCooperatingBroker(false);
+                            }}
+                          >
+                            {framework.user_first_name}{" "}
+                            {framework.user_last_name}
+                            <Check
+                              className={cn(
+                                "ml-auto",
+                                cooperatingBroker === String(framework.user_id)
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
 
           {cooperatingBroker && (
