@@ -16,9 +16,9 @@ import { useState } from "react";
 
 import { FaPlus } from "react-icons/fa";
 
-import { Document, Page, pdfjs } from "react-pdf";
+//import { Document, Page, pdfjs } from "react-pdf";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+//pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const steps = [1, 2, 3, 4];
 
@@ -111,7 +111,7 @@ export default function NewContract({ onLoading }: Props) {
   const [loadingEdit, setLoadingEdit] = useState<boolean>(false);
   const [loadingAprove, setLoadingApprove] = useState<boolean>(false);
 
-  const [pdfData, setPdfData] = useState<Uint8Array | null>(null);
+  //const [pdfData, setPdfData] = useState<Uint8Array | null>(null);
 
   const handleNextStep = () => {
     if (!isStepReady(currentStep)) {
@@ -226,7 +226,9 @@ export default function NewContract({ onLoading }: Props) {
 
       const preview = await getContractPreview(response.data.lease_id);
 
-      const buffer2 = await preview.data.arrayBuffer();
+      const blob = new Blob([preview.data?.data], { type: "application/pdf" });
+
+      /* const buffer2 = await preview.data.arrayBuffer();
       setPdfData(new Uint8Array(buffer2));
 
       console.log(preview.data instanceof ArrayBuffer); // debería dar true
@@ -236,7 +238,7 @@ export default function NewContract({ onLoading }: Props) {
       const header = String.fromCharCode(...uint8.slice(0, 5));
       console.log("PDF header:", header); // debería mostrar "%PDF-"
 
-      const blob = new Blob([preview.data], { type: "application/pdf" });
+      const blob = new Blob([preview.data], { type: "application/pdf" }); */
       const url = URL.createObjectURL(blob);
 
       setContractPdf(url);
@@ -350,10 +352,11 @@ export default function NewContract({ onLoading }: Props) {
       });
 
       setOpenPreview(true);
+      const preview = await getContractPreview(Number(leaseId));
+      //const preview = await getContractPreview(response.data.lease_id);
 
-      const preview = await getContractPreview(response.data.lease_id);
-
-      const blob = new Blob([preview.data], { type: "application/pdf" });
+      const blob = new Blob([preview.data?.data], { type: "application/pdf" });
+      //const blob = new Blob([preview.data], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
 
       setContractPdf(url);
@@ -374,7 +377,8 @@ export default function NewContract({ onLoading }: Props) {
 
   const handleAproveContract = async () => {
     setLoadingApprove(true);
-    const response = await api.patch(`/lease_contracts/${leaseId}`, {
+    const response = await api.post(`/lease_contracts/${leaseId}`, {
+    //const response = await api.patch(`/lease_contracts/${leaseId}`, {
       lease_status: "Ready",
     });
 
@@ -555,6 +559,7 @@ export default function NewContract({ onLoading }: Props) {
           ) : (
             <div className="bg-[#F7F8FA] w-full h-[600px] p-4">
               {contractPdf && (
+                <iframe src={contractPdf} width="100%" height="100%" />
                 // <iframe
                 //   src={contractPdf}
                 //   width="100%"
@@ -567,25 +572,25 @@ export default function NewContract({ onLoading }: Props) {
                 //   width="100%"
                 //   height="100%"
                 // />
-                <object
-                  data={contractPdf}
-                  type="application/pdf"
-                  width="100%"
-                  height="100%"
-                >
-                  <p>Tu navegador no soporta previsualización de PDF.</p>
-                </object>
+                //<object
+                //  data={contractPdf}
+                //  type="application/pdf"
+                //  width="100%"
+                //  height="100%"
+                //>
+                //</div>  <p>Tu navegador no soporta previsualización de PDF.</p>
+                //</object>
               )}
             </div>
           )}
 
-          {pdfData ? (
+          {/* {pdfData ? (
             <Document file={{ data: pdfData }}>
               <Page pageNumber={1} width={800} />
             </Document>
           ) : (
             <p>Cargando PDF...</p>
-          )}
+          )} */}
 
           <DrawerFooter className="border-t fixed bottom-0 right-0 left-0 w-screen bg-white flex-row justify-between">
             <div className="w-full flex items-center justify-between gap-4">

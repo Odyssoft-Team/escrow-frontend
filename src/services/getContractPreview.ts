@@ -1,16 +1,24 @@
 import api from "@/lib/axios";
+import type { ServiceResponse } from "@/types/service-response";
 
-export const getContractPreview = async (id: number) => {
+export const getContractPreview = async (
+  id: number
+): Promise<ServiceResponse> => {
+//export const getContractPreview = async (id: number) => {
   try {
     const response = await api.get(`/preview-pdf/${id}`, {
       responseType: "arraybuffer",
+      headers: {
+        "Content-Type": "application/pdf",
+      },
     });
 
     console.log("respuesta del preview", response);
 
     return {
       success: true,
-      data: response.data,
+      data: response,
+      //data: response.data,
     };
   } catch (error: any) {
     console.log(error);
