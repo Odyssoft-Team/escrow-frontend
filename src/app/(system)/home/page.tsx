@@ -19,7 +19,7 @@ import RentCollection from "@/components/home/RenRentCollection";
 export default function HomePage() {
   const { userLoggedIn } = useAuthStore();
   return (
-    <div className="bg-[#F7F8FA] px-4 flex flex-col gap-8 pt-[30px] pb-[90px] sm:px-12 xl:pb-[40px] 2xl:px-40">
+    <div className="bg-[#F7F8FA] px-4 flex flex-col gap-8 pt-7 pb-[90px] sm:px-12 xl:pb-[40px] 2xl:px-40">
       <div className="w-full flex flex-col gap-4 xl:flex-row xl:items-center xl:gap-10 xl:justify-between">
         <div className="flex flex-col gap-4">
           <span className="text-content font-medium text-base xl:text-lg">
