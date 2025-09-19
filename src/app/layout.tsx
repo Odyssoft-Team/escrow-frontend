@@ -15,7 +15,6 @@ const font_family = Fira_Sans({
 export const metadata: Metadata = {
   title: "RentSafe - Escrow Mangement system",
   description: "RentSafe - Escrow Mangement system",
-  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -30,7 +29,6 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#000000" />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
-        <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${font_family.variable} antialiased overflow-x-hidden`}>
         {/* <CapacitorStatusBar /> */}

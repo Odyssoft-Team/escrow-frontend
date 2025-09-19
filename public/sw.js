@@ -1,7 +1,6 @@
 const CACHE_NAME = "Escrow";
 const PRECACHE_URLS = [
   "/home", // página principal
-  "/manifest.json",
   "/icons/icon-192.png",
   "/icons/icon-512.png",
   // Agrega aquí otros recursos que quieras precachear

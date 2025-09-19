@@ -382,10 +382,9 @@ export default function NewContract({ onLoading }: Props) {
 
   const handleAproveContract = async () => {
     setLoadingApprove(true);
-    const response = await api.post(`/lease_contracts/${leaseId}`, {
-      //const response = await api.patch(`/lease_contracts/${leaseId}`, {
-      lease_status: "Ready",
-    });
+    const response = await api.patch(
+      `/lease_contracts/${leaseId}?lease_status=Ready`
+    );
 
     if (response.status === 200) {
       toast.success("Contract approved successfully", {
