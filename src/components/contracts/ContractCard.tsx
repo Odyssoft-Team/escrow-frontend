@@ -40,10 +40,10 @@ export default function ContractCard({
   }, []);
   return (
     <div
-      className="w-full border rounded-3xl bg-white p-5 flex flex-col gap-4 relative shadow-[24px_20px_135px_-31px_rgba(37,51,131,0.30)]"
+      className="w-full border rounded-3xl bg-white px-2 !py-4 flex flex-col gap-3 relative shadow-[24px_20px_135px_-31px_rgba(37,51,131,0.30)]"
       onClick={() => handleContractSelected(contract)}
     >
-      <div className="w-full flex items-start justify-between">
+      <div className="w-full flex items-start justify-between px-2">
         <div className="flex flex-col items-start gap-2">
           <h2 className="text-primary font-bold text-xl xl:text-2xl">
             Contract #{contract.lease_id}
@@ -68,7 +68,7 @@ export default function ContractCard({
         </div>
       </div>
 
-      <div className="w-full px-4 py-3 bg-primary/10 rounded-2xl flex items-start justify-start gap-8 xl:gap-15">
+      <div className="w-full px-3 py-3 bg-primary/10 rounded-2xl flex items-start justify-start gap-10 xl:gap-15">
         <div className="flex flex-col gap-1 items-start leading-[1]">
           <span className="flex gap-1 items-center text-sm text-content xl:text-lg">
             <PiUserCircleFill className="text-blue-500 size-4 xl:size-5" />{" "}
@@ -104,7 +104,7 @@ export default function ContractCard({
         </div>
       </div>
 
-      <div className="w-full flex items-start justify-between">
+      <div className="w-full flex items-start justify-between px-2">
         <div className="flex flex-col items-start">
           <span className="flex gap-2 items-center text-xs text-content xl:text-lg">
             <LuCalendar className="text-primary" /> Start Date
@@ -129,7 +129,7 @@ export default function ContractCard({
         </div>
       </div>
 
-      <div className="w-full flex items-center justify-end">
+      <div className="w-full items-center justify-end hidden">
         <span className="text-primary/60">
           <ChevronRight />
         </span>
