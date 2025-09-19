@@ -567,7 +567,7 @@ export default function NewContract({ onLoading }: Props) {
                   src={contractPdf}
                   width="100%"
                   height="100%"
-                  typeof="application/pdf"
+                  // typeof="application/pdf"
                 />
               )}
             </div>
