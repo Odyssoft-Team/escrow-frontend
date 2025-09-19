@@ -22,8 +22,6 @@ export default function ContractsData() {
       }
     );
 
-    console.log("response contracts:", response.data);
-
     setListContracts(response.data);
   };
 

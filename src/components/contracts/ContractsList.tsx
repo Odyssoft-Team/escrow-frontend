@@ -127,7 +127,7 @@ export function ContractsList({ contracts }: ContractsListProps) {
                 </Button>
               </DrawerClose>
               <DrawerTitle className="text-primary font-bold text-xl">
-                Property Details
+                Contract Details
               </DrawerTitle>
             </div>
           </DrawerHeader>
