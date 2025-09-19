@@ -2,7 +2,7 @@ import api from "@/lib/axios";
 
 export const getContractPreview = async (id: number) => {
   try {
-    const response = await api.get(`/preview/${id}`, {
+    const response = await api.get(`/preview-pdf/${id}`, {
       responseType: "arraybuffer",
     });
 

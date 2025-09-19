@@ -409,7 +409,7 @@ export default function NewContract({ onLoading }: Props) {
         <DrawerTrigger asChild>
           <Button
             variant="outline"
-            className="bg-primary text-white fixed right-4 bottom-[120px] rounded-full py-6 !px-6 w-auto shadow-[0px_0px_35px_5px_rgba(37,51,131,0.50)] border-none text-base"
+            className="bg-primary text-white fixed right-4 bottom-[90px] rounded-full py-6 !px-6 w-auto shadow-[0px_0px_35px_5px_rgba(37,51,131,0.50)] border-none text-base"
           >
             <FaPlus />
             New Contract
