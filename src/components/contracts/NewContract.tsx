@@ -242,7 +242,7 @@ export default function NewContract({ onLoading }: Props) {
       // const url = URL.createObjectURL(blob);
 
       setContractPdf(
-        `https://escrow-android.dev-qa.site/preview-pdf/${leaseId}`
+        `https://escrow-android.dev-qa.site/preview-pdf/${response.data.lease_id}`
       );
       // setOpenForm(false);
       // resetContract();
