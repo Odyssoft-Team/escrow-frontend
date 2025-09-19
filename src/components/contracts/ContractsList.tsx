@@ -131,12 +131,12 @@ export function ContractsList({ contracts }: ContractsListProps) {
               </DrawerTitle>
             </div>
           </DrawerHeader>
-          <div className="bg-[#F7F8FA] w-full h-full p-4 flex flex-col items-center gap-4 overflow-y-auto">
+          <div className="bg-[#F7F8FA] w-full h-full p-4 flex flex-col items-center gap-3 overflow-y-auto">
             <h2 className="font-bold text-primary text-2xl">
               Contract #{contractSelected?.lease_id}
             </h2>
 
-            <div className="w-full p-4 flex flex-col items-start gap-4 bg-white border rounded-xl">
+            <div className="w-full p-4 flex flex-col items-start gap-3 bg-white border rounded-xl">
               <h3
                 className={cn(
                   "flex items-center gap-2 text-lg font-medium",
@@ -215,7 +215,7 @@ export function ContractsList({ contracts }: ContractsListProps) {
               </div>
             </div>
 
-            <div className="w-full p-4 flex flex-col items-start gap-4 bg-white border rounded-xl">
+            <div className="w-full p-4 flex flex-col items-start gap-3 bg-white border rounded-xl">
               <h3
                 className={cn(
                   "flex items-center gap-2 text-lg font-medium text-primary"
@@ -306,7 +306,7 @@ export function ContractsList({ contracts }: ContractsListProps) {
               </div>
             </div>
 
-            <div className="w-full p-4 flex flex-col items-start gap-4 bg-white border rounded-xl">
+            <div className="w-full p-4 flex flex-col items-start gap-3 bg-white border rounded-xl">
               <h3
                 className={cn(
                   "flex items-center gap-2 text-lg font-medium text-green-600"
@@ -465,7 +465,7 @@ export function ContractsList({ contracts }: ContractsListProps) {
               </div>
             </div>
 
-            <div className="w-full p-4 flex flex-col items-start gap-4 bg-white border rounded-xl">
+            <div className="w-full p-4 flex flex-col items-start gap-3 bg-white border rounded-xl">
               <h3
                 className={cn(
                   "flex items-center gap-2 text-lg font-medium text-blue-600"
@@ -494,7 +494,7 @@ export function ContractsList({ contracts }: ContractsListProps) {
               </div>
             </div>
 
-            <div className="w-full p-4 flex flex-col items-start gap-4 bg-white border rounded-xl">
+            <div className="w-full p-4 flex flex-col items-start gap-3 bg-white border rounded-xl">
               <h3
                 className={cn(
                   "flex items-center gap-2 text-lg font-medium text-amber-800"
