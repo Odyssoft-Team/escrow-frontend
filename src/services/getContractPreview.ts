@@ -3,7 +3,9 @@ import api from "@/lib/axios";
 export const getContractPreview = async (id: number) => {
   try {
     const response = await api.get(`/preview-pdf/${id}`, {
-      responseType: "arraybuffer",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     console.log("respuesta del preview", response);
