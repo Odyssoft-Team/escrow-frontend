@@ -16,6 +16,10 @@ import { useState } from "react";
 
 import { FaPlus } from "react-icons/fa";
 
+//import { Document, Page, pdfjs } from "react-pdf";
+
+//pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
 const steps = [1, 2, 3, 4];
 
 import {
@@ -106,6 +110,8 @@ export default function NewContract({ onLoading }: Props) {
   const [editedActive, setEditedActive] = useState<boolean>(false);
   const [loadingEdit, setLoadingEdit] = useState<boolean>(false);
   const [loadingAprove, setLoadingApprove] = useState<boolean>(false);
+
+  //const [pdfData, setPdfData] = useState<Uint8Array | null>(null);
 
   const handleNextStep = () => {
     if (!isStepReady(currentStep)) {
@@ -220,8 +226,10 @@ export default function NewContract({ onLoading }: Props) {
 
       // const preview = await getContractPreview(response.data.lease_id);
 
-      // const buffer2 = await preview.data.arrayBuffer();
-      // setPdfData(new Uint8Array(buffer2));
+      // const blob = new Blob([preview.data?.data], { type: "application/pdf" });
+
+      /* const buffer2 = await preview.data.arrayBuffer();
+      setPdfData(new Uint8Array(buffer2));
 
       // console.log(preview.data instanceof ArrayBuffer); // debería dar true
       // console.log(preview.data.byteLength); // debería ser > 0
@@ -230,7 +238,7 @@ export default function NewContract({ onLoading }: Props) {
       // const header = String.fromCharCode(...uint8.slice(0, 5));
       // console.log("PDF header:", header); // debería mostrar "%PDF-"
 
-      // const blob = new Blob([preview.data], { type: "application/pdf" });
+      const blob = new Blob([preview.data], { type: "application/pdf" }); */
       // const url = URL.createObjectURL(blob);
 
       setContractPdf(
@@ -346,6 +354,8 @@ export default function NewContract({ onLoading }: Props) {
       });
 
       setOpenPreview(true);
+      // const preview = await getContractPreview(Number(leaseId));
+      //const preview = await getContractPreview(response.data.lease_id);
 
       // const preview = await getContractPreview(response.data.lease_id);
 
@@ -372,7 +382,8 @@ export default function NewContract({ onLoading }: Props) {
 
   const handleAproveContract = async () => {
     setLoadingApprove(true);
-    const response = await api.patch(`/lease_contracts/${leaseId}`, {
+    const response = await api.post(`/lease_contracts/${leaseId}`, {
+      //const response = await api.patch(`/lease_contracts/${leaseId}`, {
       lease_status: "Ready",
     });
 
