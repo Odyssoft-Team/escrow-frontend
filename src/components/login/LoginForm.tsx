@@ -86,6 +86,8 @@ export function LoginForm() {
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
+  const [userIsConfirmed, setUserIsConfirmed] = useState<boolean>(true);
+
   // Manejar envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,6 +101,29 @@ export function LoginForm() {
           password,
         };
 
+        const user_selected = listUsers.find(
+          (user) => user.username.toLowerCase() === username.toLowerCase()
+        );
+
+        if (!user_selected) {
+          toast.error("User not found", {
+            position: "top-right",
+            duration: 3000,
+          });
+          return;
+        }
+
+        if (user_selected.user_confirmed !== "YES") {
+          setUserIsConfirmed(false);
+          toast.error("User not confirmed", {
+            position: "top-right",
+            duration: 3000,
+          });
+          return;
+        }
+
+        setUserIsConfirmed(true);
+
         const response = await fetch("/api/login", {
           method: "POST",
           headers: {
@@ -111,23 +136,12 @@ export function LoginForm() {
 
         if (data.status) {
           setToken("token");
-          const user_selected = listUsers.find(
-            (user) => user.username.toLowerCase() === username.toLowerCase()
-          );
-
-          if (user_selected) {
-            setUserLoggedIn(user_selected);
-            toast.success("Login successful", {
-              position: "top-right",
-              duration: 3000,
-            });
-            router.push("/home");
-          } else {
-            toast.error("User not found", {
-              position: "top-right",
-              duration: 3000,
-            });
-          }
+          setUserLoggedIn(user_selected);
+          toast.success("Login successful", {
+            position: "top-right",
+            duration: 3000,
+          });
+          router.push("/home");
         } else {
           toast.error("Login failed. Please try again.", {
             position: "top-right",
@@ -229,6 +243,22 @@ export function LoginForm() {
           Sign Up
         </Link>
       </div>
+      {!userIsConfirmed && (
+        <div className="text-center text-sm text-orange-600 flex flex-col">
+          To continue, please confirm your account.
+          <Link
+            className="underline"
+            target="_blank"
+            href="https://therentsafe.com/reset_password.html"
+            onClick={() => {
+              setUserIsConfirmed(true);
+              handleGetUsers();
+            }}
+          >
+            Click here to go to the confirmation page.
+          </Link>
+        </div>
+      )}
     </form>
   );
 }

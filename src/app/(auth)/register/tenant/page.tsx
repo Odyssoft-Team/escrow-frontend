@@ -218,6 +218,7 @@ export default function TenantRegisterPage() {
           user_company: companyName,
           user_device_id: "",
           user_license: "",
+          user_confirmed: "NO",
         };
         const response = await api.post("/users", userData, {
           headers: {
@@ -247,6 +248,11 @@ export default function TenantRegisterPage() {
         setCompanyName("");
 
         // Redirigir a la pantalla de inicio de sesión
+        window.open(
+          "https://therentsafe.com/reset_password.html",
+          "_blank",
+          "noopener,noreferrer"
+        );
         router.push("/login");
       } catch (error) {
         console.log(error);
