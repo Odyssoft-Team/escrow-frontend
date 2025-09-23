@@ -212,7 +212,7 @@ export function LoginForm() {
               Password
             </Label>
             <Link
-              href="#"
+              href="https://therentsafe.com/reset_password.html"
               className="ml-auto text-xs text-primary font-medium underline-offset-4 hover:underline"
             >
               Forgot your password?
