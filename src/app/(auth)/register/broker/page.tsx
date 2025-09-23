@@ -222,7 +222,7 @@ export default function BrokerRegisterPage() {
           user_company: companyName,
           user_license: license,
           user_device_id: "",
-          user_confirmed: "NO",
+          user_confirmed: "N",
         };
         const response = await api.post("/users", userData, {
           headers: {

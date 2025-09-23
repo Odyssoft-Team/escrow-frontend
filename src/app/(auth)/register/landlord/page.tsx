@@ -219,7 +219,7 @@ export default function LandlordRegisterPage() {
           user_company: companyName,
           user_device_id: "",
           user_license: "",
-          user_confirmed: "NO",
+          user_confirmed: "N",
         };
         const response = await api.post("/users", userData, {
           headers: {

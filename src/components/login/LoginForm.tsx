@@ -113,7 +113,7 @@ export function LoginForm() {
           return;
         }
 
-        if (user_selected.user_confirmed !== "YES") {
+        if (user_selected.user_confirmed !== "Y") {
           setUserIsConfirmed(false);
           toast.error("User not confirmed", {
             position: "top-right",
