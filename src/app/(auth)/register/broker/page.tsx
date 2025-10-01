@@ -222,7 +222,7 @@ export default function BrokerRegisterPage() {
           user_company: companyName,
           user_license: license,
           user_device_id: "",
-          user_confirmed: "N",
+          //user_confirmed: "N",
         };
         const response = await api.post("/users", userData, {
           headers: {
@@ -253,11 +253,11 @@ export default function BrokerRegisterPage() {
         setLicense("");
 
         // Redirigir a la pantalla de inicio de sesión
-        window.open(
+        /* window.open(
           "https://therentsafe.com/reset_password.html",
           "_blank",
           "noopener,noreferrer"
-        );
+        ); */
         router.push("/login");
       } catch (error) {
         console.log(error);

@@ -19,5 +19,5 @@ export interface UserData {
   user_role: string; // Rol del usuario [web:1]
   user_state: string; // Estado o provincia [web:1]
   username: string; // Nombre de usuario [web:1]
-  user_confirmed: string | null;
+  //user_confirmed: string | null;
 }

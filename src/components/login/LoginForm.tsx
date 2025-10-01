@@ -86,7 +86,7 @@ export function LoginForm() {
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
-  const [userIsConfirmed, setUserIsConfirmed] = useState<boolean>(true);
+  //const [userIsConfirmed, setUserIsConfirmed] = useState<boolean>(true);
 
   // Manejar envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
@@ -101,7 +101,7 @@ export function LoginForm() {
           password,
         };
 
-        const user_selected = listUsers.find(
+        /* const user_selected = listUsers.find(
           (user) => user.username.toLowerCase() === username.toLowerCase()
         );
 
@@ -123,7 +123,7 @@ export function LoginForm() {
         }
 
         setUserIsConfirmed(true);
-
+ */
         const response = await fetch("/api/login", {
           method: "POST",
           headers: {
@@ -136,12 +136,30 @@ export function LoginForm() {
 
         if (data.status) {
           setToken("token");
-          setUserLoggedIn(user_selected);
+          /* agregado */
+          const user_selected = listUsers.find(
+            (user) => user.username.toLowerCase() === username.toLowerCase()
+          );
+
+          if (user_selected) {
+            setUserLoggedIn(user_selected);
+            toast.success("Login successful", {
+              position: "top-right",
+              duration: 3000,
+            });
+            router.push("/home");
+          } else {
+            toast.error("User not found", {
+              position: "top-right",
+              duration: 3000,
+            });
+          }
+          /* setUserLoggedIn(user_selected);
           toast.success("Login successful", {
             position: "top-right",
             duration: 3000,
           });
-          router.push("/home");
+          router.push("/home"); */
         } else {
           toast.error("Login failed. Please try again.", {
             position: "top-right",
@@ -243,7 +261,7 @@ export function LoginForm() {
           Sign Up
         </Link>
       </div>
-      {!userIsConfirmed && (
+      {/* {!userIsConfirmed && (
         <div className="text-center text-sm text-orange-600 flex flex-col">
           To continue, please confirm your account.
           <Link
@@ -258,7 +276,7 @@ export function LoginForm() {
             Click here to go to the confirmation page.
           </Link>
         </div>
-      )}
+      )} */}
     </form>
   );
 }
