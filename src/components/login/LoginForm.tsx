@@ -105,6 +105,8 @@ export function LoginForm() {
           (user) => user.username.toLowerCase() === username.toLowerCase()
         );
 
+        console.log("user_selected", user_selected);
+
         if (!user_selected) {
           toast.error("User not found", {
             position: "top-right",
