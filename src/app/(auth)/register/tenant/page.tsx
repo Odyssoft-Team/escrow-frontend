@@ -18,9 +18,9 @@ import { useRouter } from "next/navigation";
 export default function TenantRegisterPage() {
   const router = useRouter();
 
-  const [companyName, setCompanyName] = useState<string>("");
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
+  const [companyName2, setcompanyName2] = useState<string>("");
+  const [firstName2, setfirstName2] = useState<string>("");
+  const [lastName2, setlastName2] = useState<string>("");
   const [address1, setAddress1] = useState<string>("");
   const [address2, setAddress2] = useState<string>("");
   const [city, setCity] = useState<string>("");
@@ -29,7 +29,7 @@ export default function TenantRegisterPage() {
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [confirmPassword2, setconfirmPassword2] = useState<string>("");
   const [cellPhone, setCellPhone] = useState<string>("");
   const [businessPhone, setBusinessPhone] = useState<string>("");
 
@@ -40,9 +40,9 @@ export default function TenantRegisterPage() {
 
   // Campos obligatorios
   const requiredFields = {
-    // companyName: "Company Name",
-    firstName: "First Name",
-    lastName: "Last Name",
+    // companyName2: "Company Name",
+    firstName2: "First Name",
+    lastName2: "Last Name",
     address1: "Address Line 1",
     city: "City",
     state: "State",
@@ -50,7 +50,7 @@ export default function TenantRegisterPage() {
     email: "Email",
     username: "Username",
     password: "Password",
-    confirmPassword: "Confirm Password",
+    confirmPassword2: "Confirm Password",
     businessPhone: "Business Phone",
   };
 
@@ -123,7 +123,7 @@ export default function TenantRegisterPage() {
         const passwordError = validatePassword(value);
         if (passwordError) return passwordError;
         break;
-      case "confirmPassword":
+      case "confirmPassword2":
         if (value !== password) {
           return "Passwords do not match";
         }
@@ -179,8 +179,8 @@ export default function TenantRegisterPage() {
     });
 
     // Validar confirmación de contraseña
-    if (password !== confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+    if (password !== confirmPassword2) {
+      newErrors.confirmPassword2 = "Passwords do not match";
       isValid = false;
     }
 
@@ -206,8 +206,8 @@ export default function TenantRegisterPage() {
           user_email: email,
           password_hash: password,
           user_role: "tenant",
-          user_first_name: firstName,
-          user_last_name: lastName,
+          user_first_name: firstName2,
+          user_last_name: lastName2,
           user_phone1: businessPhone,
           user_phone2: cellPhone,
           user_address1: address1,
@@ -215,10 +215,10 @@ export default function TenantRegisterPage() {
           user_city: city,
           user_state: state,
           user_postal_code: zip,
-          user_company: companyName,
+          user_company: companyName2,
           user_device_id: "",
           user_license: "",
-          user_confirmed: "N",
+          //user_confirmed: "N",
         };
         const response = await api.post("/users", userData, {
           headers: {
@@ -235,9 +235,9 @@ export default function TenantRegisterPage() {
         setUsername("");
         setEmail("");
         setPassword("");
-        setConfirmPassword("");
-        setFirstName("");
-        setLastName("");
+        setconfirmPassword2("");
+        setfirstName2("");
+        setlastName2("");
         setBusinessPhone("");
         setCellPhone("");
         setAddress1("");
@@ -245,14 +245,14 @@ export default function TenantRegisterPage() {
         setCity("");
         setState("");
         setZip("");
-        setCompanyName("");
+        setcompanyName2("");
 
         // Redirigir a la pantalla de inicio de sesión
-        window.open(
+        /* window.open(
           "https://therentsafe.com/reset_password.html",
           "_blank",
           "noopener,noreferrer"
-        );
+        ); */
         router.push("/login");
       } catch (error) {
         console.log(error);
@@ -303,15 +303,15 @@ export default function TenantRegisterPage() {
             <span className="text-red-500">*</span>
           </Label>
           <Input
-            name="firstName"
+            name="firstName2"
             placeholder="First Name"
-            className={`h-12 w-full placeholder:text-content/50 placeholder:text-sm bg-white ${errors.firstName && touched.firstName ? "border-red-500" : ""}`}
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            className={`h-12 w-full placeholder:text-content/50 placeholder:text-sm bg-white ${errors.firstName2 && touched.firstName2 ? "border-red-500" : ""}`}
+            value={firstName2}
+            onChange={(e) => setfirstName2(e.target.value)}
             onBlur={handleBlur}
           />
-          {errors.firstName && touched.firstName && (
-            <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
+          {errors.firstName2 && touched.firstName2 && (
+            <p className="text-red-500 text-xs mt-1">{errors.firstName2}</p>
           )}
         </div>
 
@@ -323,15 +323,15 @@ export default function TenantRegisterPage() {
             <span className="text-red-500">*</span>
           </Label>
           <Input
-            name="lastName"
+            name="lastName2"
             placeholder="Last Name"
-            className={`h-12 w-full placeholder:text-content/50 placeholder:text-sm bg-white ${errors.lastName && touched.lastName ? "border-red-500" : ""}`}
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            className={`h-12 w-full placeholder:text-content/50 placeholder:text-sm bg-white ${errors.lastName2 && touched.lastName2 ? "border-red-500" : ""}`}
+            value={lastName2}
+            onChange={(e) => setlastName2(e.target.value)}
             onBlur={handleBlur}
           />
-          {errors.lastName && touched.lastName && (
-            <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
+          {errors.lastName2 && touched.lastName2 && (
+            <p className="text-red-500 text-xs mt-1">{errors.lastName2}</p>
           )}
         </div>
 
@@ -500,17 +500,17 @@ export default function TenantRegisterPage() {
             <span className="text-red-500">*</span>
           </Label>
           <Input
-            name="confirmPassword"
+            name="confirmPassword2"
             type="password"
             placeholder="Confirm Password"
-            className={`h-12 w-full placeholder:text-content/50 placeholder:text-sm bg-white ${errors.confirmPassword && touched.confirmPassword ? "border-red-500" : ""}`}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            className={`h-12 w-full placeholder:text-content/50 placeholder:text-sm bg-white ${errors.confirmPassword2 && touched.confirmPassword2 ? "border-red-500" : ""}`}
+            value={confirmPassword2}
+            onChange={(e) => setconfirmPassword2(e.target.value)}
             onBlur={handleBlur}
           />
-          {errors.confirmPassword && touched.confirmPassword && (
+          {errors.confirmPassword2 && touched.confirmPassword2 && (
             <p className="text-red-500 text-xs mt-1">
-              {errors.confirmPassword}
+              {errors.confirmPassword2}
             </p>
           )}
         </div>
