@@ -224,28 +224,10 @@ export default function NewContract({ onLoading }: Props) {
       setLeaseId(response.data.lease_id);
       setOpenPreview(true);
 
-      // const preview = await getContractPreview(response.data.lease_id);
-
-      // const blob = new Blob([preview.data?.data], { type: "application/pdf" });
-
-      /* const buffer2 = await preview.data.arrayBuffer();
-      setPdfData(new Uint8Array(buffer2));
-
-      // console.log(preview.data instanceof ArrayBuffer); // debería dar true
-      // console.log(preview.data.byteLength); // debería ser > 0
-      // const buffer = preview.data as ArrayBuffer;
-      // const uint8 = new Uint8Array(buffer);
-      // const header = String.fromCharCode(...uint8.slice(0, 5));
-      // console.log("PDF header:", header); // debería mostrar "%PDF-"
-
-      const blob = new Blob([preview.data], { type: "application/pdf" }); */
-      // const url = URL.createObjectURL(blob);
-
       setContractPdf(
         `https://escrow-android.dev-qa.site/preview-pdf/${response.data.lease_id}`
       );
-      // setOpenForm(false);
-      // resetContract();
+
       setLoadingCreate(false);
       onLoading();
     } else {
@@ -567,7 +549,7 @@ export default function NewContract({ onLoading }: Props) {
                   src={contractPdf}
                   width="100%"
                   height="100%"
-                  // typeof="application/pdf"
+                  style={{ border: "none" }}
                 />
               )}
             </div>
