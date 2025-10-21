@@ -117,7 +117,7 @@ export default function AdditionalTermsForm() {
   };
 
   return (
-    <ScrollArea className="h-[calc(100vh-370px)] w-full">
+    <ScrollArea className="h-[calc(100vh-310px)] w-full">
       <div className="w-full flex flex-col gap-2 ">
         <div className="flex items-center justify-start gap-4">
           <BsFileMedicalFill className="text-primary size-6" />
@@ -129,7 +129,7 @@ export default function AdditionalTermsForm() {
           </div>
         </div>
 
-        <div className="w-full p-4 bg-white border rounded-xl flex flex-col gap-6">
+        <div className="w-full p-4 bg-white border rounded-xl flex flex-col gap-6 mb-50">
           <h2 className="font-bold text-yellow-400 text-lg flex items-center gap-2">
             <BsFileMedicalFill className="text-yellow-400 size-6" />
             Utilities & Services

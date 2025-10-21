@@ -608,7 +608,7 @@ export default function LeaseDetailsForm() {
           </div>
         </div>
 
-        <div className="bg-white p-4 border rounded-xl flex flex-col gap-6 mb-16">
+        <div className="bg-white p-4 border rounded-xl flex flex-col gap-6 mb-50">
           <div className="flex items-center gap-2">
             {/* Puedes sustituir por tu ícono preferido */}
             <FaSignature className="size-5 text-blue-700" />

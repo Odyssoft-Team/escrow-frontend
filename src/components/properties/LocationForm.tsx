@@ -9,8 +9,8 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Input } from "../ui/input";
 import { Search } from "lucide-react";
 import { IoLocationOutline } from "react-icons/io5";
-import { Location } from "./CreateProperty";
 import PropertyMap from "./PropertyMap";
+import { Location } from "./EditProperty";
 
 interface Props {
   locationData: Location;

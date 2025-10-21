@@ -8,7 +8,6 @@ import { Textarea } from "../ui/textarea";
 import { AiOutlineDollar } from "react-icons/ai";
 import { LuDollarSign } from "react-icons/lu";
 import { ScrollArea } from "../ui/scroll-area";
-import { InfoFormData } from "./CreateProperty";
 import { useEffect, useState } from "react";
 import { UserData } from "@/types/user";
 import api from "@/lib/axios";
@@ -20,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { InfoFormData } from "./EditProperty";
 
 interface Props {
   infoData: InfoFormData;

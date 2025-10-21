@@ -1,12 +1,12 @@
 "use client";
 
 import { ContractsList } from "@/components/contracts/ContractsList";
-import NewContract from "@/components/contracts/NewContract";
 import api from "@/lib/axios";
 import { useAuthStore } from "@/store/auth.store";
 import { Contract } from "@/types/contract";
 import { useEffect, useState } from "react";
-import { FaFileAlt } from "react-icons/fa";
+import { FaFileAlt, FaPlus } from "react-icons/fa";
+import Link from "next/link";
 
 export default function ContractsData() {
   const { userLoggedIn } = useAuthStore();
@@ -45,7 +45,13 @@ export default function ContractsData() {
 
       <ContractsList contracts={listContracts} />
 
-      <NewContract onLoading={getContracts} />
+      <Link
+        href="/contracts/new"
+        className="bg-primary text-white fixed right-4 bottom-[90px] rounded-full py-2 !px-6 w-auto shadow-[0px_0px_35px_5px_rgba(37,51,131,0.50)] border-none text-base flex items-center gap-2"
+      >
+        <FaPlus />
+        New Contract
+      </Link>
     </>
   );
 }

@@ -7,14 +7,11 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 import { useState } from "react";
-
-import { FaPlus } from "react-icons/fa";
 
 //import { Document, Page, pdfjs } from "react-pdf";
 
@@ -41,6 +38,8 @@ import { useAuthStore } from "@/store/auth.store";
 // import { getContractPreview } from "@/services/getContractPreview";
 import { MdModeEdit } from "react-icons/md";
 import { BsPatchCheckFill } from "react-icons/bs";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Props {
   onLoading: () => void;
@@ -102,7 +101,6 @@ export default function NewContract({ onLoading }: Props) {
   const { userLoggedIn } = useAuthStore();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [loadingCreate, setLoadingCreate] = useState<boolean>(false);
-  const [openForm, setOpenForm] = useState<boolean>(false);
 
   const [openPreview, setOpenPreview] = useState<boolean>(false);
   const [contractPdf, setContractPdf] = useState<string | null>(null);
@@ -110,6 +108,8 @@ export default function NewContract({ onLoading }: Props) {
   const [editedActive, setEditedActive] = useState<boolean>(false);
   const [loadingEdit, setLoadingEdit] = useState<boolean>(false);
   const [loadingAprove, setLoadingApprove] = useState<boolean>(false);
+
+  const router = useRouter();
 
   //const [pdfData, setPdfData] = useState<Uint8Array | null>(null);
 
@@ -351,6 +351,8 @@ export default function NewContract({ onLoading }: Props) {
       // resetContract();
       setLoadingCreate(false);
       onLoading();
+
+      router.push("/contracts");
     } else {
       toast.error("Error creating contract", {
         position: "top-right",
@@ -377,12 +379,13 @@ export default function NewContract({ onLoading }: Props) {
       setLeaseId("");
       setOpenPreview(false);
       setEditedActive(false);
-      setOpenForm(false);
       resetContract();
       setLoadingCreate(false);
       setLoadingApprove(false);
       setLoadingEdit(false);
       onLoading();
+
+      router.push("/contracts");
     } else {
       toast.error("Error aproving contract", {
         position: "top-right",
@@ -394,129 +397,115 @@ export default function NewContract({ onLoading }: Props) {
   };
 
   return (
-    <>
-      <Drawer open={openForm} onOpenChange={setOpenForm}>
-        <DrawerTrigger asChild>
-          <Button
-            variant="outline"
-            className="bg-primary text-white fixed right-4 bottom-[90px] rounded-full py-6 !px-6 w-auto shadow-[0px_0px_35px_5px_rgba(37,51,131,0.50)] border-none text-base"
-          >
-            <FaPlus />
-            New Contract
-          </Button>
-        </DrawerTrigger>
-        <DrawerContent className="h-[95dvh] !max-h-screen">
-          <DrawerHeader className="pt-2 pb-4 flex justify-between flex-col border-b">
-            <div className="w-full flex items-center justify-center relative">
-              <DrawerClose asChild>
-                <Button
-                  variant={"outline"}
-                  className="border-none bg-primary/10 text-primary rounded-full text-base !pl-2 !pr-4 absolute left-0"
-                  onClick={resetContract}
-                >
-                  <ChevronLeft className="size-5" /> Cancel
-                </Button>
-              </DrawerClose>
-              <DrawerTitle className="text-primary font-bold text-xl">
-                {editedActive ? "Edit Contract" : "New Contract"}
-              </DrawerTitle>
-            </div>
-
-            <Stepper
-              defaultValue={1}
-              className="mt-5 mb-0 pb-0 px-5"
-              value={currentStep}
-              onValueChange={setCurrentStep}
+    <div className="bg-[#F7F8FA] px-3 flex flex-col gap-4 pt-[30px] pb-[90px] sm:px-8 xl:pb-[40px] 2xl:px-[8rem]">
+      <div className="!max-h-screen relative">
+        <div className="pt-2 pb-4 flex justify-center items-center flex-col border-b">
+          <div className="w-full flex items-center justify-center relative">
+            <Link
+              href="/contracts"
+              className="border-none bg-primary/10 text-primary rounded-full text-base !pl-2 !pr-4 absolute left-0 flex items-center gap-2 !py-2"
+              onClick={resetContract}
             >
-              {steps.map((step) => (
-                <StepperItem key={step} step={step} className="not-last:flex-1">
-                  <StepperTrigger asChild>
-                    <StepperIndicator />
-                  </StepperTrigger>
-                  {step < steps.length && <StepperSeparator />}
-                </StepperItem>
-              ))}
-            </Stepper>
-
-            <div className="w-full mt-6">
-              <p className="font-medium leading-[1] text-primary text-sm">
-                Step {currentStep} of 4
-              </p>
-              <span className="text-xs text-content">
-                {currentStep === 1 && "Lease Details"}
-                {currentStep === 2 && "Amounts Due"}
-                {currentStep === 3 && "Monthly Terms"}
-                {currentStep === 4 && "Additional Terms"}
-              </span>
-            </div>
-          </DrawerHeader>
-
-          <div className="bg-[#F7F8FA] w-full h-full p-4">
-            {currentStep === 1 && <LeaseDetailsForm />}
-            {currentStep === 2 && <AmountsDueForm />}
-            {currentStep === 3 && <MonthlyTermsForm />}
-            {currentStep === 4 && <AdditionalTermsForm />}
+              <ChevronLeft className="size-5" /> Cancel
+            </Link>
+            <h2 className="text-primary font-bold text-xl">
+              {editedActive ? "Edit Contract" : "New Contract"}
+            </h2>
           </div>
 
-          <DrawerFooter className="border-t fixed bottom-0 right-0 left-0 w-screen bg-white flex-row justify-between">
-            {editedActive ? (
-              <div className="w-full flex items-center justify-between gap-4">
+          <Stepper
+            defaultValue={1}
+            className="mt-5 mb-0 pb-0 px-5"
+            value={currentStep}
+            onValueChange={setCurrentStep}
+          >
+            {steps.map((step) => (
+              <StepperItem key={step} step={step} className="not-last:flex-1">
+                <StepperTrigger asChild>
+                  <StepperIndicator />
+                </StepperTrigger>
+                {step < steps.length && <StepperSeparator />}
+              </StepperItem>
+            ))}
+          </Stepper>
+        </div>
+
+        <div className="bg-[#F7F8FA] w-full h-full p-4">
+          <div className="mb-2 flex items-center gap-3">
+            <p className="font-medium leading-[1] text-primary text-sm">
+              Step {currentStep} of 4
+            </p>
+            <span className="text-xs text-content">
+              {currentStep === 1 && "Lease Details"}
+              {currentStep === 2 && "Amounts Due"}
+              {currentStep === 3 && "Monthly Terms"}
+              {currentStep === 4 && "Additional Terms"}
+            </span>
+          </div>
+          {currentStep === 1 && <LeaseDetailsForm />}
+          {currentStep === 2 && <AmountsDueForm />}
+          {currentStep === 3 && <MonthlyTermsForm />}
+          {currentStep === 4 && <AdditionalTermsForm />}
+        </div>
+
+        <div className="fixed bottom-[80px] right-0 left-0 w-full flex-row justify-between px-4">
+          {editedActive ? (
+            <div className="w-full flex items-center justify-between gap-4">
+              <Button
+                variant="default"
+                onClick={handleUpdateContract}
+                className="flex-1 bg-green-500 text-white hover:bg-green-500 hover:text-white"
+              >
+                {loadingEdit ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <CheckCircle />
+                )}
+                Save edit
+              </Button>
+            </div>
+          ) : (
+            <div className="w-full flex items-center justify-between gap-4">
+              {currentStep !== 1 && (
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    setCurrentStep((prev) => Math.max(1, prev - 1))
+                  }
+                  className="flex-1 bg-primary/10 border border-primary/30"
+                >
+                  <ChevronLeft />
+                  Prev
+                </Button>
+              )}
+
+              {currentStep === 4 ? (
                 <Button
                   variant="default"
-                  onClick={handleUpdateContract}
+                  onClick={handleCreateContract}
                   className="flex-1 bg-green-500 text-white hover:bg-green-500 hover:text-white"
                 >
-                  {loadingEdit ? (
+                  {loadingCreate ? (
                     <Loader2 className="animate-spin" />
                   ) : (
                     <CheckCircle />
                   )}
-                  Save edit
+                  Preview
                 </Button>
-              </div>
-            ) : (
-              <div className="w-full flex items-center justify-between gap-4">
-                {currentStep !== 1 && (
-                  <Button
-                    variant="outline"
-                    onClick={() =>
-                      setCurrentStep((prev) => Math.max(1, prev - 1))
-                    }
-                    className="flex-1 bg-primary/10 border border-primary/30"
-                  >
-                    <ChevronLeft />
-                    Prev
-                  </Button>
-                )}
-
-                {currentStep === 4 ? (
-                  <Button
-                    variant="default"
-                    onClick={handleCreateContract}
-                    className="flex-1 bg-green-500 text-white hover:bg-green-500 hover:text-white"
-                  >
-                    {loadingCreate ? (
-                      <Loader2 className="animate-spin" />
-                    ) : (
-                      <CheckCircle />
-                    )}
-                    Preview
-                  </Button>
-                ) : (
-                  <Button
-                    variant="default"
-                    onClick={handleNextStep}
-                    className="flex-1"
-                  >
-                    Next
-                    <ChevronRight />
-                  </Button>
-                )}
-              </div>
-            )}
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+              ) : (
+                <Button
+                  variant="default"
+                  onClick={handleNextStep}
+                  className="flex-1"
+                >
+                  Next
+                  <ChevronRight />
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
 
       <Drawer open={openPreview} onOpenChange={setOpenPreview}>
         <DrawerContent className="h-[95dvh] !max-h-screen">
@@ -585,6 +574,6 @@ export default function NewContract({ onLoading }: Props) {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-    </>
+    </div>
   );
 }

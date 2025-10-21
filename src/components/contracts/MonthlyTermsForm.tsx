@@ -324,7 +324,7 @@ export default function MonthlyTermsForm() {
   };
 
   return (
-    <ScrollArea className="h-[calc(100vh-370px)] w-full">
+    <ScrollArea className="h-[calc(100vh-310px)] w-full">
       <div className="w-full flex flex-col gap-2 ">
         <div className="flex items-center justify-start gap-4">
           <IoCard className="text-primary size-6" />

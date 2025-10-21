@@ -6,9 +6,17 @@ import { Avatar, AvatarFallback } from "./ui/avatar";
 import MenuDesktop from "./MenuDesktop";
 import { useAuthStore } from "@/store/auth.store";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const { userLoggedIn } = useAuthStore();
+
+  const pathname = usePathname();
+
+  // Oculta el header en la ruta "/properties/new"
+  if (pathname === "/properties/new" || pathname === "/contracts/new")
+    return null;
+
   return (
     <header className="w-full p-4 flex items-center justify-end gap-3 fixed top-0 xl:top-0 z-5 sm:p-6 xl:relative xl:bg-white xl:py-4 xl:justify-between xl:border-b">
       <MenuDesktop />

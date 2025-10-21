@@ -28,10 +28,39 @@ import { TiLocationArrowOutline } from "react-icons/ti";
 
 import { useAuthStore } from "@/store/auth.store";
 import { useRouter } from "next/navigation";
+import api from "@/lib/axios";
+import { useEffect, useRef, useState } from "react";
+import { UserData } from "@/types/user";
+import Image from "next/image";
+import { toast } from "sonner";
 
 export default function ProfileData() {
   const { userLoggedIn, setUserLoggedIn } = useAuthStore();
   const router = useRouter();
+
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+
+  const handleGetPhoto = async (user: UserData | null) => {
+    if (!user?.user_id) return;
+
+    try {
+      const response = await api.get(`/users/${user.user_id}/profile-picture`, {
+        responseType: "blob", // 👈 importante: recibir binario
+      });
+
+      console.log("respuesta traer foto::", response);
+
+      // Crear una URL temporal a partir del blob
+      const imageUrl = URL.createObjectURL(response.data);
+      setPhotoUrl(imageUrl);
+    } catch (error) {
+      console.error("Error fetching image:", error);
+    }
+  };
+
+  useEffect(() => {
+    handleGetPhoto(userLoggedIn);
+  }, [userLoggedIn]);
 
   const handleLogout = async () => {
     const response = await fetch("/api/logout", {
@@ -43,6 +72,54 @@ export default function ProfileData() {
     if (data.status) {
       setUserLoggedIn(null);
       router.push("/login");
+    }
+  };
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleUploadPhoto = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file || !userLoggedIn?.user_id) return;
+
+    // Validar tamaño y tipo de archivo
+    if (file.size > 2 * 1024 * 1024) {
+      toast.warning("El archivo no debe superar los 2MB");
+      return;
+    }
+
+    if (!["image/png", "image/jpeg", "image/webp"].includes(file.type)) {
+      toast.warning("Formato no permitido. Usa PNG, JPG o WEBP");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await api.put(
+        `/users/${userLoggedIn.user_id}/profile-picture`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("respuesta del update:::", response);
+
+      if (response.status === 200) {
+        // Refrescar imagen
+        handleGetPhoto(userLoggedIn);
+      }
+    } catch (error) {
+      console.error("Error subiendo imagen:", error);
     }
   };
 
@@ -58,14 +135,45 @@ export default function ProfileData() {
       <div className="flex flex-col gap-2">
         <h1 className="font-bold text-primary text-3xl leading-[1]">Profile</h1>
         <div className="w-full flex items-center justify-center gap-1 font-medium text-primary/70 text-sm relative">
-          <Avatar className="bg-primary text-white size-32 overflow-visible shadow-[0px_0px_35px_5px_rgba(37,51,131,0.50)]">
-            <AvatarFallback className="size-full bg-primary text-white font-bold text-5xl uppercase">
-              {userLoggedIn?.user_first_name?.charAt(0)}
-            </AvatarFallback>
-            <span className="bg-amber-500 text-white px-4 py-1 rounded-full absolute right-0 bottom-0 text-xs uppercase">
-              {userLoggedIn?.user_role}
-            </span>
-          </Avatar>
+          {photoUrl ? (
+            <div
+              className="relative cursor-pointer group"
+              onClick={handleImageClick}
+              title="Click para cambiar foto"
+            >
+              <Image
+                src={photoUrl}
+                alt="Profile"
+                className="rounded-full size-32 object-cover shadow-[0px_0px_35px_5px_rgba(37,51,131,0.50)] group-hover:opacity-80 transition-opacity"
+                width={128}
+                height={128}
+              />
+              <div className="absolute inset-0 bg-black/40 text-white text-xs flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                Cambiar foto
+              </div>
+            </div>
+          ) : (
+            <Avatar
+              onClick={handleImageClick}
+              className="bg-primary text-white size-32 overflow-visible shadow-[0px_0px_35px_5px_rgba(37,51,131,0.50)] cursor-pointer"
+            >
+              <AvatarFallback className="size-full bg-primary text-white font-bold text-5xl uppercase">
+                {userLoggedIn?.user_first_name?.charAt(0)}
+              </AvatarFallback>
+              <span className="bg-amber-500 text-white px-4 py-1 rounded-full absolute right-0 bottom-0 text-xs uppercase">
+                {userLoggedIn?.user_role}
+              </span>
+            </Avatar>
+          )}
+
+          {/* Input oculto para subir archivo */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/png, image/jpeg, image/webp"
+            className="hidden"
+            onChange={handleUploadPhoto}
+          />
         </div>
         <div className="flex flex-col items-center gap-1 font-medium text-primary/70 text-sm my-6">
           <span className="text-primary px-4 py-1 rounded-full  font-bold text-3xl leading-[1] capitalize">
