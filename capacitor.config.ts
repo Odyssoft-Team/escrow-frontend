@@ -7,7 +7,7 @@ const config: CapacitorConfig = {
     url: "https://escrow-3.vercel.app",
   },
   android: {
-    // Configuración específica de Android
+    // Configuración específica de Android aquí
     allowMixedContent: true,
     webContentsDebuggingEnabled: true,
   },
