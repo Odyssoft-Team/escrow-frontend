@@ -12,15 +12,22 @@ export default function ContractsData() {
   const { userLoggedIn } = useAuthStore();
   const [listContracts, setListContracts] = useState<Contract[]>([]);
 
+  let url: string = "";
+
+  if (userLoggedIn?.user_role === "broker") {
+    url = "lease_contracts_by_brokers";
+  } else if (userLoggedIn?.user_role === "tenant") {
+    url = "lease_contracts_by_tenant";
+  } else if (userLoggedIn?.user_role === "landlord") {
+    url = "lease_contracts_by_landlord";
+  }
+
   const getContracts = async () => {
-    const response = await api.get(
-      `/lease_contracts_by_brokers/${userLoggedIn?.user_id}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await api.get(`/${url}/${userLoggedIn?.user_id}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     setListContracts(response.data);
   };
@@ -43,7 +50,7 @@ export default function ContractsData() {
         </span>
       </div>
 
-      <ContractsList contracts={listContracts} />
+      <ContractsList contracts={listContracts} onLoading={getContracts} />
 
       <Link
         href="/contracts/new"

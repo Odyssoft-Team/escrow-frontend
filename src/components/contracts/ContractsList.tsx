@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Building2Icon,
   CalendarIcon,
   ChevronLeft,
   HomeIcon,
+  Loader2,
   Search,
   ShieldIcon,
   UserCheck2,
@@ -34,17 +35,21 @@ import {
   FaSignature,
 } from "react-icons/fa";
 import { FaCircleCheck } from "react-icons/fa6";
-import { BsExclamationCircle } from "react-icons/bs";
+import { BsExclamationCircle, BsPatchCheckFill } from "react-icons/bs";
 import { IoIosCalendar } from "react-icons/io";
 import { RiArmchairFill } from "react-icons/ri";
 import { PiSigmaBold } from "react-icons/pi";
 import { MdOutlinePets } from "react-icons/md";
+import { toast } from "sonner";
+import api from "@/lib/axios";
+import { UserData } from "@/types/user";
 
 interface ContractsListProps {
   contracts: Contract[];
+  onLoading: () => void;
 }
 
-export function ContractsList({ contracts }: ContractsListProps) {
+export function ContractsList({ contracts, onLoading }: ContractsListProps) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredContracts = useMemo(() => {
@@ -66,8 +71,56 @@ export function ContractsList({ contracts }: ContractsListProps) {
 
   const handleContractSelected = (contract: Contract) => {
     setContractSelected(contract);
+    console.log(contract);
+
     setOpenContractDetails(true);
   };
+
+  const [loadingAprove, setLoadingApprove] = useState<boolean>(false);
+
+  const handleAproveContract = async () => {
+    setLoadingApprove(true);
+    const response = await api.patch(
+      `/lease_contracts/${contractSelected?.lease_id}?lease_status=Ready`
+    );
+
+    if (response.status === 200) {
+      toast.success("Contract approved successfully", {
+        position: "top-right",
+        duration: 3000,
+      });
+      setLoadingApprove(false);
+      onLoading();
+
+      setOpenContractDetails(false);
+    } else {
+      toast.error("Error aproving contract", {
+        position: "top-right",
+        duration: 3000,
+      });
+    }
+    setLoadingApprove(false);
+  };
+
+  const [listUsers, setListUsers] = useState<UserData[]>([]);
+  const handleGetUsers = async () => {
+    const response = await api.get("/users", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 200) {
+      setListUsers(response.data);
+    } else {
+      console.log(response);
+      setListUsers([]);
+    }
+  };
+
+  useEffect(() => {
+    handleGetUsers();
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -129,6 +182,19 @@ export function ContractsList({ contracts }: ContractsListProps) {
               <DrawerTitle className="text-primary font-bold text-xl">
                 Contract Details
               </DrawerTitle>
+
+              <Button
+                variant="outline"
+                onClick={() => handleAproveContract()}
+                className="bg-primary/10 border border-primary/30 absolute right-0"
+              >
+                {loadingAprove ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <BsPatchCheckFill />
+                )}
+                Aprove
+              </Button>
             </div>
           </DrawerHeader>
           <div className="bg-[#F7F8FA] w-full h-full p-4 flex flex-col items-center gap-3 overflow-y-auto">
@@ -210,6 +276,86 @@ export function ContractsList({ contracts }: ContractsListProps) {
                     {formatToShortDate(
                       contractSelected?.lease_created_at as string
                     )}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full p-4 flex flex-col items-start gap-3 bg-white border rounded-xl">
+              <h3
+                className={cn(
+                  "flex items-center gap-2 text-lg font-medium text-blue-500"
+                )}
+              >
+                <FaFlag className="size-5" />
+                Contract Details
+              </h3>
+
+              <div
+                className={cn(
+                  "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
+                )}
+              >
+                <BsExclamationCircle className={cn("size-5 text-primary")} />
+                <div className="flex flex-col gap-0 leading-[1]">
+                  <span className="text-content text-sm">Landlord</span>
+                  <span className={cn("text-base")}>
+                    {
+                      listUsers.find(
+                        (user) => user.user_id === contractSelected?.landlord_id
+                      )?.user_first_name
+                    }{" "}
+                    {
+                      listUsers.find(
+                        (user) => user.user_id === contractSelected?.landlord_id
+                      )?.user_last_name
+                    }
+                  </span>
+                </div>
+              </div>
+
+              <div
+                className={cn(
+                  "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
+                )}
+              >
+                <BsExclamationCircle className={cn("size-5 text-primary")} />
+                <div className="flex flex-col gap-0 leading-[1]">
+                  <span className="text-content text-sm">Tenant</span>
+                  <span className={cn("text-base")}>
+                    {
+                      listUsers.find(
+                        (user) => user.user_id === contractSelected?.tenant_id
+                      )?.user_first_name
+                    }{" "}
+                    {
+                      listUsers.find(
+                        (user) => user.user_id === contractSelected?.tenant_id
+                      )?.user_last_name
+                    }
+                  </span>
+                </div>
+              </div>
+
+              <div
+                className={cn(
+                  "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4"
+                )}
+              >
+                <IoIosCalendar className={cn("size-5 text-primary")} />
+                <div className="flex flex-col gap-0 leading-[1]">
+                  <span className="text-content text-sm">Broker</span>
+                  <span className={cn("text-base")}>
+                    {
+                      listUsers.find(
+                        (user) => user.user_id === contractSelected?.broker_id
+                      )?.user_first_name
+                    }{" "}
+                    {
+                      listUsers.find(
+                        (user) => user.user_id === contractSelected?.broker_id
+                      )?.user_last_name
+                    }
                   </span>
                 </div>
               </div>

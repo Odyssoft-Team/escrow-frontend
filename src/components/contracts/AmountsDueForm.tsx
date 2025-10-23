@@ -33,6 +33,9 @@ export default function AmountsDueForm() {
     setAdvanceRentMonth,
     setAdvanceRent,
     setAdvanceRentDueOn,
+    setTotalRent,
+    leaseStartDate,
+    leaseEndDate,
     lastMonthRent,
     lastMonthDueOn,
     setLastMonthRent,
@@ -287,6 +290,11 @@ export default function AmountsDueForm() {
       setToFirstMonthRent(numValue / 3);
       setToLastMonthRent(numValue / 3);
       setToSecurityDeposit(numValue / 3);
+      const number_years =
+        leaseEndDate.getFullYear() - leaseStartDate.getFullYear();
+      const number_months = leaseEndDate.getMonth() - leaseStartDate.getMonth();
+      const result = number_years * 12 + number_months;
+      setTotalRent(numValue * result);
     }
   };
 
@@ -300,6 +308,12 @@ export default function AmountsDueForm() {
       setToFirstMonthRent(Number(value) / 3);
       setToLastMonthRent(Number(value) / 3);
       setToSecurityDeposit(Number(value) / 3);
+      const number_years =
+        leaseEndDate.getFullYear() - leaseStartDate.getFullYear();
+      const number_months = leaseEndDate.getMonth() - leaseStartDate.getMonth();
+      const result = number_years * 12 + number_months;
+
+      setTotalRent(Number(value) * result);
     }
   };
 

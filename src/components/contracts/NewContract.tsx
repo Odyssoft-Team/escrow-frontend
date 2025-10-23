@@ -352,7 +352,7 @@ export default function NewContract({ onLoading }: Props) {
       setLoadingCreate(false);
       onLoading();
 
-      router.push("/contracts");
+      // router.push("/contracts");
     } else {
       toast.error("Error creating contract", {
         position: "top-right",
