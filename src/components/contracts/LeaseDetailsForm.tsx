@@ -31,8 +31,9 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, PlusCircleIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export default function LeaseDetailsForm() {
   const {
@@ -107,9 +108,7 @@ export default function LeaseDetailsForm() {
         <p className="font-medium leading-[1] text-primary text-sm">
           Step 1 of 4
         </p>
-        <span className="text-xs text-content">
-          Lease Details
-        </span>
+        <span className="text-xs text-content">Lease Details</span>
       </div>
       <div className="w-full flex flex-col gap-2 ">
         <div className="flex items-center justify-start gap-4">
@@ -339,6 +338,15 @@ export default function LeaseDetailsForm() {
                           />
                         </CommandItem>
                       ))}
+
+                      <CommandItem className="p-0">
+                        <Link
+                          href="/properties/new"
+                          className="flex items-center gap-2 w-full h-full px-2 py-1 hover:bg-primary/10"
+                        >
+                          <PlusCircleIcon /> New Property
+                        </Link>
+                      </CommandItem>
                     </CommandGroup>
                   </CommandList>
                 </Command>
