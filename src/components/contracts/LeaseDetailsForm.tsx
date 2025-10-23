@@ -103,6 +103,14 @@ export default function LeaseDetailsForm() {
 
   return (
     <ScrollArea className="h-[calc(100vh-270px)] w-full pb-6">
+      <div className="mb-2 flex items-center gap-3">
+        <p className="font-medium leading-[1] text-primary text-sm">
+          Step 1 of 4
+        </p>
+        <span className="text-xs text-content">
+          Lease Details
+        </span>
+      </div>
       <div className="w-full flex flex-col gap-2 ">
         <div className="flex items-center justify-start gap-4">
           <FaCircleExclamation className="text-primary size-6" />
@@ -116,7 +124,7 @@ export default function LeaseDetailsForm() {
           <div className="flex flex-col gap-1">
             <label className="flex items-center gap-2 text-content font-normal">
               <PiUserCircleFill className="text-primary/80" />
-              Landlord *
+              Landlord <span className="text-red-500">*</span>
             </label>
 
             <Popover open={openLandlord} onOpenChange={setOpenLandlord}>
@@ -150,7 +158,7 @@ export default function LeaseDetailsForm() {
                   <ChevronsUpDown className="opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[400px] p-0" align="start">
+              <PopoverContent className="w-[330px] p-0" align="start">
                 <Command>
                   <CommandInput
                     placeholder="Search landlord..."
@@ -196,7 +204,7 @@ export default function LeaseDetailsForm() {
           <div className="flex flex-col gap-1">
             <label className="flex items-center gap-2 text-content font-normal">
               <PiUserCirclePlusFill className="text-primary/80" />
-              Tenant *
+              Tenant <span className="text-red-500">*</span>
             </label>
 
             <Popover open={openTenant} onOpenChange={setOpenTenant} modal>
@@ -275,7 +283,7 @@ export default function LeaseDetailsForm() {
           <div className="flex flex-col gap-1">
             <label className="flex items-center gap-2 text-content font-normal">
               <FaRegBuilding className="text-primary/80" />
-              Property *
+              Property <span className="text-red-500">*</span>
             </label>
 
             <Popover open={openProperty} onOpenChange={setOpenProperty} modal>

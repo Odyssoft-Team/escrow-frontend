@@ -352,6 +352,14 @@ export default function AmountsDueForm() {
 
   return (
     <ScrollArea className="h-[calc(100vh-270px)] w-full pb-6">
+      <div className="mb-2 flex items-center gap-3">
+        <p className="font-medium leading-[1] text-primary text-sm">
+          Step 2 of 4
+        </p>
+        <span className="text-xs text-content">
+          Amounts Due
+        </span>
+      </div>
       <div className="w-full flex flex-col gap-2 ">
         <div className="flex items-center justify-start gap-4">
           <FaMoneyBill className="text-primary size-6" />

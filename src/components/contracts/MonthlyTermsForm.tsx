@@ -349,6 +349,14 @@ export default function MonthlyTermsForm() {
 
   return (
     <ScrollArea className="h-[calc(100vh-310px)] w-full">
+      <div className="mb-2 flex items-center gap-3">
+        <p className="font-medium leading-[1] text-primary text-sm">
+          Step 3 of 4
+        </p>
+        <span className="text-xs text-content">
+          Monthly Terms
+        </span>
+      </div>
       <div className="w-full flex flex-col gap-2 ">
         <div className="flex items-center justify-start gap-4">
           <IoCard className="text-primary size-6" />
