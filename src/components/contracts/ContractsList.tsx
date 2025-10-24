@@ -84,6 +84,8 @@ export function ContractsList({ contracts, onLoading }: ContractsListProps) {
       `/lease_contracts/${contractSelected?.lease_id}?lease_status=Ready`
     );
 
+    console.log("respuesta de aprobar", response);
+
     if (response.status === 200) {
       toast.success("Contract approved successfully", {
         position: "top-right",
@@ -183,18 +185,20 @@ export function ContractsList({ contracts, onLoading }: ContractsListProps) {
                 Contract Details
               </DrawerTitle>
 
-              <Button
-                variant="outline"
-                onClick={() => handleAproveContract()}
-                className="bg-primary/10 border border-primary/30 absolute right-0"
-              >
-                {loadingAprove ? (
-                  <Loader2 className="animate-spin" />
-                ) : (
-                  <BsPatchCheckFill />
-                )}
-                Aprove
-              </Button>
+              {contractSelected?.lease_status === "Contract" && (
+                <Button
+                  variant="outline"
+                  onClick={() => handleAproveContract()}
+                  className="border-none bg-primary/10 text-primary rounded-full text-base !px-2 absolute right-0"
+                >
+                  {loadingAprove ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                    <BsPatchCheckFill />
+                  )}
+                  Aprove
+                </Button>
+              )}
             </div>
           </DrawerHeader>
           <div className="bg-[#F7F8FA] w-full h-full p-4 flex flex-col items-center gap-3 overflow-y-auto">
@@ -206,7 +210,7 @@ export function ContractsList({ contracts, onLoading }: ContractsListProps) {
               <h3
                 className={cn(
                   "flex items-center gap-2 text-lg font-medium",
-                  contractSelected?.lease_status === "Available"
+                  contractSelected?.lease_status === "Ready"
                     ? "text-green-500"
                     : "text-orange-500"
                 )}
@@ -218,7 +222,7 @@ export function ContractsList({ contracts, onLoading }: ContractsListProps) {
               <div
                 className={cn(
                   "w-full px-4 py-2 border rounded-xl flex items-center justify-start gap-4",
-                  contractSelected?.lease_status === "Available"
+                  contractSelected?.lease_status === "Ready"
                     ? "bg-green-100"
                     : "bg-orange-100"
                 )}
@@ -226,7 +230,7 @@ export function ContractsList({ contracts, onLoading }: ContractsListProps) {
                 <FaCircleCheck
                   className={cn(
                     "size-5",
-                    contractSelected?.lease_status === "Available"
+                    contractSelected?.lease_status === "Ready"
                       ? "text-green-500"
                       : "text-orange-500"
                   )}
@@ -236,7 +240,7 @@ export function ContractsList({ contracts, onLoading }: ContractsListProps) {
                   <span
                     className={cn(
                       "text-base",
-                      contractSelected?.lease_status === "Available"
+                      contractSelected?.lease_status === "Ready"
                         ? "text-green-500"
                         : "text-orange-500"
                     )}
