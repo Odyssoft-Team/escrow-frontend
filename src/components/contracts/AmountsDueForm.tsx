@@ -293,7 +293,7 @@ export default function AmountsDueForm() {
       const number_years =
         leaseEndDate.getFullYear() - leaseStartDate.getFullYear();
       const number_months = leaseEndDate.getMonth() - leaseStartDate.getMonth();
-      const result = number_years * 12 + number_months;
+      const result = number_years * 12 + number_months + 1;
       setTotalRent(numValue * result);
     }
   };
@@ -311,7 +311,7 @@ export default function AmountsDueForm() {
       const number_years =
         leaseEndDate.getFullYear() - leaseStartDate.getFullYear();
       const number_months = leaseEndDate.getMonth() - leaseStartDate.getMonth();
-      const result = number_years * 12 + number_months;
+      const result = number_years * 12 + number_months + 1;
 
       setTotalRent(Number(value) * result);
     }
@@ -356,9 +356,7 @@ export default function AmountsDueForm() {
         <p className="font-medium leading-[1] text-primary text-sm">
           Step 2 of 4
         </p>
-        <span className="text-xs text-content">
-          Amounts Due
-        </span>
+        <span className="text-xs text-content">Amounts Due</span>
       </div>
       <div className="w-full flex flex-col gap-2 ">
         <div className="flex items-center justify-start gap-4">
