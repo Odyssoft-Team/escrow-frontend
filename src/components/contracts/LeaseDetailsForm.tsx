@@ -29,7 +29,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 import {
@@ -113,6 +112,7 @@ export default function LeaseDetailsForm() {
     useState<boolean>(false);
 
   const [openNewTenant, setOpenNewTenant] = useState<boolean>(false);
+  const [openNewLandlord, setOpenNewLandlord] = useState<boolean>(false);
 
   return (
     <>
@@ -206,6 +206,15 @@ export default function LeaseDetailsForm() {
                               />
                             </CommandItem>
                           ))}
+
+                        <CommandItem
+                          onSelect={() => {
+                            setOpenLandlord(false);
+                            setOpenNewLandlord(true);
+                          }}
+                        >
+                          <PlusCircleIcon /> New Landlord
+                        </CommandItem>
                       </CommandGroup>
                     </CommandList>
                   </Command>
@@ -717,7 +726,37 @@ export default function LeaseDetailsForm() {
               Enter the basic information to create a new tenant.
             </DialogDescription>
           </DialogHeader>
-          <NewUserForm />
+          <NewUserForm
+            onLoading={() => {
+              handleGetUsers();
+              setOpenNewTenant(false);
+            }}
+            onCancel={() => {
+              setOpenNewTenant(false);
+            }}
+            type="tenant"
+          />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={openNewLandlord} onOpenChange={setOpenNewLandlord}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create New Landlord</DialogTitle>
+            <DialogDescription>
+              Enter the basic information to create a new landlord.
+            </DialogDescription>
+          </DialogHeader>
+          <NewUserForm
+            onLoading={() => {
+              handleGetUsers();
+              setOpenNewLandlord(false);
+            }}
+            onCancel={() => {
+              setOpenNewLandlord(false);
+            }}
+            type="landlord"
+          />
         </DialogContent>
       </Dialog>
     </>
