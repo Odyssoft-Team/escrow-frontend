@@ -176,6 +176,15 @@ export default function LeaseDetailsForm() {
                       placeholder="Search landlord..."
                       className="h-9"
                     />
+                    <CommandItem
+                      className="border-b rounded-b-none"
+                      onSelect={() => {
+                        setOpenLandlord(false);
+                        setOpenNewLandlord(true);
+                      }}
+                    >
+                      <PlusCircleIcon className="text-primary" /> New Landlord
+                    </CommandItem>
                     <CommandList>
                       <CommandEmpty>No results found.</CommandEmpty>
                       <CommandGroup>
@@ -206,15 +215,6 @@ export default function LeaseDetailsForm() {
                               />
                             </CommandItem>
                           ))}
-
-                        <CommandItem
-                          onSelect={() => {
-                            setOpenLandlord(false);
-                            setOpenNewLandlord(true);
-                          }}
-                        >
-                          <PlusCircleIcon /> New Landlord
-                        </CommandItem>
                       </CommandGroup>
                     </CommandList>
                   </Command>
@@ -265,6 +265,14 @@ export default function LeaseDetailsForm() {
                       placeholder="Search tenant..."
                       className="h-9"
                     />
+                    <CommandItem
+                      onSelect={() => {
+                        setOpenTenant(false);
+                        setOpenNewTenant(true);
+                      }}
+                    >
+                      <PlusCircleIcon className="text-primary" /> New Tenant
+                    </CommandItem>
                     <CommandList>
                       <CommandEmpty>No results found.</CommandEmpty>
                       <CommandGroup>
@@ -295,15 +303,6 @@ export default function LeaseDetailsForm() {
                               />
                             </CommandItem>
                           ))}
-
-                        <CommandItem
-                          onSelect={() => {
-                            setOpenTenant(false);
-                            setOpenNewTenant(true);
-                          }}
-                        >
-                          <PlusCircleIcon /> New Tenant
-                        </CommandItem>
                       </CommandGroup>
                     </CommandList>
                   </Command>
@@ -347,6 +346,14 @@ export default function LeaseDetailsForm() {
                       placeholder="Search property..."
                       className="h-9"
                     />
+                    <CommandItem className="p-0">
+                      <Link
+                        href="/properties/new"
+                        className="flex items-center gap-2 w-full h-full px-2 py-1 hover:bg-primary/10"
+                      >
+                        <PlusCircleIcon className="text-primary" /> New Property
+                      </Link>
+                    </CommandItem>
                     <CommandList>
                       <CommandEmpty>No results found.</CommandEmpty>
                       <CommandGroup>
@@ -370,15 +377,6 @@ export default function LeaseDetailsForm() {
                             />
                           </CommandItem>
                         ))}
-
-                        <CommandItem className="p-0">
-                          <Link
-                            href="/properties/new"
-                            className="flex items-center gap-2 w-full h-full px-2 py-1 hover:bg-primary/10"
-                          >
-                            <PlusCircleIcon /> New Property
-                          </Link>
-                        </CommandItem>
                       </CommandGroup>
                     </CommandList>
                   </Command>
